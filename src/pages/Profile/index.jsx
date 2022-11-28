@@ -223,8 +223,8 @@ export const Profile = () => {
               sx={{ width: 200, height: 200 }}
               src={
                 newAvatarUrl
-                  ? `http://localhost:4444${newAvatarUrl}`
-                  : `http://localhost:4444${avatarUrl}`
+                  ? `${process.env.REACT_APP_API_URL}${newAvatarUrl}`
+                  : `${process.env.REACT_APP_API_URL}${avatarUrl}`
               }
             ></Avatar>
           </Grid>

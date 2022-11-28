@@ -91,7 +91,7 @@ export const Index = () => {
       <div className={styles.root}>
         <Avatar
           classes={{ root: styles.avatar }}
-          src={user ? `http://localhost:4444${user.avatarUrl}` : ""}
+          src={user ? `${process.env.REACT_APP_API_URL}${user.avatarUrl}` : ""}
         />
         <div className={styles.form}>
           <TextField
