@@ -190,7 +190,7 @@ export const AddPost = () => {
             <img
               className={styles.image}
               src={`${
-                "https://sharkov-blog.onrender.com" || "http://localhost:4444"
+                process.env.REACT_APP_API_URL || "http://localhost:4444"
               }${imageUrl}`}
               alt="Uploaded"
             />

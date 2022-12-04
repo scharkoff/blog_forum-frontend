@@ -78,8 +78,7 @@ export const CommentsBlock = ({
                   <Avatar
                     alt={obj.user?.fullName}
                     src={`${
-                      "https://sharkov-blog.onrender.com" ||
-                      "http://localhost:4444"
+                      process.env.REACT_APP_API_URL || "http://localhost:4444"
                     }${obj.user.avatarUrl}`}
                   />
                 )}

@@ -93,9 +93,9 @@ export const Index = () => {
           classes={{ root: styles.avatar }}
           src={
             user
-              ? `${
-                  "https://sharkov-blog.onrender.com" || "http://localhost:4444"
-                }${user.avatarUrl}`
+              ? `${process.env.REACT_APP_API_URL || "http://localhost:4444"}${
+                  user.avatarUrl
+                }`
               : ""
           }
         />

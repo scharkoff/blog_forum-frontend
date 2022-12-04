@@ -11,7 +11,7 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText, rank }) => {
         src={
           avatarUrl
             ? `${
-                "https://sharkov-blog.onrender.com" || "http://localhost:4444"
+                process.env.REACT_APP_API_URL || "http://localhost:4444"
               }${avatarUrl}`
             : "./images/noavatar.png"
         }
