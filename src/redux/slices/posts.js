@@ -1,12 +1,22 @@
 // -- Imports
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../axios";
+
+// -- Comments
 import {
   fetchComments,
   fetchRemoveComment,
   fetchEditComment,
   fetchCancelEditMode,
 } from "./comments";
+
+// -- Tags
+import {
+  fetchActiveTag,
+  fetchPostsLikeTag,
+  fetchSortedPostsLikeTag,
+  fetchTags,
+} from "./tags";
 
 // -- Запрос на получение всех статей
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
@@ -28,42 +38,6 @@ export const fetchSortedPosts = createAsyncThunk(
   }
 );
 
-// -- Запрос на получение статей по конкретному тегу
-export const fetchPostsLikeTag = createAsyncThunk(
-  "posts/fetchPostsLikeTags",
-  async (name) => {
-    const { data } = await axios.get("/posts");
-
-    if (!name) return data;
-
-    return data.filter((post) => post.tags.includes(name)).reverse();
-  }
-);
-
-// -- Запрос на получение статей по конкретному тегу
-export const fetchActiveTag = createAsyncThunk(
-  "posts/fetchActiveTag",
-  async (name) => {
-    return name;
-  }
-);
-
-// -- Запрос на получение отсортированных статей по конкретному тегу
-export const fetchSortedPostsLikeTag = createAsyncThunk(
-  "posts/fetchPostsLikeTags",
-  async ({ value, name }) => {
-    const { data } = await axios.get("/posts");
-
-    if (value === 1) {
-      return data
-        .filter((post) => post.tags.includes(name))
-        .sort((a, b) => b.viewsCount - a.viewsCount);
-    }
-
-    return data.filter((post) => post.tags.includes(name)).reverse();
-  }
-);
-
 // -- Запрос на удаление статьи по ее индентификатору
 export const fetchRemovePost = createAsyncThunk(
   "posts/fetchRemovePost",
@@ -72,12 +46,6 @@ export const fetchRemovePost = createAsyncThunk(
     return data;
   }
 );
-
-// -- Запрос на  получение тегов
-export const fetchTags = createAsyncThunk("posts/fetchTags", async () => {
-  const { data } = await axios.get("/tags");
-  return data;
-});
 
 // -- Конфиг для стейта
 const initialState = {

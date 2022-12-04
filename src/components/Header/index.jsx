@@ -13,7 +13,8 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 // -- Redux state
-import { fetchActiveTag, fetchPosts } from "../../redux/slices/posts";
+import { fetchPosts } from "../../redux/slices/posts";
+import { fetchActiveTag } from "../../redux/slices/tags";
 import { logout, selectIsAuth } from "../../redux/slices/auth";
 
 export const Header = () => {

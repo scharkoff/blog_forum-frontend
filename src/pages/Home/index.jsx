@@ -7,29 +7,21 @@ import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import TextField from "@mui/material/TextField";
-import { Search } from "@mui/icons-material";
 
 // -- Components
 import { Post } from "../../components/Post";
 import { TagsBlock } from "../../components/TagsBlock";
 import { CommentsBlock } from "../../components/CommentsBlock";
+import { SearchString } from "../../components/SearchString";
 
 // -- React-redux
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-// -- Styles
-import styles from "./Home.module.scss";
-
 // -- Redux state
 import store from "../../redux/store";
-import {
-  fetchPosts,
-  fetchTags,
-  fetchSortedPosts,
-  fetchSortedPostsLikeTag,
-} from "../../redux/slices/posts";
+import { fetchPosts, fetchSortedPosts } from "../../redux/slices/posts";
+import { fetchTags, fetchSortedPostsLikeTag } from "../../redux/slices/tags";
 import { fetchComments } from "../../redux/slices/comments";
 import { fetchAuthMe } from "../../redux/slices/auth";
 
@@ -91,6 +83,9 @@ export const Home = () => {
     dispatch(fetchAuthMe());
   }, []);
 
+  // -- Текст в поисковой строке
+  const [searchText, setSearchText] = React.useState("");
+
   // -- Functions
   // -- Обработка клика по выбранному тегу
   const onSortPosts = (value) => {
@@ -99,23 +94,6 @@ export const Home = () => {
     if (name) {
       dispatch(fetchSortedPostsLikeTag({ value, name }));
     } else dispatch(fetchSortedPosts(value));
-  };
-
-  // -- Иконка поиска
-  const [activeSearchIcon, setActiveSearchIcon] = React.useState(false);
-
-  // -- Текст в поисковой строке
-  const [searchText, setSearchText] = React.useState("");
-
-  // -- Поисковая строка
-  const getUsersLikeSearchText = (e) => {
-    const words = e.target.value;
-    setSearchText(words);
-    setPostsArray(
-      copyOfPosts.filter((post) =>
-        post.title.toLowerCase().startsWith(words.toLowerCase())
-      )
-    );
   };
 
   return (
@@ -154,19 +132,13 @@ export const Home = () => {
           label="Популярные"
         />
       </Tabs>
-      <TextField
-        onSelect={() => setActiveSearchIcon(true)}
-        onBlur={() => setActiveSearchIcon(false)}
-        variant="standard"
-        classes={{ root: styles.search }}
-        id="search"
-        label="Поиск"
-        value={searchText}
-        onChange={(e) => getUsersLikeSearchText(e)}
-      />
-      <Search
-        style={{ marginTop: 30 }}
-        color={!activeSearchIcon ? "disabled" : "primary"}
+
+      <SearchString
+        searchText={searchText}
+        setSearchText={setSearchText}
+        setPostsArray={setPostsArray}
+        copyOfPosts={copyOfPosts}
+        type={"posts"}
       />
       <Grid container spacing={4}>
         <Grid xs={8} item>
@@ -180,7 +152,10 @@ export const Home = () => {
                 title={obj.title}
                 imageUrl={
                   obj.imageUrl
-                    ? `${process.env.REACT_APP_API_URL}${obj.imageUrl}`
+                    ? `${
+                        "https://sharkov-blog.onrender.com" ||
+                        "http://localhost:4444"
+                      }${obj.imageUrl}`
                     : ""
                 }
                 user={obj.user}

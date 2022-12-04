@@ -18,7 +18,7 @@ import { useParams } from "react-router-dom";
 import { SideBlock } from "./SideBlock";
 
 // -- Redux state
-import { fetchActiveTag, fetchPostsLikeTag } from "../redux/slices/posts";
+import { fetchActiveTag, fetchPostsLikeTag } from "../redux/slices/tags";
 
 export const TagsBlock = ({ items, isLoading = true, setSearchText }) => {
   const dispatch = useDispatch();

@@ -11,7 +11,6 @@ import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import Paper from "@mui/material/Paper";
 
 // -- React-redux
 import { useParams } from "react-router-dom";
@@ -62,9 +61,7 @@ export const Profile = () => {
     }
   }, [user]);
 
-  React.useEffect(() => {
-    console.log("new avatar url: " + newAvatarUrl);
-  }, [newAvatarUrl]);
+  React.useEffect(() => {}, [newAvatarUrl]);
 
   React.useEffect(() => {
     axios.get("/auth/me").then((res) => {
@@ -93,8 +90,9 @@ export const Profile = () => {
       setNewAvatarUrl(data.url);
       setDisableSaveButton(false);
     } catch (error) {
-      console.error(error);
-      alert("Не удалось загрузить изображение!");
+      setAlertText("Не удалось загрузить изображение!");
+      setAlertType("error");
+      setOpen(true);
     }
   };
 
@@ -146,7 +144,6 @@ export const Profile = () => {
   // -- Обработка клика по кнопке "Сохранить изменения" на новый аватар
   const onSubmitAvatar = async (values) => {
     const data = await dispatch(fetchUpdateUserAvatar(values));
-    console.log(values);
 
     if (data.payload.isError) {
       setAlertText(data.payload[0].msg);
@@ -223,8 +220,14 @@ export const Profile = () => {
               sx={{ width: 200, height: 200 }}
               src={
                 newAvatarUrl
-                  ? `${process.env.REACT_APP_API_URL}${newAvatarUrl}`
-                  : `${process.env.REACT_APP_API_URL}${avatarUrl}`
+                  ? `${
+                      "https://sharkov-blog.onrender.com" ||
+                      "http://localhost:4444"
+                    }${newAvatarUrl}`
+                  : `${
+                      "https://sharkov-blog.onrender.com" ||
+                      "http://localhost:4444"
+                    }${avatarUrl}`
               }
             ></Avatar>
           </Grid>

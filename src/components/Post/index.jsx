@@ -22,7 +22,8 @@ import { UserInfo } from "../UserInfo";
 import { PostSkeleton } from "./Skeleton";
 
 // -- Redux state
-import { fetchPostsLikeTag, fetchRemovePost } from "../../redux/slices/posts";
+import { fetchRemovePost } from "../../redux/slices/posts";
+import { fetchPostsLikeTag } from "../../redux/slices/tags";
 
 export const Post = ({
   id,

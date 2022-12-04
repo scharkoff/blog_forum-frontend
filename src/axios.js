@@ -2,7 +2,7 @@ import axios from "axios";
 
 // -- Базовый URL для отправки запросов
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: "https://sharkov-blog.onrender.com" || "http://localhost:4444/",
 });
 
 instance.interceptors.request.use((config) => {

@@ -62,8 +62,9 @@ export const AddPost = () => {
       const { data } = await axios.post("/upload", formData);
       setImageUrl(data.url);
     } catch (error) {
-      console.error(error);
-      alert("Не удалось загрузить изображение!");
+      setAlertText("Не удалось загрузить изображение!");
+      setAlertType("error");
+      setOpen(true);
     }
   };
 
@@ -80,8 +81,9 @@ export const AddPost = () => {
           setTags(data.tags);
         })
         .catch((err) => {
-          console.warn(err);
-          alert("Ошибка при получении статьи!");
+          setAlertText("Ошибка при получении статьи!");
+          setAlertType("error");
+          setOpen(true);
         });
     }
   }, []);
@@ -187,7 +189,9 @@ export const AddPost = () => {
             </Button>
             <img
               className={styles.image}
-              src={`${process.env.REACT_APP_API_URL}${imageUrl}`}
+              src={`${
+                "https://sharkov-blog.onrender.com" || "http://localhost:4444"
+              }${imageUrl}`}
               alt="Uploaded"
             />
           </>

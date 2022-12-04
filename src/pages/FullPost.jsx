@@ -83,7 +83,9 @@ export const FullPost = () => {
         title={data.title}
         imageUrl={
           data.imageUrl
-            ? `${process.env.REACT_APP_API_URL}${data.imageUrl}`
+            ? `${
+                "https://sharkov-blog.onrender.com" || "http://localhost:4444"
+              }${data.imageUrl}`
             : ""
         }
         user={data.user}
