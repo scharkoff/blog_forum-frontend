@@ -1,8 +1,11 @@
 # Сайт-блог
 
 Деплой приложения на Vercel + Render: https://blog-forum-frontend-aplknk47d-scharkoff.vercel.app/
+
 Админ аккаунт:
+
 log: nick@a.ru
+
 pas: 12345
 
 # Стек проекта
