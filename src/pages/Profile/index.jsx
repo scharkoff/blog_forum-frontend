@@ -243,6 +243,7 @@ export const Profile = () => {
               autoFocus={true}
               ref={inputFileRef}
               type="file"
+              name="image"
               onChange={handleChangeFile}
               hidden
             />

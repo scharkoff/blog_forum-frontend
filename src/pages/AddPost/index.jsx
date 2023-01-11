@@ -175,6 +175,7 @@ export const AddPost = () => {
         <input
           ref={inputFileRef}
           type="file"
+          name="image"
           onChange={handleChangeFile}
           hidden
         />
