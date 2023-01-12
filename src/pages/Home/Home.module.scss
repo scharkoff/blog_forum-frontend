@@ -1,2 +1,14 @@
-// -- Media querys
-@import "./HomeMedia.module.scss";
+
+@media screen and (max-width: 420px), screen and (max-height: 390px)  {
+    .contentWrapper {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .tags,
+    .posts, 
+    .comments {
+        max-width: 100% !important;
+    }
+
+}
