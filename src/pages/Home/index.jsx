@@ -25,6 +25,9 @@ import { fetchTags, fetchSortedPostsLikeTag } from "../../redux/slices/tags";
 import { fetchComments } from "../../redux/slices/comments";
 import { fetchAuthMe } from "../../redux/slices/auth";
 
+// -- Styles
+import styles from "./Home.module.scss";
+
 export const Home = () => {
   // -- Redux dispatch
   const dispatch = useDispatch();
@@ -139,9 +142,10 @@ export const Home = () => {
         setPostsArray={setPostsArray}
         copyOfPosts={copyOfPosts}
         type={"posts"}
+        className={styles.search}
       />
-      <Grid container spacing={4}>
-        <Grid xs={8} item>
+      <Grid container spacing={4} className={styles.contentWrapper}>
+        <Grid xs={8} item className={styles.posts}>
           {(isPostsLoading ? [...Array(5)] : postsArray).map((obj, index) =>
             isPostsLoading ? (
               <Post key={index} isLoading={true} />
@@ -168,7 +172,7 @@ export const Home = () => {
             )
           )}
         </Grid>
-        <Grid xs={4} item>
+        <Grid xs={4} item className={styles.tags}>
           <TagsBlock
             setSearchText={setSearchText}
             isHomePage={isHomePage}
@@ -176,6 +180,7 @@ export const Home = () => {
             isLoading={false}
           />
           <CommentsBlock
+            className={styles.comments}
             items={
               comments.items
                 ? sortedComments

@@ -1,9 +1,9 @@
 import React from "react";
 
 // -- Components
-import { Post } from "../components/Post";
-import { Index } from "../components/AddComment";
-import { CommentsBlock } from "../components/CommentsBlock";
+import { Post } from "../../components/Post";
+import { Index } from "../../components/AddComment";
+import { CommentsBlock } from "../../components/CommentsBlock";
 
 // -- Material UI
 import Alert from "@mui/material/Alert";
@@ -18,10 +18,10 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 // -- Axios
-import axios from "../axios";
+import axios from "../../axios";
 
 // -- Redux state
-import { fetchComments } from "../redux/slices/comments";
+import { fetchComments } from "../../redux/slices/comments";
 
 export const FullPost = () => {
   const [data, setData] = React.useState();

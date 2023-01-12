@@ -1,0 +1,23 @@
+@media screen and (max-width: 420px), screen and (max-height: 390px)  {
+    .title {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    .content {
+        margin-top: 2px;
+        p {
+          font-size: 14px;
+          line-height: 1.5;
+        }
+
+        h1 {
+            font-size: 20px;
+            line-height: 1.5;
+        }
+      }
+
+      .wrapper {
+        padding: 5px 10px 10px;
+      }
+}

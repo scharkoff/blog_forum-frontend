@@ -1,12 +1,20 @@
 # Сайт-блог
 
-Деплой приложения на Vercel + Render: https://blog-forum-frontend-aplknk47d-scharkoff.vercel.app/
+Деплой приложения на `Vercel` + `Render`: https://blog-forum-frontend-aplknk47d-scharkoff.vercel.app/
 
 Админ аккаунт:
 
+```
 log: nick@a.ru
+```
 
+```
 pas: 12345
+```
+
+### <span style="color: yellow"> Внимание! </span>
+
+Хостинг `render.com` требует подписки для использования диска облачного хранения, вследствие чего картинки, загруженные вами ранее, удалятся через неопределенное время. Спасибо!
 
 # Стек проекта
 
@@ -26,4 +34,3 @@ MongoDB (Mongoose),
 JSON web token,
 Multer,
 BCrypt.
-

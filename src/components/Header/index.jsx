@@ -59,6 +59,7 @@ export const Header = () => {
                       marginRight: 20,
                       color: "black",
                     }}
+                    className={styles.profileName}
                     variant="h7"
                   >
                     {user?.fullName}

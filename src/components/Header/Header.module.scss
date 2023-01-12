@@ -20,6 +20,9 @@
   border-radius: 5px;
   padding: 0 10px;
   text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
     background-color: #4361ee;
@@ -29,9 +32,13 @@
 .buttons {
   button {
     margin-left: 10px;
+    padding: 4px;
   }
 
   a {
     text-decoration: none;
   }
 }
+
+// -- Media querys
+@import "./Header.media.module.scss";

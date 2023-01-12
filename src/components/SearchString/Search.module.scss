@@ -1,4 +1,7 @@
 .search {
   margin: 10px 0 !important;
-  width: 20%;
+  max-width: 20%;
 }
+
+// -- Media querys
+@import "./Search.media.module.scss";
