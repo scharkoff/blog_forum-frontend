@@ -1,6 +1,6 @@
 # Сайт-блог
 
-Деплой приложения на `Vercel` + `Render`: https://blog-forum-frontend-aplknk47d-scharkoff.vercel.app/
+Деплой приложения на `Vercel` + `Render`: https://blog-forum-frontend.vercel.app/
 
 Админ аккаунт:
 

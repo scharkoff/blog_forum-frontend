@@ -4,9 +4,4 @@
 }
 
 // -- Media querys
-@media screen and (max-width: 420px), screen and (max-height: 390px)  {
-  .search {
-      margin: 10px 0 !important;
-      max-width: 80%;
-    }
-}
+@import "./Search.media.module.scss";
