@@ -67,7 +67,11 @@ export const Header = () => {
                 </Link>
                 {user.rank === "admin" ? (
                   <Link to="/admin-panel">
-                    <Button variant="contained" color="secondary">
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      style={{ boxShadow: 1 }}
+                    >
                       Админ панель
                     </Button>
                   </Link>
@@ -80,6 +84,7 @@ export const Header = () => {
                 </Link>
                 <Link to="/login">
                   <Button
+                    style={{ boxShadow: 0 }}
                     onClick={onClickLogout}
                     variant="contained"
                     color="error"

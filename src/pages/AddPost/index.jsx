@@ -210,7 +210,7 @@ export const AddPost = () => {
         <TextField
           classes={{ root: styles.tags }}
           variant="standard"
-          placeholder="Тэги"
+          placeholder="Слова через запятую, например: лето, зима, весна"
           value={tags}
           onChange={(e) => setTags(e.target.value)}
           fullWidth
