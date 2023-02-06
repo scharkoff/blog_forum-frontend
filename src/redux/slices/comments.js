@@ -11,6 +11,27 @@ export const fetchComments = createAsyncThunk(
   }
 );
 
+// -- Запрос на получение 5 отсортированных комментариев
+export const fetchSortedComments = createAsyncThunk(
+  "posts/fetchComments",
+  async () => {
+    const { data } = await axios.get("/posts/comments");
+    return data.reverse()
+      .slice(0, 5)
+      .map((item) => {
+        return {
+          user: {
+            fullName: item.user?.fullName,
+            avatarUrl: item.user?.avatarUrl,
+            rank: item.user?.rank,
+          },
+          text: item.text,
+          commentId: item._id,
+        };
+      });
+  }
+);
+
 // -- Запрос на удаление комментария по его индентификатору
 export const fetchRemoveComment = createAsyncThunk(
   "posts/fetchRemoveComment",
@@ -40,5 +61,5 @@ export const fetchEditComment = createAsyncThunk(
 // -- Запрос на сброс режима редактирования комментария
 export const fetchCancelEditMode = createAsyncThunk(
   "posts/fetchCancelEditMode",
-  async () => {}
+  async () => { }
 );

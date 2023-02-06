@@ -22,7 +22,7 @@ import { useParams } from "react-router-dom";
 import store from "../../redux/store";
 import { fetchPosts, fetchSortedPosts } from "../../redux/slices/posts";
 import { fetchTags, fetchSortedPostsLikeTag } from "../../redux/slices/tags";
-import { fetchComments } from "../../redux/slices/comments";
+import { fetchSortedComments } from "../../redux/slices/comments";
 import { fetchAuthMe } from "../../redux/slices/auth";
 
 // -- Styles
@@ -42,9 +42,6 @@ export const Home = () => {
   const [open, setOpen] = React.useState(false);
   const [alertText, setAlertText] = React.useState("");
   const [alertType, setAlertType] = React.useState("info");
-
-  // -- Отсорированные комментарии
-  const sortedComments = [].concat(comments.items);
 
   // -- Посты
   const [postsArray, setPostsArray] = React.useState([]);
@@ -82,7 +79,7 @@ export const Home = () => {
       ? dispatch(fetchSortedPostsLikeTag({ activeTab, name }))
       : dispatch(fetchPosts());
     dispatch(fetchTags());
-    dispatch(fetchComments());
+    dispatch(fetchSortedComments());
     dispatch(fetchAuthMe());
   }, []);
 
@@ -181,24 +178,7 @@ export const Home = () => {
           />
           <CommentsBlock
             className={styles.comments}
-            items={
-              comments.items
-                ? sortedComments
-                    .reverse()
-                    .slice(0, 5)
-                    .map((item) => {
-                      return {
-                        user: {
-                          fullName: item.user?.fullName,
-                          avatarUrl: item.user?.avatarUrl,
-                          rank: item.user?.rank,
-                        },
-                        text: item.text,
-                        commentId: item._id,
-                      };
-                    })
-                : []
-            }
+            items={comments.items ? comments.items : []}
             isLoading={false}
             isEditable={false}
           />

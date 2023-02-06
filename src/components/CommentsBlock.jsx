@@ -27,118 +27,116 @@ import { useParams } from "react-router-dom";
 import { selectIsAuth } from "../redux/slices/auth.js";
 import { fetchEditComment, fetchRemoveComment } from "../redux/slices/comments";
 
-export const CommentsBlock = ({
-  items,
-  children,
-  isLoading = true,
-  isEditble,
-}) => {
-  // -- Redux dispatch
-  const dispatch = useDispatch();
+export const CommentsBlock = React.memo(
+  ({ items, children, isLoading = true, isEditble }) => {
+    // -- Redux dispatch
+    const dispatch = useDispatch();
+    console.log("Comments block rerender");
 
-  // -- Проверка на авторизацию
-  const isAuth = useSelector(selectIsAuth);
+    // -- Проверка на авторизацию
+    const isAuth = useSelector(selectIsAuth);
 
-  // -- useParams
-  const id = useParams();
+    // -- useParams
+    const id = useParams();
 
-  // -- Auth userId
-  const userId = useSelector((state) =>
-    state.auth.data ? state.auth.data._id : null
-  );
+    // -- Auth userId
+    const userId = useSelector((state) =>
+      state.auth.data ? state.auth.data._id : null
+    );
 
-  // -- Auth user rank
-  const userRank = useSelector((state) =>
-    state.auth.data ? state.auth.data.rank : null
-  );
+    // -- Auth user rank
+    const userRank = useSelector((state) =>
+      state.auth.data ? state.auth.data.rank : null
+    );
 
-  // -- Functions
-  // -- Обработка клика по кнопке "Удалить" комментарий
-  function onRemoveComment(commentId) {
-    if (window.confirm("Вы действительно хотите удалить комментарий?")) {
-      dispatch(fetchRemoveComment({ commentId, id }));
+    // -- Functions
+    // -- Обработка клика по кнопке "Удалить" комментарий
+    function onRemoveComment(commentId) {
+      if (window.confirm("Вы действительно хотите удалить комментарий?")) {
+        dispatch(fetchRemoveComment({ commentId, id }));
+      }
     }
-  }
 
-  // -- Обрабокта клика по кнопке "Сохранить" комментарий
-  function onEditComment(commentId, text) {
-    dispatch(fetchEditComment({ id, commentId, text }));
-  }
+    // -- Обрабокта клика по кнопке "Сохранить" комментарий
+    function onEditComment(commentId, text) {
+      dispatch(fetchEditComment({ id, commentId, text }));
+    }
 
-  return (
-    <SideBlock title="Комментарии">
-      <List>
-        {(isLoading && items ? [...Array(5)] : items).map((obj, index) => (
-          <React.Fragment key={index}>
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
+    return (
+      <SideBlock title="Комментарии">
+        <List>
+          {(isLoading && items ? [...Array(5)] : items).map((obj, index) => (
+            <React.Fragment key={index}>
+              <ListItem alignItems="flex-start">
+                <ListItemAvatar>
+                  {isLoading ? (
+                    <Skeleton variant="circular" width={40} height={40} />
+                  ) : (
+                    <Avatar
+                      alt={obj.user?.fullName}
+                      src={`${
+                        process.env.REACT_APP_API_URL || "http://localhost:4444"
+                      }${obj.user.avatarUrl}`}
+                    />
+                  )}
+                </ListItemAvatar>
                 {isLoading ? (
-                  <Skeleton variant="circular" width={40} height={40} />
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <Skeleton variant="text" height={25} width={120} />
+                    <Skeleton variant="text" height={18} width={230} />
+                  </div>
                 ) : (
-                  <Avatar
-                    alt={obj.user?.fullName}
-                    src={`${
-                      process.env.REACT_APP_API_URL || "http://localhost:4444"
-                    }${obj.user.avatarUrl}`}
-                  />
+                  <>
+                    <ListItemText
+                      primary={
+                        <React.Fragment>
+                          <Typography
+                            sx={{ display: "inline" }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          >
+                            {obj.user?.fullName}
+                          </Typography>
+                          <span
+                            className={
+                              obj.user?.rank === "user"
+                                ? styles.rank
+                                : styles.admin
+                            }
+                          >
+                            {" " + obj.user?.rank}
+                          </span>
+                        </React.Fragment>
+                      }
+                      secondary={obj.text}
+                    />
+                    {(isAuth && isEditble && userId === obj.user?.userId) ||
+                    (userRank === "admin" && isAuth && isEditble) ? (
+                      <>
+                        <IconButton
+                          onClick={() => onRemoveComment(obj.commentId)}
+                          color="secondary"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => onEditComment(obj.commentId, obj.text)}
+                          color="primary"
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </>
+                    ) : null}
+                  </>
                 )}
-              </ListItemAvatar>
-              {isLoading ? (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <Skeleton variant="text" height={25} width={120} />
-                  <Skeleton variant="text" height={18} width={230} />
-                </div>
-              ) : (
-                <>
-                  <ListItemText
-                    primary={
-                      <React.Fragment>
-                        <Typography
-                          sx={{ display: "inline" }}
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                        >
-                          {obj.user?.fullName}
-                        </Typography>
-                        <span
-                          className={
-                            obj.user?.rank === "user"
-                              ? styles.rank
-                              : styles.admin
-                          }
-                        >
-                          {" " + obj.user?.rank}
-                        </span>
-                      </React.Fragment>
-                    }
-                    secondary={obj.text}
-                  />
-                  {(isAuth && isEditble && userId === obj.user?.userId) ||
-                  (userRank === "admin" && isAuth && isEditble) ? (
-                    <>
-                      <IconButton
-                        onClick={() => onRemoveComment(obj.commentId)}
-                        color="secondary"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => onEditComment(obj.commentId, obj.text)}
-                        color="primary"
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </>
-                  ) : null}
-                </>
-              )}
-            </ListItem>
-            <Divider variant="inset" component="li" />
-          </React.Fragment>
-        ))}
-      </List>
-      {children}
-    </SideBlock>
-  );
-};
+              </ListItem>
+              <Divider variant="inset" component="li" />
+            </React.Fragment>
+          ))}
+        </List>
+        {children}
+      </SideBlock>
+    );
+  }
+);

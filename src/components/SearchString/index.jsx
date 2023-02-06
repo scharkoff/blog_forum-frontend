@@ -21,6 +21,7 @@ export const SearchString = ({
 
   // -- Найти посты по результату
   const getPostsLikeSearchText = (e) => {
+    console.log("отработала функция поиска");
     const words = e.target.value;
     setSearchText(words);
     setPostsArray(
