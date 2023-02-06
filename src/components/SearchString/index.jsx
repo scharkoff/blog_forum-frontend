@@ -25,7 +25,7 @@ export const SearchString = ({
     setSearchText(words);
     setPostsArray(
       copyOfPosts.filter((post) =>
-        post.title.toLowerCase().startsWith(words.toLowerCase())
+        post.title.toLowerCase().includes(words.toLowerCase())
       )
     );
   };
@@ -37,9 +37,9 @@ export const SearchString = ({
     setRows(
       copyOfRows.filter(
         (row) =>
-          row.fullName.toLowerCase().startsWith(words.toLowerCase()) ||
-          row.email.toLowerCase().startsWith(words.toLowerCase()) ||
-          row.rank.toLowerCase().startsWith(words.toLowerCase())
+          row.fullName.toLowerCase().includes(words.toLowerCase()) ||
+          row.email.toLowerCase().includes(words.toLowerCase()) ||
+          row.rank.toLowerCase().includes(words.toLowerCase())
       )
     );
   };
