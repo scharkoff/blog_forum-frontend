@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 // -- Components
 import { SideBlock } from "./SideBlock";
@@ -31,7 +32,6 @@ export const CommentsBlock = React.memo(
   ({ items, children, isLoading = true, isEditble }) => {
     // -- Redux dispatch
     const dispatch = useDispatch();
-    console.log("Comments block rerender");
 
     // -- Проверка на авторизацию
     const isAuth = useSelector(selectIsAuth);
@@ -140,3 +140,10 @@ export const CommentsBlock = React.memo(
     );
   }
 );
+
+CommentsBlock.propTypes = {
+  items: PropTypes.array.isRequired,
+  children: PropTypes.node,
+  isLoading: PropTypes.bool,
+  isEditble: PropTypes.bool,
+};

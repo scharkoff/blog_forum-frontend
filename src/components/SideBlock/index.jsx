@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 // -- Styles
 import styles from "./SideBlock.module.scss";
@@ -16,4 +17,9 @@ export const SideBlock = ({ title, children }) => {
       {children}
     </Paper>
   );
+};
+
+SideBlock.propTypes = {
+  title: PropTypes.string.isRequired,
+  children: PropTypes.node,
 };

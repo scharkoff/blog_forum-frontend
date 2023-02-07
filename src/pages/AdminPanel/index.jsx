@@ -1,9 +1,6 @@
 import React from "react";
 
 // -- Material UI
-import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import { Typography } from "@mui/material";
 
 // -- React-redux
@@ -13,12 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "../../redux/slices/users.js";
 
 // -- Components
-import { UserTable } from "../../components/UserTable/index.jsx";
+import { UsersTable } from "../../components/UsersTable/index.jsx";
+import { AlertMessage } from "../../components/AlertMessage/index.jsx";
 
 export const AdminPanel = () => {
   const dispatch = useDispatch();
 
-  // -- Alert settings hooks
+  // -- Уведомления об операциях
   const [open, setOpen] = React.useState(false);
   const [alertText, setAlertText] = React.useState("");
   const [alertType, setAlertType] = React.useState("info");
@@ -33,29 +31,18 @@ export const AdminPanel = () => {
 
   return (
     <div>
-      <Alert
-        style={{ display: !open ? "none" : "flex", marginBottom: 20 }}
-        severity={alertType}
-        action={
-          <IconButton
-            aria-label="close"
-            color="inherit"
-            size="small"
-            onClick={() => {
-              setOpen(false);
-            }}
-          >
-            <CloseIcon fontSize="inherit" />
-          </IconButton>
-        }
-      >
-        {alertText}
-      </Alert>
-      <Typography variant="h4" gutterBottom style={{ margin: 0 }}>
+      <AlertMessage
+        message={alertText}
+        type={alertType}
+        open={open}
+        setOpen={setOpen}
+      />
+
+      <Typography variant="h5" gutterBottom style={{ margin: 0 }}>
         Таблица всех пользователей
       </Typography>
 
-      <UserTable
+      <UsersTable
         setAlertText={setAlertText}
         setAlertType={setAlertType}
         setOpen={setOpen}

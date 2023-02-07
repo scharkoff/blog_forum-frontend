@@ -21,7 +21,7 @@ import {
 // -- Axios
 import axios from "../../axios";
 
-export const Index = () => {
+export const AddComment = () => {
   // -- Redux dispatch
   const dispatch = useDispatch();
 
@@ -75,7 +75,6 @@ export const Index = () => {
       dispatch(fetchComments());
       setText("");
     } catch (error) {
-      console.error(error);
       alert("Ошибка при создании комментария!");
     }
   };

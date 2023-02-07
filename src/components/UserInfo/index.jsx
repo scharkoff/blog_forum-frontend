@@ -1,4 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
+
+import Avatar from "@mui/material/Avatar";
 
 // -- Styles
 import styles from "./UserInfo.module.scss";
@@ -6,8 +9,9 @@ import styles from "./UserInfo.module.scss";
 export const UserInfo = ({ avatarUrl, fullName, additionalText, rank }) => {
   return (
     <div className={styles.root}>
-      <img
-        className={styles.avatar}
+      <Avatar
+        sx={{ width: 35, height: 35, marginRight: 1 }}
+        alt={fullName}
         src={
           avatarUrl
             ? `${
@@ -15,7 +19,6 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText, rank }) => {
               }${avatarUrl}`
             : "./images/noavatar.png"
         }
-        alt={fullName}
       />
       <div className={styles.userDetails}>
         <span className={styles.userName}>
@@ -28,4 +31,11 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText, rank }) => {
       </div>
     </div>
   );
+};
+
+UserInfo.propTypes = {
+  avatarUrl: PropTypes.string.isRequired,
+  fullName: PropTypes.string.isRequired,
+  additionalText: PropTypes.string.isRequired,
+  rank: PropTypes.string.isRequired,
 };

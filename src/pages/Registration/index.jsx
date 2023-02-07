@@ -6,9 +6,6 @@ import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
-import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 
 // -- React-redux
 import { useForm } from "react-hook-form";
@@ -20,6 +17,7 @@ import { fetchRegister, selectIsAuth } from "../../redux/slices/auth";
 
 // -- Imports styles
 import styles from "./Login.module.scss";
+import { AlertMessage } from "../../components/AlertMessage";
 
 export const Registration = () => {
   // -- Redux dispatch
@@ -28,7 +26,7 @@ export const Registration = () => {
   // -- Авторизирован или нет
   const isAuth = useSelector(selectIsAuth);
 
-  // -- Alert settings hooks
+  // -- Уведомления об операциях
   const [open, setOpen] = React.useState(false);
   const [alertText, setAlertText] = React.useState("");
   const [alertType, setAlertType] = React.useState("info");
@@ -58,7 +56,6 @@ export const Registration = () => {
   // -- Обработка клика по кнопке "Зарегистрироваться"
   const onSubmit = async (values) => {
     const data = await dispatch(fetchRegister(values));
-    console.log(values);
 
     if ("token" in data.payload) {
       window.localStorage.setItem("token", data.payload.token);
@@ -84,24 +81,13 @@ export const Registration = () => {
 
   return (
     <div>
-      <Alert
-        style={{ display: !open ? "none" : "flex", marginBottom: 20 }}
-        severity={alertType}
-        action={
-          <IconButton
-            aria-label="close"
-            color="inherit"
-            size="small"
-            onClick={() => {
-              setOpen(false);
-            }}
-          >
-            <CloseIcon fontSize="inherit" />
-          </IconButton>
-        }
-      >
-        {alertText}
-      </Alert>
+      <AlertMessage
+        message={alertText}
+        type={alertType}
+        open={open}
+        setOpen={setOpen}
+      />
+
       <Paper elevation={0} classes={{ root: styles.root }}>
         <Typography classes={{ root: styles.title }} variant="h5">
           Создание аккаунта

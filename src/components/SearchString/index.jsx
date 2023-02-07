@@ -1,27 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 
 // -- Styles
-import styles from "./Search.module.scss";
+import styles from "./SearchString.module.scss";
+
+// -- Redux state
+import store from "../../redux/store";
 
 // -- Material UI
 import TextField from "@mui/material/TextField";
-import { Search } from "@mui/icons-material";
 
-export const SearchString = ({
-  searchText,
-  setSearchText,
-  setPostsArray,
-  copyOfPosts,
-  setRows,
-  copyOfRows,
-  type,
-}) => {
-  // -- Иконка поиска
-  const [activeSearchIcon, setActiveSearchIcon] = React.useState(false);
+export const SearchString = ({ setPostsArray, copyOfPosts }) => {
+  const state = store.getState();
 
-  // -- Найти посты по результату
+  const resetSearchStringValue = state.utils.search.resetSearchString;
+  const [searchText, setSearchText] = React.useState("");
+
+  useEffect(() => {
+    if (resetSearchStringValue) {
+      setSearchText("");
+    }
+  }, [resetSearchStringValue]);
+
   const getPostsLikeSearchText = (e) => {
-    console.log("отработала функция поиска");
     const words = e.target.value;
     setSearchText(words);
     setPostsArray(
@@ -31,39 +32,22 @@ export const SearchString = ({
     );
   };
 
-  // -- Найти пользователей по результату
-  const getUsersLikeSearchText = (e) => {
-    const words = e.target.value;
-    setSearchText(words);
-    setRows(
-      copyOfRows.filter(
-        (row) =>
-          row.fullName.toLowerCase().includes(words.toLowerCase()) ||
-          row.email.toLowerCase().includes(words.toLowerCase()) ||
-          row.rank.toLowerCase().includes(words.toLowerCase())
-      )
-    );
-  };
   return (
     <>
       <TextField
-        onSelect={() => setActiveSearchIcon(true)}
-        onBlur={() => setActiveSearchIcon(false)}
-        variant="standard"
+        style={{ marginBottom: 15 }}
+        variant="filled"
         classes={{ root: styles.search }}
         id="search"
-        label="Поиск"
+        label="Поиск статьи..."
         value={searchText}
-        onChange={(e) =>
-          type === "users"
-            ? getUsersLikeSearchText(e)
-            : getPostsLikeSearchText(e)
-        }
-      />
-      <Search
-        style={{ marginTop: 30 }}
-        color={!activeSearchIcon ? "disabled" : "primary"}
+        onChange={(e) => getPostsLikeSearchText(e)}
       />
     </>
   );
+};
+
+SearchString.propTypes = {
+  setPostsArray: PropTypes.func.isRequired,
+  copyOfPosts: PropTypes.array.isRequired,
 };

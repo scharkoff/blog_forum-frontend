@@ -2,13 +2,8 @@ import React from "react";
 
 // -- Components
 import { Post } from "../../components/Post";
-import { Index } from "../../components/AddComment";
+import { AddComment } from "../../components/AddComment";
 import { CommentsBlock } from "../../components/CommentsBlock";
-
-// -- Material UI
-import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 
 // -- React markdown
 import ReactMarkdown from "react-markdown";
@@ -22,6 +17,7 @@ import axios from "../../axios";
 
 // -- Redux state
 import { fetchComments } from "../../redux/slices/comments";
+import { AlertMessage } from "../../components/AlertMessage";
 
 export const FullPost = () => {
   const [data, setData] = React.useState();
@@ -31,7 +27,7 @@ export const FullPost = () => {
 
   const dispatch = useDispatch();
 
-  // -- Alert settings hooks
+  // -- Уведомления об операциях
   const [open, setOpen] = React.useState(false);
   const [alertText, setAlertText] = React.useState("");
   const [alertType, setAlertType] = React.useState("info");
@@ -60,24 +56,13 @@ export const FullPost = () => {
 
   return (
     <>
-      <Alert
-        style={{ display: !open ? "none" : "flex", marginBottom: 20 }}
-        severity={alertType}
-        action={
-          <IconButton
-            aria-label="close"
-            color="inherit"
-            size="small"
-            onClick={() => {
-              setOpen(false);
-            }}
-          >
-            <CloseIcon fontSize="inherit" />
-          </IconButton>
-        }
-      >
-        {alertText}
-      </Alert>
+      <AlertMessage
+        message={alertText}
+        type={alertType}
+        open={open}
+        setOpen={setOpen}
+      />
+
       <Post
         id={data._id}
         title={data.title}
@@ -123,7 +108,7 @@ export const FullPost = () => {
         isLoading={false}
         isEditble={true}
       >
-        <Index />
+        <AddComment />
       </CommentsBlock>
     </>
   );

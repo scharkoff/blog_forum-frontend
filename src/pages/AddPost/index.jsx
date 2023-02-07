@@ -35,7 +35,7 @@ export const AddPost = () => {
   // -- id поста
   const { id } = useParams();
 
-  // -- Alert settings hooks
+  // -- Уведомления об операциях
   const [open, setOpen] = React.useState(false);
   const [alertText, setAlertText] = React.useState("");
   const [alertType, setAlertType] = React.useState("info");

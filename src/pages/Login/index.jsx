@@ -5,9 +5,6 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 
 // -- React-redux
 import { useForm } from "react-hook-form";
@@ -19,6 +16,7 @@ import { fetchAuth, selectIsAuth } from "../../redux/slices/auth";
 
 // -- Styles
 import styles from "./Login.module.scss";
+import { AlertMessage } from "../../components/AlertMessage";
 
 export const Login = () => {
   // -- Redux dispatch
@@ -27,7 +25,7 @@ export const Login = () => {
   // -- Авторизирован или нет
   const isAuth = useSelector(selectIsAuth);
 
-  // -- Alert settings hooks
+  // -- Уведомления об операциях
   const [open, setOpen] = React.useState(false);
   const [alertText, setAlertText] = React.useState("");
   const [alertType, setAlertType] = React.useState("info");
@@ -69,24 +67,13 @@ export const Login = () => {
 
   return (
     <div>
-      <Alert
-        style={{ display: !open ? "none" : "flex", marginBottom: 20 }}
-        severity={alertType}
-        action={
-          <IconButton
-            aria-label="close"
-            color="inherit"
-            size="small"
-            onClick={() => {
-              setOpen(false);
-            }}
-          >
-            <CloseIcon fontSize="inherit" />
-          </IconButton>
-        }
-      >
-        {alertText}
-      </Alert>
+      <AlertMessage
+        message={alertText}
+        type={alertType}
+        open={open}
+        setOpen={setOpen}
+      />
+
       <Paper elevation={0} classes={{ root: styles.root }}>
         <Typography classes={{ root: styles.title }} variant="h5">
           Вход в аккаунт

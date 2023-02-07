@@ -1,8 +1,5 @@
 import React from "react";
 
-// -- Axios
-import axios from "../../axios.js";
-
 // -- Material UI
 import { Avatar } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -13,27 +10,12 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Typography } from "@mui/material";
 import { Select } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-
-// -- Imports styles
-import styles from "./EditUserData.module.scss";
-
-// -- Table
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
 
 // -- React-redux
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { fetchEditUserData } from "../../redux/slices/users.js";
 
 // -- Redux state
 import {
@@ -43,6 +25,7 @@ import {
   fetchUpdateUserPassword,
   fetchUpdateUserRank,
 } from "../../redux/slices/auth.js";
+import { AlertMessage } from "../../components/AlertMessage/index.jsx";
 
 export const EditUserData = () => {
   const dispatch = useDispatch();
@@ -62,7 +45,7 @@ export const EditUserData = () => {
   const [disableSaveButton, setDisableSaveButton] = React.useState(true);
   const [disableLoadButton, setDisableLoadButton] = React.useState(true);
 
-  // -- Alert settings hooks
+  // -- Уведомления об операциях
   const [open, setOpen] = React.useState(false);
   const [alertText, setAlertText] = React.useState("");
   const [alertType, setAlertType] = React.useState("info");
@@ -198,26 +181,14 @@ export const EditUserData = () => {
 
   return (
     <div>
-      <Alert
-        style={{ display: !open ? "none" : "flex", marginBottom: 20 }}
-        severity={alertType}
-        action={
-          <IconButton
-            aria-label="close"
-            color="inherit"
-            size="small"
-            onClick={() => {
-              setOpen(false);
-            }}
-          >
-            <CloseIcon fontSize="inherit" />
-          </IconButton>
-        }
-      >
-        {alertText}
-      </Alert>
+      <AlertMessage
+        message={alertText}
+        type={alertType}
+        open={open}
+        setOpen={setOpen}
+      />
 
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         Изменение данных пользователя
       </Typography>
 

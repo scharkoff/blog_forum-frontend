@@ -4,15 +4,11 @@ import React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Grid from "@mui/material/Grid";
-import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 
 // -- Components
-import { Post } from "../../components/Post";
 import { TagsBlock } from "../../components/TagsBlock";
 import { CommentsBlock } from "../../components/CommentsBlock";
-import { SearchString } from "../../components/SearchString";
+import { Posts } from "../../components/Posts";
 
 // -- React-redux
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +23,7 @@ import { fetchAuthMe } from "../../redux/slices/auth";
 
 // -- Styles
 import styles from "./Home.module.scss";
+import { resetSearchString } from "../../redux/slices/utils";
 
 export const Home = () => {
   // -- Redux dispatch
@@ -36,29 +33,10 @@ export const Home = () => {
   const state = store.getState();
 
   // -- Комментарии и посты в стейте
-  const { comments, posts } = state.posts;
-
-  // -- Alert settings hooks
-  const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState("");
-  const [alertType, setAlertType] = React.useState("info");
-
-  // -- Посты
-  const [postsArray, setPostsArray] = React.useState([]);
-  const [copyOfPosts, setCopyOfPosts] = React.useState([]);
-
-  React.useEffect(() => {
-    if (posts.items) {
-      setPostsArray(posts.items);
-      setCopyOfPosts(posts.items);
-    }
-  }, [posts.items]);
+  const { comments } = state.posts;
 
   // -- Теги
   let { tags } = useSelector((state) => state.posts);
-
-  // -- User data
-  const userData = useSelector((state) => state.auth.data);
 
   // -- На главной ли странице
   const isHomePage = useSelector((state) => state.posts.posts.home);
@@ -68,9 +46,6 @@ export const Home = () => {
 
   // -- useState
   const [activeTab, setActiveTab] = React.useState(0);
-
-  // -- Загружаются ли посты
-  const isPostsLoading = posts.status === "loading";
 
   // -- useEffect
   React.useEffect(() => {
@@ -83,13 +58,9 @@ export const Home = () => {
     dispatch(fetchAuthMe());
   }, []);
 
-  // -- Текст в поисковой строке
-  const [searchText, setSearchText] = React.useState("");
-
   // -- Functions
   // -- Обработка клика по выбранному тегу
   const onSortPosts = (value) => {
-    setSearchText("");
     value === 1 ? setActiveTab(1) : setActiveTab(0);
     if (name) {
       dispatch(fetchSortedPostsLikeTag({ value, name }));
@@ -98,80 +69,34 @@ export const Home = () => {
 
   return (
     <>
-      <Alert
-        style={{ display: !open ? "none" : "flex", marginBottom: 20 }}
-        severity={alertType}
-        action={
-          <IconButton
-            aria-label="close"
-            color="inherit"
-            size="small"
-            onClick={() => {
-              setOpen(false);
-            }}
-          >
-            <CloseIcon fontSize="inherit" />
-          </IconButton>
-        }
+      <Tabs
+        value={activeTab}
+        aria-label="basic tabs example"
+        style={{ marginBottom: 15 }}
       >
-        {alertText}
-      </Alert>
-      <Tabs value={activeTab} aria-label="basic tabs example">
         <Tab
           onClick={() => {
             onSortPosts(0);
-            setSearchText("");
+            dispatch(resetSearchString(new Date().valueOf()));
           }}
           label="Новые"
         />
         <Tab
           onClick={() => {
             onSortPosts(1);
-            setSearchText("");
+            dispatch(resetSearchString(new Date().valueOf()));
           }}
           label="Популярные"
         />
       </Tabs>
 
-      <SearchString
-        searchText={searchText}
-        setSearchText={setSearchText}
-        setPostsArray={setPostsArray}
-        copyOfPosts={copyOfPosts}
-        type={"posts"}
-        className={styles.search}
-      />
       <Grid container spacing={4} className={styles.contentWrapper}>
         <Grid xs={8} item className={styles.posts}>
-          {(isPostsLoading ? [...Array(5)] : postsArray).map((obj, index) =>
-            isPostsLoading ? (
-              <Post key={index} isLoading={true} />
-            ) : (
-              <Post
-                key={index}
-                id={obj._id}
-                title={obj.title}
-                imageUrl={
-                  obj.imageUrl
-                    ? `${
-                        process.env.REACT_APP_API_URL || "http://localhost:4444"
-                      }${obj.imageUrl}`
-                    : ""
-                }
-                user={obj.user}
-                createdAt={obj.createdAt.slice(0, 10)}
-                viewsCount={obj.viewsCount}
-                commentsCount={obj.commentsCount}
-                tags={obj.tags}
-                isEditable={userData?._id === obj?.user?._id}
-                alert={{ setAlertText, setAlertType, setOpen }}
-              />
-            )
-          )}
+          <Posts />
         </Grid>
+
         <Grid xs={4} item className={styles.tags}>
           <TagsBlock
-            setSearchText={setSearchText}
             isHomePage={isHomePage}
             items={tags.items ? tags.items : []}
             isLoading={false}

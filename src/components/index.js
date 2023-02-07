@@ -6,4 +6,6 @@ export * from "./SideBlock";
 export * from "./UserInfo";
 export * from "./Header";
 export * from "./SearchString";
-export * from "./UserTable";
+export * from "./UsersTable";
+export * from "./AdminSearchString";
+export * from "./AlertMessage";

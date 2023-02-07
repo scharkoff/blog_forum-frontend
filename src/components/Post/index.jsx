@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 // -- clsx for css
 import clsx from "clsx";
@@ -38,7 +39,9 @@ export const Post = ({
   isFullPost,
   isLoading,
   isEditable,
-  alert,
+  setOpen,
+  setAlertText,
+  setAlertType,
 }) => {
   // -- Redux dispatch
   const dispatch = useDispatch();
@@ -56,13 +59,13 @@ export const Post = ({
     if (window.confirm("Вы действительно хотите удалить статью?")) {
       try {
         dispatch(fetchRemovePost(id));
-        alert.setAlertText("Пост успешно удален!");
-        alert.setAlertType("success");
-        alert.setOpen(true);
+        setOpen(true);
+        setAlertText("Статья успешно удалена!");
+        setAlertType("success");
       } catch (error) {
-        alert.setAlertText("Произошла ошибка при удалении поста!");
-        alert.setAlertType("error");
-        alert.setOpen(true);
+        setOpen(true);
+        setAlertText("Ошибка при удалении статьи!");
+        setAlertType("error");
       }
     }
   };
@@ -122,4 +125,22 @@ export const Post = ({
       </div>
     </div>
   );
+};
+
+Post.propTypes = {
+  id: PropTypes.string,
+  title: PropTypes.string,
+  createdAt: PropTypes.string,
+  imageUrl: PropTypes.string,
+  user: PropTypes.object,
+  viewsCount: PropTypes.number,
+  commentsCount: PropTypes.number,
+  tags: PropTypes.array,
+  children: PropTypes.node,
+  isFullPost: PropTypes.bool,
+  isLoading: PropTypes.bool,
+  isEditable: PropTypes.bool,
+  setOpen: PropTypes.func,
+  setAlertText: PropTypes.func,
+  setAlertType: PropTypes.func,
 };

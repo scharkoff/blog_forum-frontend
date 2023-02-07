@@ -12,4 +12,5 @@ export const theme = createTheme({
       fontWeight: 400,
     },
   },
+  shadows: "none"
 });

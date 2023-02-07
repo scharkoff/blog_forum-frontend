@@ -47,6 +47,8 @@ export const fetchRemovePost = createAsyncThunk(
   }
 );
 
+
+
 // -- Конфиг для стейта
 const initialState = {
   posts: {
@@ -62,6 +64,7 @@ const initialState = {
     status: "loading",
   },
 };
+
 
 const postsSlice = createSlice({
   name: "posts",
@@ -145,9 +148,13 @@ const postsSlice = createSlice({
       state.posts.items = state.posts.items.filter(
         (obj) => obj._id !== action.meta.arg
       );
+      state.posts.alertStatus = "success";
+      state.posts.alertMessage = "Запись успешно удалена!";
     },
     [fetchRemovePost.rejected]: (state) => {
       state.posts.status = "error";
+      state.posts.alertStatus = "error";
+      state.posts.alertMessage = "Произошла ошибка при удалении статьи!";
     },
     // -- Получение комментариев
     [fetchComments.pending]: (state, action) => {
@@ -195,6 +202,7 @@ const postsSlice = createSlice({
     [fetchCancelEditMode.rejected]: (state, action) => {
       state.comments.status = "error";
     },
+
   },
 });
 

@@ -16,6 +16,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchPosts } from "../../redux/slices/posts";
 import { fetchActiveTag } from "../../redux/slices/tags";
 import { logout, selectIsAuth } from "../../redux/slices/auth";
+import { resetSearchString } from "../../redux/slices/utils";
 
 export const Header = () => {
   // -- Redux dispatch
@@ -43,6 +44,7 @@ export const Header = () => {
             onClick={() => {
               dispatch(fetchPosts());
               dispatch(fetchActiveTag(null));
+              dispatch(resetSearchString(new Date().valueOf()));
             }}
             className={styles.logo}
             to="/"

@@ -12,9 +12,6 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
-// -- Components
-import { SearchString } from "../SearchString/index.jsx";
-
 // -- React-redux
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,13 +21,11 @@ import {
   fetchDeleteUser,
   fetchEditUserData,
 } from "../../redux/slices/users.js";
+import { AdminSearchString } from "../AdminSearchString/index.jsx";
 
-export const UserTable = ({ setAlertText, setAlertType, setOpen, user }) => {
+export const UsersTable = ({ setAlertText, setAlertType, setOpen, user }) => {
   // -- useDispatch
   const dispatch = useDispatch();
-
-  // -- Текст в поисковой строке
-  const [searchText, setSearchText] = React.useState("");
 
   // -- All users from state
   const users = useSelector((state) => state?.users?.data);
@@ -117,14 +112,12 @@ export const UserTable = ({ setAlertText, setAlertType, setOpen, user }) => {
   };
   return (
     <>
-      <SearchString
-        searchText={searchText}
-        setSearchText={setSearchText}
-        setRows={setRows}
-        copyOfRows={copyOfRows}
-        type={"users"}
-      />
-      <Paper elevation={0} sx={{ width: "100%", overflow: "hidden" }}>
+      <AdminSearchString setRows={setRows} copyOfRows={copyOfRows} />
+
+      <Paper
+        elevation={0}
+        sx={{ width: "100%", overflow: "hidden", marginTop: 1 }}
+      >
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>

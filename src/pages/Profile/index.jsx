@@ -24,6 +24,7 @@ import {
   fetchUpdateUserLogin,
   fetchUpdateUserPassword,
 } from "../../redux/slices/auth.js";
+import { AlertMessage } from "../../components/AlertMessage/index.jsx";
 
 export const Profile = () => {
   // -- Redux dispatch
@@ -41,7 +42,7 @@ export const Profile = () => {
   const [disableSaveButton, setDisableSaveButton] = React.useState(true);
   const [disableLoadButton, setDisableLoadButton] = React.useState(true);
 
-  // -- Alert settings hooks
+  // -- Уведомления об операциях
   const [open, setOpen] = React.useState(false);
   const [alertText, setAlertText] = React.useState("");
   const [alertType, setAlertType] = React.useState("info");
@@ -62,12 +63,6 @@ export const Profile = () => {
   }, [user]);
 
   React.useEffect(() => {}, [newAvatarUrl]);
-
-  React.useEffect(() => {
-    axios.get("/auth/me").then((res) => {
-      return res.data;
-    });
-  }, []);
 
   // -- Валидация почты для отображения ошибки в поле
   function validateEmail(emailField) {
@@ -193,24 +188,12 @@ export const Profile = () => {
   });
   return (
     <div>
-      <Alert
-        style={{ display: !open ? "none" : "flex", marginBottom: 20 }}
-        severity={alertType}
-        action={
-          <IconButton
-            aria-label="close"
-            color="inherit"
-            size="small"
-            onClick={() => {
-              setOpen(false);
-            }}
-          >
-            <CloseIcon fontSize="inherit" />
-          </IconButton>
-        }
-      >
-        {alertText}
-      </Alert>
+      <AlertMessage
+        message={alertText}
+        type={alertType}
+        open={open}
+        setOpen={setOpen}
+      />
 
       <form onSubmit={avatarForm.handleSubmit(onSubmitAvatar)}>
         <Grid container justifyContent="center">
