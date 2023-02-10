@@ -46,6 +46,6 @@ export const AdminSearchString = ({ setRows, copyOfRows }) => {
 };
 
 AdminSearchString.propTypes = {
-  setPostsArray: PropTypes.func.isRequired,
-  copyOfPosts: PropTypes.array.isRequired,
+  setPostsArray: PropTypes.func,
+  copyOfPosts: PropTypes.array,
 };

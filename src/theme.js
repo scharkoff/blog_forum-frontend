@@ -12,5 +12,19 @@ export const theme = createTheme({
       fontWeight: 400,
     },
   },
-  shadows: "none"
+
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          boxShadow: "none"
+        }
+      }
+    }
+  }
+
+
 });
+
+
+

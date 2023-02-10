@@ -19,10 +19,8 @@ import styles from "./Login.module.scss";
 import { AlertMessage } from "../../components/AlertMessage";
 
 export const Login = () => {
-  // -- Redux dispatch
   const dispatch = useDispatch();
 
-  // -- Авторизирован или нет
   const isAuth = useSelector(selectIsAuth);
 
   // -- Уведомления об операциях
@@ -30,7 +28,6 @@ export const Login = () => {
   const [alertText, setAlertText] = React.useState("");
   const [alertType, setAlertType] = React.useState("info");
 
-  // -- Настройки и работа с формой
   const { register, handleSubmit, formState } = useForm({
     defaultValues: {
       email: "",
@@ -39,8 +36,7 @@ export const Login = () => {
     mode: "onChange",
   });
 
-  // -- Обработка клика по кнопке "Авторизоваться"
-  const onSubmit = async (values) => {
+  const onSubmitAuth = async (values) => {
     const data = await dispatch(fetchAuth(values));
 
     if ("token" in data.payload) {
@@ -60,7 +56,6 @@ export const Login = () => {
     }
   };
 
-  // -- Если авторизировался, перебросить на главный экран
   if (isAuth) {
     return <Navigate to="/" />;
   }
@@ -78,7 +73,7 @@ export const Login = () => {
         <Typography classes={{ root: styles.title }} variant="h5">
           Вход в аккаунт
         </Typography>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmitAuth)}>
           <TextField
             className={styles.field}
             label="E-Mail"

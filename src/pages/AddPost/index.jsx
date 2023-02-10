@@ -4,9 +4,8 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+
+import { AlertMessage } from "../../components/AlertMessage";
 
 // -- Material UI simple editor
 import SimpleMDE from "react-simplemde-editor";
@@ -26,13 +25,10 @@ import { selectIsAuth } from "../../redux/slices/auth";
 import axios from "../../axios";
 
 export const AddPost = () => {
-  // -- Проверка на авторизацию
   const isAuth = useSelector(selectIsAuth);
 
-  // -- Навигация rrd
   const navigate = useNavigate();
 
-  // -- id поста
   const { id } = useParams();
 
   // -- Уведомления об операциях
@@ -40,20 +36,16 @@ export const AddPost = () => {
   const [alertText, setAlertText] = React.useState("");
   const [alertType, setAlertType] = React.useState("info");
 
-  // -- useState
   const [text, setText] = React.useState("");
   const [isLoading, setLoading] = React.useState(false);
   const [imageUrl, setImageUrl] = React.useState("");
   const [tags, setTags] = React.useState("");
   const [title, setTitle] = React.useState("");
 
-  // -- useRef
   const inputFileRef = React.useRef(null);
 
-  // -- Проверка на режим редактирования
   const isEditing = Boolean(id);
 
-  // -- Загрузка изображения к посту
   const handleChangeFile = async (event) => {
     try {
       const formData = new FormData();
@@ -68,7 +60,6 @@ export const AddPost = () => {
     }
   };
 
-  // -- useEffect
   React.useEffect(() => {
     document.title = "Добавить пост";
     if (id) {
@@ -88,14 +79,11 @@ export const AddPost = () => {
     }
   }, []);
 
-  // -- Functions
-  // -- Обработка клика по кнопке "Удалить" картинку
   const onClickRemoveImage = () => {
     setImageUrl("");
   };
 
-  // -- Обработка клика по кнопке "Опубликовать" пост
-  const onSubmit = async () => {
+  const onSubmitPost = async () => {
     try {
       setLoading(true);
       const fields = {
@@ -118,7 +106,6 @@ export const AddPost = () => {
     }
   };
 
-  // -- useCallback for simple editor
   const onChange = React.useCallback((value) => {
     setText(value);
   }, []);
@@ -139,6 +126,8 @@ export const AddPost = () => {
     []
   );
 
+  console.log("rerender ");
+
   // -- Если не авторизировался, перебросить на главный экран
   if (!window.localStorage.getItem("token") && !isAuth) {
     return <Navigate to="/" />;
@@ -146,24 +135,13 @@ export const AddPost = () => {
 
   return (
     <div>
-      <Alert
-        style={{ display: !open ? "none" : "flex", marginBottom: 20 }}
-        severity={alertType}
-        action={
-          <IconButton
-            aria-label="close"
-            color="inherit"
-            size="small"
-            onClick={() => {
-              setOpen(false);
-            }}
-          >
-            <CloseIcon fontSize="inherit" />
-          </IconButton>
-        }
-      >
-        {alertText}
-      </Alert>
+      <AlertMessage
+        message={alertText}
+        type={alertType}
+        open={open}
+        setOpen={setOpen}
+      />
+
       <Paper elevation={0} style={{ padding: 30 }}>
         <Button
           onClick={() => inputFileRef.current.click()}
@@ -222,7 +200,7 @@ export const AddPost = () => {
           options={options}
         />
         <div className={styles.buttons}>
-          <Button onClick={onSubmit} size="large" variant="contained">
+          <Button onClick={onSubmitPost} size="large" variant="contained">
             {isEditing ? "Сохранить" : "Опубликовать"}
           </Button>
           <Link to="/" style={{ textDecoration: "none" }}>

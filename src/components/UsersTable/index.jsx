@@ -24,13 +24,10 @@ import {
 import { AdminSearchString } from "../AdminSearchString/index.jsx";
 
 export const UsersTable = ({ setAlertText, setAlertType, setOpen, user }) => {
-  // -- useDispatch
   const dispatch = useDispatch();
 
-  // -- All users from state
   const users = useSelector((state) => state?.users?.data);
 
-  // -- Пользователи из базы данных
   const [rows, setRows] = React.useState(users);
   const [copyOfRows, setCopyOfRows] = React.useState([]);
 
@@ -136,9 +133,9 @@ export const UsersTable = ({ setAlertText, setAlertType, setOpen, user }) => {
             <TableBody>
               {(rows ? rows : [])
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
+                .map((row, i) => {
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={i}>
                       {columns.map((column, i) => {
                         const value = row[column.id];
                         return row.id !== user?._id ? (
@@ -148,9 +145,8 @@ export const UsersTable = ({ setAlertText, setAlertType, setOpen, user }) => {
                               : value}
 
                             {i === 5 ? (
-                              <div key={column.id}>
+                              <div>
                                 <Link
-                                  key={column.id}
                                   to={`/admin-panel/edit-user/${row.id}`}
                                   style={{ textDecoration: "none" }}
                                 >

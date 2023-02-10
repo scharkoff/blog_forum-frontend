@@ -20,10 +20,8 @@ import styles from "./Login.module.scss";
 import { AlertMessage } from "../../components/AlertMessage";
 
 export const Registration = () => {
-  // -- Redux dispatch
   const dispatch = useDispatch();
 
-  // -- Авторизирован или нет
   const isAuth = useSelector(selectIsAuth);
 
   // -- Уведомления об операциях
@@ -31,7 +29,6 @@ export const Registration = () => {
   const [alertText, setAlertText] = React.useState("");
   const [alertType, setAlertType] = React.useState("info");
 
-  // -- Настройки и работа с формой
   const { register, handleSubmit, setError, formState, getValues } = useForm({
     defaultValues: {
       rank: "user",
@@ -42,18 +39,6 @@ export const Registration = () => {
     mode: "onChange",
   });
 
-  // -- Валидация почты для отображения ошибки в поле
-  function validateEmail(emailField) {
-    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-
-    if (reg.test(emailField.value) === false) {
-      return false;
-    }
-
-    return true;
-  }
-
-  // -- Обработка клика по кнопке "Зарегистрироваться"
   const onSubmit = async (values) => {
     const data = await dispatch(fetchRegister(values));
 
@@ -74,7 +59,6 @@ export const Registration = () => {
     }
   };
 
-  // -- Если авторизировался, перебросить на главный экран
   if (isAuth) {
     return <Navigate to="/" />;
   }

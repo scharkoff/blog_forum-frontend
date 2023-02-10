@@ -19,16 +19,12 @@ import { logout, selectIsAuth } from "../../redux/slices/auth";
 import { resetSearchString } from "../../redux/slices/utils";
 
 export const Header = () => {
-  // -- Redux dispatch
   const dispatch = useDispatch();
 
-  // -- Проверка на авторизацию
   const isAuth = useSelector(selectIsAuth);
 
-  // -- User data
   const user = useSelector((state) => state.auth.data);
 
-  // -- Обработка клика по кнопке "Выйти"
   const onClickLogout = () => {
     if (window.confirm("Вы действительно хотите выйти из акккаунта?")) {
       dispatch(logout());
