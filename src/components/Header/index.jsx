@@ -17,13 +17,14 @@ import { fetchPosts } from "../../redux/slices/posts";
 import { fetchActiveTag } from "../../redux/slices/tags";
 import { logout, selectIsAuth } from "../../redux/slices/auth";
 import { resetSearchString } from "../../redux/slices/utils";
+import { Avatar } from "@mui/material";
 
 export const Header = () => {
   const dispatch = useDispatch();
 
   const isAuth = useSelector(selectIsAuth);
 
-  const user = useSelector((state) => state.auth.data);
+  const user = useSelector((state) => state.auth?.data);
 
   const onClickLogout = () => {
     if (window.confirm("Вы действительно хотите выйти из акккаунта?")) {
@@ -31,6 +32,8 @@ export const Header = () => {
       window.localStorage.removeItem("token");
     }
   };
+
+  const isMobile = useSelector((state) => state.utils?.isMobile?.value);
 
   return (
     <div className={styles.root}>
