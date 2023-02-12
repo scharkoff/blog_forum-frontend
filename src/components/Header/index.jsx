@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 // -- Material UI
 import Button from "@mui/material/Button";
@@ -19,14 +19,14 @@ import { fetchPosts } from "../../redux/slices/posts";
 import { fetchActiveTag } from "../../redux/slices/tags";
 import { logout, selectIsAuth } from "../../redux/slices/auth";
 import { resetSearchString } from "../../redux/slices/utils";
-import { Avatar, IconButton } from "@mui/material";
+import { Avatar } from "@mui/material";
 
 export const Header = () => {
   const dispatch = useDispatch();
 
   const isAuth = useSelector(selectIsAuth);
 
-  const user = useSelector((state) => state.auth.data);
+  const user = useSelector((state) => state.auth?.data);
 
   const onClickLogout = () => {
     if (window.confirm("Вы действительно хотите выйти из акккаунта?")) {
@@ -35,19 +35,7 @@ export const Header = () => {
     }
   };
 
-  const [width, setWidth] = useState(window.innerWidth);
-
-  function handleWindowSizeChange() {
-    setWidth(window.innerWidth);
-  }
-  useEffect(() => {
-    window.addEventListener("resize", handleWindowSizeChange);
-    return () => {
-      window.removeEventListener("resize", handleWindowSizeChange);
-    };
-  }, []);
-
-  const isMobile = width <= 768;
+  const isMobile = useSelector((state) => state.utils?.isMobile?.value);
 
   return (
     <div className={styles.root}>
