@@ -2,8 +2,10 @@ import React from "react";
 
 // -- Material UI
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import AddIcon from "@mui/icons-material/Add";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
 // -- Styles
 import styles from "./Header.module.scss";
@@ -17,13 +19,14 @@ import { fetchPosts } from "../../redux/slices/posts";
 import { fetchActiveTag } from "../../redux/slices/tags";
 import { logout, selectIsAuth } from "../../redux/slices/auth";
 import { resetSearchString } from "../../redux/slices/utils";
+import { Avatar } from "@mui/material";
 
 export const Header = () => {
   const dispatch = useDispatch();
 
   const isAuth = useSelector(selectIsAuth);
 
-  const user = useSelector((state) => state.auth.data);
+  const user = useSelector((state) => state.auth?.data);
 
   const onClickLogout = () => {
     if (window.confirm("Вы действительно хотите выйти из акккаунта?")) {
@@ -31,6 +34,8 @@ export const Header = () => {
       window.localStorage.removeItem("token");
     }
   };
+
+  const isMobile = useSelector((state) => state.utils?.isMobile?.value);
 
   return (
     <div className={styles.root}>
@@ -50,54 +55,60 @@ export const Header = () => {
           <div className={styles.buttons}>
             {isAuth ? (
               <>
-                <Link to={`/profile/${user?._id}`}>
-                  <Typography
-                    style={{
-                      cursor: "pointer",
-                      marginRight: 20,
-                      color: "black",
-                    }}
-                    className={styles.profileName}
-                    variant="h7"
-                  >
-                    {user?.fullName}
-                  </Typography>
+                <Link to={`/profile/${user?._id}`} style={{ marginLeft: 10 }}>
+                  {user ? (
+                    <Avatar
+                      src={`${
+                        process.env.REACT_APP_API_URL || "http://localhost:4444"
+                      }${user.avatarUrl}`}
+                      variant="rounded"
+                      sx={
+                        !isMobile
+                          ? { width: 36, height: 36 }
+                          : { width: 32, height: 32 }
+                      }
+                    />
+                  ) : (
+                    ""
+                  )}
                 </Link>
                 {user.rank === "admin" ? (
-                  <Link to="/admin-panel">
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      style={{ boxShadow: 1 }}
-                    >
-                      Админ панель
+                  <Link to="/admin-panel" style={{ marginLeft: 10 }}>
+                    <Button variant="contained" color="secondary">
+                      <AdminPanelSettingsIcon
+                        fontSize={!isMobile ? "medium" : "small"}
+                      />
                     </Button>
                   </Link>
                 ) : (
                   ""
                 )}
 
-                <Link to="/add-post">
-                  <Button variant="contained">Написать статью</Button>
-                </Link>
-                <Link to="/login">
+                <Link to="/add-post" style={{ marginLeft: 10 }}>
                   <Button
-                    style={{ boxShadow: 0 }}
+                    variant="contained"
+                    startIcon={!isMobile ? <AddIcon fontSize="small" /> : ""}
+                  >
+                    {!isMobile ? "Создать" : <AddIcon fontSize="small" />}
+                  </Button>
+                </Link>
+                <Link to="/login" style={{ marginLeft: 10 }}>
+                  <Button
                     onClick={onClickLogout}
                     variant="contained"
                     color="error"
                   >
-                    Выйти
+                    <LogoutIcon fontSize={!isMobile ? "medium" : "small"} />
                   </Button>
                 </Link>
               </>
             ) : (
               <>
-                <Link to="/login">
+                <Link to="/login" style={{ marginLeft: 10 }}>
                   <Button variant="outlined">Войти</Button>
                 </Link>
-                <Link to="/register">
-                  <Button variant="contained">Создать аккаунт</Button>
+                <Link to="/register" style={{ marginLeft: 10 }}>
+                  <Button variant="contained">Регистрация</Button>
                 </Link>
               </>
             )}
