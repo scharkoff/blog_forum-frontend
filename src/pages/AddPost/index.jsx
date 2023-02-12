@@ -27,6 +27,8 @@ import axios from "../../axios";
 export const AddPost = () => {
   const isAuth = useSelector(selectIsAuth);
 
+  const isMobile = useSelector((state) => state.utils?.isMobile?.value);
+
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -41,6 +43,7 @@ export const AddPost = () => {
   const [imageUrl, setImageUrl] = React.useState("");
   const [tags, setTags] = React.useState("");
   const [title, setTitle] = React.useState("");
+  const [authorId, setAuthorId] = React.useState("");
 
   const inputFileRef = React.useRef(null);
 
@@ -70,6 +73,7 @@ export const AddPost = () => {
           setText(data.text);
           setImageUrl(data.imageUrl);
           setTags(data.tags);
+          setAuthorId(data.user?._id);
         })
         .catch((err) => {
           setAlertText("Ошибка при получении статьи!");
@@ -86,18 +90,28 @@ export const AddPost = () => {
   const onSubmitPost = async () => {
     try {
       setLoading(true);
-      const fields = {
+
+      const fieldsCreate = {
         title,
         text,
         imageUrl,
         tags: Array.isArray(tags) ? tags : tags.replaceAll(" ", "").split(","),
       };
 
+      const fieldsUpdate = {
+        title,
+        text,
+        imageUrl,
+        tags: Array.isArray(tags) ? tags : tags.replaceAll(" ", "").split(","),
+        user: authorId,
+      };
+
       const { data } = isEditing
-        ? await axios.patch(`/posts/${id}`, fields)
-        : await axios.post("/posts/create", fields);
+        ? await axios.patch(`/posts/${id}`, fieldsUpdate)
+        : await axios.post("/posts/create", fieldsCreate);
 
       const _id = isEditing ? id : data._id;
+
       navigate(`/posts/${_id}`);
     } catch (error) {
       setAlertText(error.response.data[0].msg);
@@ -110,7 +124,6 @@ export const AddPost = () => {
     setText(value);
   }, []);
 
-  // -- Опции для simple editor
   const options = React.useMemo(
     () => ({
       spellChecker: false,
@@ -128,7 +141,6 @@ export const AddPost = () => {
 
   console.log("rerender ");
 
-  // -- Если не авторизировался, перебросить на главный экран
   if (!window.localStorage.getItem("token") && !isAuth) {
     return <Navigate to="/" />;
   }
@@ -146,7 +158,8 @@ export const AddPost = () => {
         <Button
           onClick={() => inputFileRef.current.click()}
           variant="outlined"
-          size="large"
+          size="medium"
+          style={{ marginRight: 10 }}
         >
           Загрузить превью
         </Button>

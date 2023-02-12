@@ -12,13 +12,10 @@ import { useSelector } from "react-redux";
 import { AlertMessage } from "../AlertMessage";
 
 export const Posts = () => {
-  // -- Redux state
   const state = store.getState();
 
-  // -- Комментарии и посты в стейте
   const { posts } = state.posts;
 
-  // -- Посты
   const [postsArray, setPostsArray] = React.useState([]);
   const [copyOfPosts, setCopyOfPosts] = React.useState([]);
 
@@ -29,13 +26,11 @@ export const Posts = () => {
     }
   }, [posts.items]);
 
-  // -- User data
   const userData = useSelector((state) => state.auth.data);
 
-  // -- Загружаются ли посты
   const isPostsLoading = posts.status === "loading";
 
-  // -- Уведомление
+  // -- Уведомления
   const [open, setOpen] = React.useState(false);
   const [alertText, setAlertText] = React.useState("");
   const [alertType, setAlertType] = React.useState("info");

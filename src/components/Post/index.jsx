@@ -43,18 +43,14 @@ export const Post = ({
   setAlertText,
   setAlertType,
 }) => {
-  // -- Redux dispatch
   const dispatch = useDispatch();
 
-  // -- Auth user data
   const authUser = useSelector((state) => state.auth.data);
 
-  // -- Скелет при загрузке страницы
   if (isLoading) {
     return <PostSkeleton />;
   }
 
-  // -- Обработка клика по кнопке "Удалить статью"
   const onClickRemove = () => {
     if (window.confirm("Вы действительно хотите удалить статью?")) {
       try {

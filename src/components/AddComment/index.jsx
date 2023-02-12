@@ -22,44 +22,34 @@ import {
 import axios from "../../axios";
 
 export const AddComment = () => {
-  // -- Redux dispatch
   const dispatch = useDispatch();
 
-  // -- useState
   const [user, setUser] = React.useState(null);
   const [text, setText] = React.useState("");
 
-  // -- useParams
   const { id } = useParams();
 
-  // -- useSelector
   const { editMode } = useSelector((state) => state.posts.comments);
   let { editbleComment } = useSelector((state) => state.posts.comments);
-  // -- User data
+
   const { data } = useSelector((state) => state.auth);
 
-  // -- useEffect
-  // -- Проверка на авторизацию
   React.useEffect(() => {
     axios.get("/auth/me").then((res) => {
       setUser(res.data);
     });
   }, []);
 
-  // -- Установка текста для редактирования существующего комментария
   React.useEffect(() => {
     if (editbleComment) {
       setText(editbleComment.text);
     }
   }, [editbleComment]);
 
-  // -- Сбрасывать значение комментария в режиме редактирования при выходе со страницы
   React.useEffect(() => {
     setText("");
   }, [id]);
 
-  // -- Functions
-  // -- Обработка клика по кнопке "Отправить" и "Сохранить"
   const onSubmit = async () => {
     try {
       const fields = {
@@ -79,7 +69,6 @@ export const AddComment = () => {
     }
   };
 
-  // -- Обработка клика по кнопке "Отменить"
   const onCancel = async () => {
     dispatch(fetchCancelEditMode());
     setText("");
