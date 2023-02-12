@@ -30,10 +30,8 @@
 }
 
 .buttons {
-  button {
-    margin-left: 10px;
-    padding: 6px 10px;
-  }
+  display: flex;
+  align-items: center;
 
   a {
     text-decoration: none;
