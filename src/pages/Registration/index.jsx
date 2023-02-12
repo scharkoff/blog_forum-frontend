@@ -16,7 +16,7 @@ import { Navigate } from "react-router-dom";
 import { fetchRegister, selectIsAuth } from "../../redux/slices/auth";
 
 // -- Imports styles
-import styles from "./Registration.module.scss";
+import styles from "./Login.module.scss";
 import { AlertMessage } from "../../components/AlertMessage";
 
 export const Registration = () => {
