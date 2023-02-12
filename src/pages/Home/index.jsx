@@ -26,28 +26,20 @@ import styles from "./Home.module.scss";
 import { resetSearchString } from "../../redux/slices/utils";
 
 export const Home = () => {
-  // -- Redux dispatch
   const dispatch = useDispatch();
 
-  // -- Redux state
   const state = store.getState();
 
-  // -- Комментарии и посты в стейте
   const { comments } = state.posts;
 
-  // -- Теги
   let { tags } = useSelector((state) => state.posts);
 
-  // -- На главной ли странице
   const isHomePage = useSelector((state) => state.posts.posts.home);
 
-  // -- Актуальный тег
   const { name } = useParams();
 
-  // -- useState
   const [activeTab, setActiveTab] = React.useState(0);
 
-  // -- useEffect
   React.useEffect(() => {
     document.title = "Главная страница";
     name
@@ -58,8 +50,6 @@ export const Home = () => {
     dispatch(fetchAuthMe());
   }, []);
 
-  // -- Functions
-  // -- Обработка клика по выбранному тегу
   const onSortPosts = (value) => {
     value === 1 ? setActiveTab(1) : setActiveTab(0);
     if (name) {
