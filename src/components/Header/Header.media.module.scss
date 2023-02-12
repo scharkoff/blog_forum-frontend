@@ -8,14 +8,15 @@
     .buttons {
       box-sizing: border-box;
       display: flex;
-      button, span{
-        margin-left: 5px;
+      button, span{ 
+        min-width: 32px;
+        padding-left: 5px;
+        padding-right: 5px;
+        margin: 0;
         font-size: 11px;
         line-height: 1.5;
       }
     }
-  
-    .profileName {
-      line-height: 1.5;
-    }
+
+
 }
