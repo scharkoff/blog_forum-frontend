@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
 // -- Styles
@@ -16,7 +16,7 @@ export const SearchString = ({ setPostsArray, copyOfPosts }) => {
   const resetSearchStringValue = state.utils.search.resetSearchString;
   const [searchText, setSearchText] = React.useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (resetSearchStringValue) {
       setSearchText("");
     }
