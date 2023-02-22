@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // -- Components
-import { SideBlock } from "./SideBlock";
+import { SideBlock } from "../SideBlock";
 
 // -- Material UI
 import ListItem from "@mui/material/ListItem";
@@ -18,15 +18,18 @@ import EditIcon from "@mui/icons-material/Edit";
 import Typography from "@mui/material/Typography";
 
 // -- Styles
-import styles from "./UserInfo/UserInfo.module.scss";
+import styles from "../UserInfo/UserInfo.module.scss";
 
 // -- React-redux
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 // -- Redux state
-import { selectIsAuth } from "../redux/slices/auth.js";
-import { fetchEditComment, fetchRemoveComment } from "../redux/slices/comments";
+import { selectIsAuth } from "../../redux/slices/auth.js";
+import {
+  fetchEditComment,
+  fetchRemoveComment,
+} from "../../redux/slices/comments";
 
 export const CommentsBlock = React.memo(
   ({ items, children, isLoading = true, isEditble }) => {

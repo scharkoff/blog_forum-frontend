@@ -1,6 +1,6 @@
 // -- Imports
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../axios";
+import axios from "../../configs/axios/axios";
 
 // -- Запрос на авторизацию
 export const fetchAuth = createAsyncThunk("auth/fetchAuth", async (params) => {

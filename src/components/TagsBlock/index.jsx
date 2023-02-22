@@ -16,11 +16,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 // -- Components
-import { SideBlock } from "./SideBlock";
+import { SideBlock } from "../SideBlock";
 
 // -- Redux state
-import { fetchActiveTag, fetchPostsLikeTag } from "../redux/slices/tags";
-import { resetSearchString } from "../redux/slices/utils";
+import { fetchActiveTag, fetchPostsLikeTag } from "../../redux/slices/tags";
+import { resetSearchString } from "../../redux/slices/utils";
 
 export const TagsBlock = React.memo(({ items, isLoading = true }) => {
   const dispatch = useDispatch();

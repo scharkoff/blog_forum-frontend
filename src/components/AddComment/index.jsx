@@ -19,7 +19,7 @@ import {
 } from "../../redux/slices/comments";
 
 // -- Axios
-import axios from "../../axios";
+import axios from "../../configs/axios/axios";
 
 export const AddComment = () => {
   const dispatch = useDispatch();

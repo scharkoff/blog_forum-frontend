@@ -1,6 +1,6 @@
 // -- Imports
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../axios";
+import axios from "../../configs/axios/axios";
 
 // -- Запрос на получение всех комментариев
 export const fetchComments = createAsyncThunk(

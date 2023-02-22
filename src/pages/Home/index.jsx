@@ -1,9 +1,10 @@
 import React from "react";
 
 // -- Material UI
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Grid from "@mui/material/Grid";
+
+// -- Modules
+import { SortTabs } from "../../modules";
 
 // -- Components
 import { TagsBlock } from "../../components/TagsBlock";
@@ -12,18 +13,15 @@ import { Posts } from "../../components/Posts";
 
 // -- React-redux
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 
 // -- Redux state
 import store from "../../redux/store";
-import { fetchPosts, fetchSortedPosts } from "../../redux/slices/posts";
-import { fetchTags, fetchSortedPostsLikeTag } from "../../redux/slices/tags";
+import { fetchTags } from "../../redux/slices/tags";
 import { fetchSortedComments } from "../../redux/slices/comments";
 import { fetchAuthMe } from "../../redux/slices/auth";
 
 // -- Styles
 import styles from "./Home.module.scss";
-import { resetSearchString } from "../../redux/slices/utils";
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -36,49 +34,18 @@ export const Home = () => {
 
   const isHomePage = useSelector((state) => state.posts.posts.home);
 
-  const { name } = useParams();
-
   const [activeTab, setActiveTab] = React.useState(0);
 
   React.useEffect(() => {
     document.title = "Главная страница";
-    name
-      ? dispatch(fetchSortedPostsLikeTag({ activeTab, name }))
-      : dispatch(fetchPosts());
     dispatch(fetchTags());
     dispatch(fetchSortedComments());
     dispatch(fetchAuthMe());
   }, []);
 
-  const onSortPosts = (value) => {
-    value === 1 ? setActiveTab(1) : setActiveTab(0);
-    if (name) {
-      dispatch(fetchSortedPostsLikeTag({ value, name }));
-    } else dispatch(fetchSortedPosts(value));
-  };
-
   return (
     <>
-      <Tabs
-        value={activeTab}
-        aria-label="basic tabs example"
-        style={{ marginBottom: 15 }}
-      >
-        <Tab
-          onClick={() => {
-            onSortPosts(0);
-            dispatch(resetSearchString(new Date().valueOf()));
-          }}
-          label="Новые"
-        />
-        <Tab
-          onClick={() => {
-            onSortPosts(1);
-            dispatch(resetSearchString(new Date().valueOf()));
-          }}
-          label="Популярные"
-        />
-      </Tabs>
+      <SortTabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <Grid container spacing={4} className={styles.contentWrapper}>
         <Grid xs={8} item className={styles.posts}>

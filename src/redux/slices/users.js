@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "../../axios";
+import axios from "../../configs/axios/axios";
 
 // -- Получить всех пользователей
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {

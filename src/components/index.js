@@ -1,5 +1,4 @@
 export * from "./TagsBlock";
-export * from "./CommentsBlock";
 export * from "./Post";
 export * from "./AddComment";
 export * from "./SideBlock";
@@ -9,3 +8,4 @@ export * from "./SearchString";
 export * from "./UsersTable";
 export * from "./AdminSearchString";
 export * from "./AlertMessage";
+export * from "./CommentsBlock";

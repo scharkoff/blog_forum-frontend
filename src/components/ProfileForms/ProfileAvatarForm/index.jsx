@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import axios from "../../../axios.js";
+import axios from "../../../configs/axios/axios";
 
 import { Avatar } from "@mui/material";
 import Grid from "@mui/material/Grid";
