@@ -1,28 +1,30 @@
-import React from "react";
+import React from 'react';
 
 // -- Material UI
-import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
+import TextField from '@mui/material/TextField';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
 
-import { AlertMessage } from "../../components/AlertMessage";
+import { AlertMessage } from 'components/AlertMessage';
 
 // -- Material UI simple editor
-import SimpleMDE from "react-simplemde-editor";
+import SimpleMDE from 'react-simplemde-editor';
 
 // -- Styles
-import "easymde/dist/easymde.min.css";
-import styles from "./AddPost.module.scss";
+import 'easymde/dist/easymde.min.css';
+import styles from './scss/AddPost.module.scss';
 
 // -- React-redux
-import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Navigate, useNavigate, useParams, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 // -- Redux state
-import { selectIsAuth } from "../../redux/slices/auth";
+import { selectIsAuth } from 'redux/slices/auth';
 
 // -- Axios
-import axios from "../../configs/axios/axios";
+import axios from 'configs/axios/axios';
+import { onSubmitPost } from './api/submitPost';
+import { handleChangeFile } from './api/handleChangeFile';
 
 export const AddPostForm = () => {
   const isAuth = useSelector(selectIsAuth);
@@ -33,36 +35,22 @@ export const AddPostForm = () => {
 
   // -- Уведомления об операциях
   const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState("");
-  const [alertType, setAlertType] = React.useState("info");
+  const [alertText, setAlertText] = React.useState('');
+  const [alertType, setAlertType] = React.useState('info');
 
-  const [text, setText] = React.useState("");
+  const [text, setText] = React.useState('');
   const [isLoading, setLoading] = React.useState(false);
-  const [imageUrl, setImageUrl] = React.useState("");
-  const [tags, setTags] = React.useState("");
-  const [title, setTitle] = React.useState("");
-  const [authorId, setAuthorId] = React.useState("");
+  const [imageUrl, setImageUrl] = React.useState('');
+  const [tags, setTags] = React.useState('');
+  const [title, setTitle] = React.useState('');
+  const [authorId, setAuthorId] = React.useState('');
 
   const inputFileRef = React.useRef(null);
 
   const isEditing = Boolean(id);
 
-  const handleChangeFile = async (event) => {
-    try {
-      const formData = new FormData();
-      const file = event.target.files[0];
-      formData.append("image", file);
-      const { data } = await axios.post("/upload", formData);
-      setImageUrl(data.url);
-    } catch (error) {
-      setAlertText("Не удалось загрузить изображение!");
-      setAlertType("error");
-      setOpen(true);
-    }
-  };
-
   React.useEffect(() => {
-    document.title = "Добавить пост";
+    document.title = 'Добавить пост';
     if (id) {
       axios
         .get(`/posts/${id}`)
@@ -74,48 +62,15 @@ export const AddPostForm = () => {
           setAuthorId(data.user?._id);
         })
         .catch((err) => {
-          setAlertText("Ошибка при получении статьи!");
-          setAlertType("error");
+          setAlertText('Ошибка при получении статьи!');
+          setAlertType('error');
           setOpen(true);
         });
     }
   }, []);
 
   const onClickRemoveImage = () => {
-    setImageUrl("");
-  };
-
-  const onSubmitPost = async () => {
-    try {
-      setLoading(true);
-
-      const fieldsCreate = {
-        title,
-        text,
-        imageUrl,
-        tags: Array.isArray(tags) ? tags : tags.replaceAll(" ", "").split(","),
-      };
-
-      const fieldsUpdate = {
-        title,
-        text,
-        imageUrl,
-        tags: Array.isArray(tags) ? tags : tags.replaceAll(" ", "").split(","),
-        user: authorId,
-      };
-
-      const { data } = isEditing
-        ? await axios.patch(`/posts/${id}`, fieldsUpdate)
-        : await axios.post("/posts/create", fieldsCreate);
-
-      const _id = isEditing ? id : data._id;
-
-      navigate(`/posts/${_id}`);
-    } catch (error) {
-      setAlertText(error.response.data[0].msg);
-      setAlertType("error");
-      setOpen(true);
-    }
+    setImageUrl('');
   };
 
   const onChange = React.useCallback((value) => {
@@ -125,9 +80,9 @@ export const AddPostForm = () => {
   const options = React.useMemo(
     () => ({
       spellChecker: false,
-      maxHeight: "400px",
+      maxHeight: '400px',
       autofocus: true,
-      placeholder: "Введите текст...",
+      placeholder: 'Введите текст...',
       status: false,
       autosave: {
         enabled: true,
@@ -137,9 +92,29 @@ export const AddPostForm = () => {
     []
   );
 
-  console.log("rerender ");
+  const submitPostDTO = {
+    title,
+    text,
+    imageUrl,
+    tags,
+    authorId,
+    isEditing,
+    setLoading,
+    setAlertText,
+    setAlertType,
+    setOpen,
+    navigate,
+    id,
+  };
 
-  if (!window.localStorage.getItem("token") && !isAuth) {
+  const handleChangeFileDTO = {
+    setImageUrl,
+    setAlertText,
+    setAlertType,
+    setOpen,
+  };
+
+  if (!window.localStorage.getItem('token') && !isAuth) {
     return <Navigate to="/" />;
   }
 
@@ -165,7 +140,7 @@ export const AddPostForm = () => {
           ref={inputFileRef}
           type="file"
           name="image"
-          onChange={handleChangeFile}
+          onChange={(e) => handleChangeFile(e, handleChangeFileDTO)}
           hidden
         />
         {imageUrl && (
@@ -180,7 +155,7 @@ export const AddPostForm = () => {
             <img
               className={styles.image}
               src={`${
-                process.env.REACT_APP_API_URL || "http://localhost:4444"
+                process.env.REACT_APP_API_URL || 'http://localhost:4444'
               }${imageUrl}`}
               alt="Uploaded"
             />
@@ -211,10 +186,14 @@ export const AddPostForm = () => {
           options={options}
         />
         <div className={styles.buttons}>
-          <Button onClick={onSubmitPost} size="large" variant="contained">
-            {isEditing ? "Сохранить" : "Опубликовать"}
+          <Button
+            onClick={() => onSubmitPost(submitPostDTO)}
+            size="large"
+            variant="contained"
+          >
+            {isEditing ? 'Сохранить' : 'Опубликовать'}
           </Button>
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/" style={{ textDecoration: 'none' }}>
             <Button color="secondary" size="large" variant="outlined">
               Отмена
             </Button>

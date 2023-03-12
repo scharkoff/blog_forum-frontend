@@ -1,32 +1,32 @@
-import React from "react";
+import React from 'react';
 
 // -- Material UI
-import { Typography } from "@mui/material";
+import { Typography } from '@mui/material';
 
 // -- React-redux
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import { AlertMessage } from "../../components/AlertMessage/index.jsx";
-import { UserLoginForm } from "../../components/EditUserDataForms/UserLoginForm/index.jsx";
-import { UserEmailForm } from "../../components/EditUserDataForms/UserEmailForm/index.jsx";
-import { UserRankForm } from "../../components/EditUserDataForms/UserRankForm/index.jsx";
-import { UserPasswordForm } from "../../components/EditUserDataForms/UserPasswordForm/index.jsx";
+import { AlertMessage } from 'components/AlertMessage/index.jsx';
+import { UserLoginForm } from 'components/EditUserDataForms/UserLoginForm/index.jsx';
+import { UserEmailForm } from 'components/EditUserDataForms/UserEmailForm/index.jsx';
+import { UserRankForm } from 'components/EditUserDataForms/UserRankForm/index.jsx';
+import { UserPasswordForm } from 'components/EditUserDataForms/UserPasswordForm/index.jsx';
 
 export const EditUserDataForm = () => {
   const editbleUserData = useSelector((state) => state.users.editbleUserData);
 
   const { id } = useParams();
 
-  const [login, setLogin] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [rank, setRank] = React.useState("");
+  const [login, setLogin] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [rank, setRank] = React.useState('');
 
   // -- Уведомления об операциях
   const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState("");
-  const [alertType, setAlertType] = React.useState("info");
+  const [alertText, setAlertText] = React.useState('');
+  const [alertType, setAlertType] = React.useState('info');
 
   // -- useEffect
   React.useEffect(() => {

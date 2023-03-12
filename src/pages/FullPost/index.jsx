@@ -1,5 +1,5 @@
-import React from "react";
-import { FullPostForm } from "../../modules";
+import React from 'react';
+import { FullPostForm } from 'modules';
 
 export const FullPost = () => {
   return <FullPostForm />;

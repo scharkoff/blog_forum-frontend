@@ -1,32 +1,32 @@
-import React from "react";
+import React from 'react';
 
 // -- Material UI
-import { Typography } from "@mui/material";
+import { Typography } from '@mui/material';
 
 // -- React-redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
 // -- Redux state
-import { fetchUsers } from "../../redux/slices/users.js";
+import { fetchUsers } from 'redux/slices/users.js';
 
 // -- Components
-import { UsersTable } from "../../components/UsersTable/index.jsx";
-import { AlertMessage } from "../../components/AlertMessage/index.jsx";
+import { UsersTable } from 'components/UsersTable/index.jsx';
+import { AlertMessage } from 'components/AlertMessage/index.jsx';
 
 export const AdminPanelTable = () => {
   const dispatch = useDispatch();
 
   // -- Уведомления об операциях
   const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState("");
-  const [alertType, setAlertType] = React.useState("info");
+  const [alertText, setAlertText] = React.useState('');
+  const [alertType, setAlertType] = React.useState('info');
 
   // -- Auth user
   const user = useSelector((state) => state.auth.data);
 
   React.useEffect(() => {
     dispatch(fetchUsers());
-    document.title = "Админ панель";
+    document.title = 'Админ панель';
   }, []);
 
   return (

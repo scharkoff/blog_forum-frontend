@@ -1,35 +1,32 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 // -- Components
-import { SideBlock } from "../SideBlock";
+import { SideBlock } from '../SideBlock';
 
 // -- Material UI
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
-import Skeleton from "@mui/material/Skeleton";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Clear";
-import EditIcon from "@mui/icons-material/Edit";
-import Typography from "@mui/material/Typography";
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
+import Skeleton from '@mui/material/Skeleton';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Clear';
+import EditIcon from '@mui/icons-material/Edit';
+import Typography from '@mui/material/Typography';
 
 // -- Styles
-import styles from "../UserInfo/UserInfo.module.scss";
+import styles from '../UserInfo/UserInfo.module.scss';
 
 // -- React-redux
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 // -- Redux state
-import { selectIsAuth } from "../../redux/slices/auth.js";
-import {
-  fetchEditComment,
-  fetchRemoveComment,
-} from "../../redux/slices/comments";
+import { selectIsAuth } from 'redux/slices/auth.js';
+import { fetchEditComment, fetchRemoveComment } from 'redux/slices/comments';
 
 export const CommentsBlock = React.memo(
   ({ items, children, isLoading = true, isEditble }) => {
@@ -55,7 +52,7 @@ export const CommentsBlock = React.memo(
     // -- Functions
     // -- Обработка клика по кнопке "Удалить" комментарий
     function onRemoveComment(commentId) {
-      if (window.confirm("Вы действительно хотите удалить комментарий?")) {
+      if (window.confirm('Вы действительно хотите удалить комментарий?')) {
         dispatch(fetchRemoveComment({ commentId, id }));
       }
     }
@@ -78,13 +75,13 @@ export const CommentsBlock = React.memo(
                     <Avatar
                       alt={obj.user?.fullName}
                       src={`${
-                        process.env.REACT_APP_API_URL || "http://localhost:4444"
+                        process.env.REACT_APP_API_URL || 'http://localhost:4444'
                       }${obj.user.avatarUrl}`}
                     />
                   )}
                 </ListItemAvatar>
                 {isLoading ? (
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <Skeleton variant="text" height={25} width={120} />
                     <Skeleton variant="text" height={18} width={230} />
                   </div>
@@ -94,7 +91,7 @@ export const CommentsBlock = React.memo(
                       primary={
                         <React.Fragment>
                           <Typography
-                            sx={{ display: "inline" }}
+                            sx={{ display: 'inline' }}
                             component="span"
                             variant="body2"
                             color="text.primary"
@@ -103,19 +100,19 @@ export const CommentsBlock = React.memo(
                           </Typography>
                           <span
                             className={
-                              obj.user?.rank === "user"
+                              obj.user?.rank === 'user'
                                 ? styles.rank
                                 : styles.admin
                             }
                           >
-                            {" " + obj.user?.rank}
+                            {' ' + obj.user?.rank}
                           </span>
                         </React.Fragment>
                       }
                       secondary={obj.text}
                     />
                     {(isAuth && isEditble && userId === obj.user?.userId) ||
-                    (userRank === "admin" && isAuth && isEditble) ? (
+                    (userRank === 'admin' && isAuth && isEditble) ? (
                       <>
                         <IconButton
                           onClick={() => onRemoveComment(obj.commentId)}

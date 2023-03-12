@@ -1,25 +1,25 @@
-import React from "react";
+import React from 'react';
 
 // -- Material UI
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import AddIcon from "@mui/icons-material/Add";
-import LogoutIcon from "@mui/icons-material/Logout";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import AddIcon from '@mui/icons-material/Add';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 // -- Styles
-import styles from "./Header.module.scss";
+import styles from './Header.module.scss';
 
 // -- React-Redux
-import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 // -- Redux state
-import { fetchPosts } from "../../redux/slices/posts";
-import { fetchActiveTag } from "../../redux/slices/tags";
-import { logout, selectIsAuth } from "../../redux/slices/auth";
-import { resetSearchString } from "../../redux/slices/utils";
-import { Avatar } from "@mui/material";
+import { fetchPosts } from 'redux/slices/posts';
+import { fetchActiveTag } from 'redux/slices/tags';
+import { logout, selectIsAuth } from 'redux/slices/auth';
+import { resetSearchString } from 'redux/slices/utils';
+import { Avatar } from '@mui/material';
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -29,9 +29,9 @@ export const Header = () => {
   const user = useSelector((state) => state.auth?.data);
 
   const onClickLogout = () => {
-    if (window.confirm("Вы действительно хотите выйти из акккаунта?")) {
+    if (window.confirm('Вы действительно хотите выйти из акккаунта?')) {
       dispatch(logout());
-      window.localStorage.removeItem("token");
+      window.localStorage.removeItem('token');
     }
   };
 
@@ -59,7 +59,7 @@ export const Header = () => {
                   {user ? (
                     <Avatar
                       src={`${
-                        process.env.REACT_APP_API_URL || "http://localhost:4444"
+                        process.env.REACT_APP_API_URL || 'http://localhost:4444'
                       }${user.avatarUrl}`}
                       variant="rounded"
                       sx={
@@ -69,27 +69,27 @@ export const Header = () => {
                       }
                     />
                   ) : (
-                    ""
+                    ''
                   )}
                 </Link>
-                {user.rank === "admin" ? (
+                {user.rank === 'admin' ? (
                   <Link to="/admin-panel" style={{ marginLeft: 10 }}>
                     <Button variant="contained" color="secondary">
                       <AdminPanelSettingsIcon
-                        fontSize={!isMobile ? "medium" : "small"}
+                        fontSize={!isMobile ? 'medium' : 'small'}
                       />
                     </Button>
                   </Link>
                 ) : (
-                  ""
+                  ''
                 )}
 
                 <Link to="/add-post" style={{ marginLeft: 10 }}>
                   <Button
                     variant="contained"
-                    startIcon={!isMobile ? <AddIcon fontSize="small" /> : ""}
+                    startIcon={!isMobile ? <AddIcon fontSize="small" /> : ''}
                   >
-                    {!isMobile ? "Создать" : <AddIcon fontSize="small" />}
+                    {!isMobile ? 'Создать' : <AddIcon fontSize="small" />}
                   </Button>
                 </Link>
                 <Link to="/login" style={{ marginLeft: 10 }}>
@@ -98,7 +98,7 @@ export const Header = () => {
                     variant="contained"
                     color="error"
                   >
-                    <LogoutIcon fontSize={!isMobile ? "medium" : "small"} />
+                    <LogoutIcon fontSize={!isMobile ? 'medium' : 'small'} />
                   </Button>
                 </Link>
               </>

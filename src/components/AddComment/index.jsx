@@ -1,31 +1,28 @@
-import React from "react";
+import React from 'react';
 
 // -- Styles
-import styles from "./AddComment.module.scss";
+import styles from './AddComment.module.scss';
 
 // -- Material UI
-import TextField from "@mui/material/TextField";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
+import TextField from '@mui/material/TextField';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
 
 // -- React-redux
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 // -- Redux state
-import {
-  fetchCancelEditMode,
-  fetchComments,
-} from "../../redux/slices/comments";
+import { fetchCancelEditMode, fetchComments } from 'redux/slices/comments';
 
 // -- Axios
-import axios from "../../configs/axios/axios";
+import axios from 'configs/axios/axios';
 
 export const AddComment = () => {
   const dispatch = useDispatch();
 
   const [user, setUser] = React.useState(null);
-  const [text, setText] = React.useState("");
+  const [text, setText] = React.useState('');
 
   const { id } = useParams();
 
@@ -35,7 +32,7 @@ export const AddComment = () => {
   const { data } = useSelector((state) => state.auth);
 
   React.useEffect(() => {
-    axios.get("/auth/me").then((res) => {
+    axios.get('/auth/me').then((res) => {
       setUser(res.data);
     });
   }, []);
@@ -47,7 +44,7 @@ export const AddComment = () => {
   }, [editbleComment]);
 
   React.useEffect(() => {
-    setText("");
+    setText('');
   }, [id]);
 
   const onSubmit = async () => {
@@ -63,15 +60,15 @@ export const AddComment = () => {
         ? await axios.post(`/posts/${id}/addComment`, fields)
         : await axios.patch(`/posts/${id}/updateComment`, fields);
       dispatch(fetchComments());
-      setText("");
+      setText('');
     } catch (error) {
-      alert("Ошибка при создании комментария!");
+      alert('Ошибка при создании комментария!');
     }
   };
 
   const onCancel = async () => {
     dispatch(fetchCancelEditMode());
-    setText("");
+    setText('');
   };
 
   return (
@@ -81,10 +78,10 @@ export const AddComment = () => {
           classes={{ root: styles.avatar }}
           src={
             user
-              ? `${process.env.REACT_APP_API_URL || "http://localhost:4444"}${
+              ? `${process.env.REACT_APP_API_URL || 'http://localhost:4444'}${
                   user.avatarUrl
                 }`
-              : ""
+              : ''
           }
         />
         <div className={styles.form}>
@@ -104,16 +101,16 @@ export const AddComment = () => {
             onClick={onSubmit}
             variant="contained"
             disabled={!text ? true : false}
-            color={editMode ? "secondary" : "primary"}
+            color={editMode ? 'secondary' : 'primary'}
           >
-            {!editMode ? "Отправить" : "Сохранить"}
+            {!editMode ? 'Отправить' : 'Сохранить'}
           </Button>
 
           {editMode ? (
             <Button
               style={{ marginLeft: 10 }}
               onClick={onCancel}
-              color={editMode ? "secondary" : "primary"}
+              color={editMode ? 'secondary' : 'primary'}
             >
               Отменить
             </Button>

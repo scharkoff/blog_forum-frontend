@@ -1,24 +1,24 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 // -- Styles
-import styles from "./SearchString.module.scss";
+import styles from './SearchString.module.scss';
 
 // -- Redux state
-import store from "../../redux/store";
+import store from 'redux/store';
 
 // -- Material UI
-import TextField from "@mui/material/TextField";
+import TextField from '@mui/material/TextField';
 
 export const SearchString = ({ setPostsArray, copyOfPosts }) => {
   const state = store.getState();
 
   const resetSearchStringValue = state.utils.search.resetSearchString;
-  const [searchText, setSearchText] = React.useState("");
+  const [searchText, setSearchText] = React.useState('');
 
   React.useEffect(() => {
     if (resetSearchStringValue) {
-      setSearchText("");
+      setSearchText('');
     }
   }, [resetSearchStringValue]);
 

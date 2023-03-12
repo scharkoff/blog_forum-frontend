@@ -1,22 +1,22 @@
-import React from "react";
+import React from 'react';
 
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 
-import { AlertMessage } from "../../components/AlertMessage/index.jsx";
-import { ProfileAvatarForm } from "../../components/ProfileForms/ProfileAvatarForm/index.jsx";
-import { ProfileLoginForm } from "../../components/ProfileForms/ProfileLoginForm/index.jsx";
-import { ProfileEmailForm } from "../../components/ProfileForms/ProfileEmailForm/index.jsx";
-import { ProfilePasswordForm } from "../../components/ProfileForms/ProfilePasswordForm/index.jsx";
+import { AlertMessage } from 'components/AlertMessage/index.jsx';
+import { ProfileAvatarForm } from 'components/ProfileForms/ProfileAvatarForm/index.jsx';
+import { ProfileLoginForm } from 'components/ProfileForms/ProfileLoginForm/index.jsx';
+import { ProfileEmailForm } from 'components/ProfileForms/ProfileEmailForm/index.jsx';
+import { ProfilePasswordForm } from 'components/ProfileForms/ProfilePasswordForm/index.jsx';
 
 export const ProfileForm = () => {
-  const [login, setLogin] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [avatarUrl, setAvatarUrl] = React.useState("");
+  const [login, setLogin] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [avatarUrl, setAvatarUrl] = React.useState('');
 
   const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState("");
-  const [alertType, setAlertType] = React.useState("info");
+  const [alertText, setAlertText] = React.useState('');
+  const [alertType, setAlertType] = React.useState('info');
 
   const user = useSelector((state) => state.auth.data);
 

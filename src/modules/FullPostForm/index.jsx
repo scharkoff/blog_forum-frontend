@@ -1,23 +1,23 @@
-import React from "react";
+import React from 'react';
 
 // -- Components
-import { Post } from "../../components/Post";
-import { AddComment } from "../../components/AddComment";
-import { CommentsBlock } from "../../components/CommentsBlock";
+import { Post } from 'components/Post';
+import { AddComment } from 'components/AddComment';
+import { CommentsBlock } from 'components/CommentsBlock';
 
 // -- React markdown
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown from 'react-markdown';
 
 // -- React-redux
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 // -- Axios
-import axios from "../../configs/axios/axios";
+import axios from 'configs/axios/axios';
 
 // -- Redux state
-import { fetchComments } from "../../redux/slices/comments";
-import { AlertMessage } from "../../components/AlertMessage";
+import { fetchComments } from 'redux/slices/comments';
+import { AlertMessage } from 'components/AlertMessage';
 
 export const FullPostForm = () => {
   const [data, setData] = React.useState();
@@ -29,8 +29,8 @@ export const FullPostForm = () => {
 
   // -- Уведомления об операциях
   const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState("");
-  const [alertType, setAlertType] = React.useState("info");
+  const [alertText, setAlertText] = React.useState('');
+  const [alertType, setAlertType] = React.useState('info');
 
   React.useEffect(() => {
     dispatch(fetchComments());
@@ -44,9 +44,9 @@ export const FullPostForm = () => {
         setLoading(false);
       })
       .catch(() => {
-        setAlertText("Ошибка при получении статьи!");
+        setAlertText('Ошибка при получении статьи!');
         setOpen(true);
-        setAlertType("error");
+        setAlertType('error');
       });
   }, []);
 
@@ -68,10 +68,10 @@ export const FullPostForm = () => {
         title={data.title}
         imageUrl={
           data.imageUrl
-            ? `${process.env.REACT_APP_API_URL || "http://localhost:4444"}${
+            ? `${process.env.REACT_APP_API_URL || 'http://localhost:4444'}${
                 data.imageUrl
               }`
-            : ""
+            : ''
         }
         user={data.user}
         createdAt={data.createdAt.slice(0, 10)}

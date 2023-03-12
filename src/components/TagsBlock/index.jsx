@@ -1,26 +1,26 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 // -- Material UI imports
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import TagIcon from "@mui/icons-material/Tag";
-import ListItemText from "@mui/material/ListItemText";
-import Skeleton from "@mui/material/Skeleton";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import TagIcon from '@mui/icons-material/Tag';
+import ListItemText from '@mui/material/ListItemText';
+import Skeleton from '@mui/material/Skeleton';
 
 // -- React-redux
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 // -- Components
-import { SideBlock } from "../SideBlock";
+import { SideBlock } from '../SideBlock';
 
 // -- Redux state
-import { fetchActiveTag, fetchPostsLikeTag } from "../../redux/slices/tags";
-import { resetSearchString } from "../../redux/slices/utils";
+import { fetchActiveTag, fetchPostsLikeTag } from 'redux/slices/tags';
+import { resetSearchString } from 'redux/slices/utils';
 
 export const TagsBlock = React.memo(({ items, isLoading = true }) => {
   const dispatch = useDispatch();
@@ -49,14 +49,14 @@ export const TagsBlock = React.memo(({ items, isLoading = true }) => {
           <Link
             key={i}
             style={{
-              textDecoration: "none",
-              color: activeTagName === name ? "white" : "black",
+              textDecoration: 'none',
+              color: activeTagName === name ? 'white' : 'black',
             }}
             to={`/tags/${name}`}
           >
             <ListItem
               style={{
-                backgroundColor: activeTagName === name ? "#4361ee" : "white",
+                backgroundColor: activeTagName === name ? '#4361ee' : 'white',
               }}
               key={i}
               onClick={() => {
@@ -68,7 +68,7 @@ export const TagsBlock = React.memo(({ items, isLoading = true }) => {
               <ListItemButton>
                 <ListItemIcon>
                   <TagIcon
-                    style={{ color: activeTagName === name ? "white" : "" }}
+                    style={{ color: activeTagName === name ? 'white' : '' }}
                   />
                 </ListItemIcon>
                 {isLoading ? (

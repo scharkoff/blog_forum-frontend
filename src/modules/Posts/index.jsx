@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React from 'react';
 
 // -- Redux state
-import store from "../../redux/store";
+import store from 'redux/store';
 
 // -- Components
-import { Post } from "../../components/Post";
-import { SearchString } from "../SearchString";
+import { Post } from 'components/Post';
+import { SearchString } from 'components/SearchString';
 
 // -- React-redux
-import { useSelector } from "react-redux";
-import { AlertMessage } from "../AlertMessage";
+import { useSelector } from 'react-redux';
+import { AlertMessage } from 'components/AlertMessage';
 
 export const Posts = () => {
   const state = store.getState();
@@ -28,12 +28,12 @@ export const Posts = () => {
 
   const userData = useSelector((state) => state.auth.data);
 
-  const isPostsLoading = posts.status === "loading";
+  const isPostsLoading = posts.status === 'loading';
 
   // -- Уведомления
   const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState("");
-  const [alertType, setAlertType] = React.useState("info");
+  const [alertText, setAlertText] = React.useState('');
+  const [alertType, setAlertType] = React.useState('info');
 
   return (
     <div>
@@ -56,10 +56,10 @@ export const Posts = () => {
             title={obj.title}
             imageUrl={
               obj.imageUrl
-                ? `${process.env.REACT_APP_API_URL || "http://localhost:4444"}${
+                ? `${process.env.REACT_APP_API_URL || 'http://localhost:4444'}${
                     obj.imageUrl
                   }`
-                : ""
+                : ''
             }
             user={obj.user}
             createdAt={obj.createdAt.slice(0, 10)}

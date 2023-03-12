@@ -1,27 +1,27 @@
-import React from "react";
+import React from 'react';
 
 // -- Material UI
-import Grid from "@mui/material/Grid";
+import Grid from '@mui/material/Grid';
 
 // -- Modules
-import { SortTabs } from "../../modules";
+import { SortTabs } from 'modules';
 
 // -- Components
-import { TagsBlock } from "../../components/TagsBlock";
-import { CommentsBlock } from "../../components/CommentsBlock";
-import { Posts } from "../../components/Posts";
+import { TagsBlock } from 'components/TagsBlock';
+import { CommentsBlock } from 'components/CommentsBlock';
+import { Posts } from 'modules/Posts';
 
 // -- React-redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
 // -- Redux state
-import store from "../../redux/store";
-import { fetchTags } from "../../redux/slices/tags";
-import { fetchSortedComments } from "../../redux/slices/comments";
-import { fetchAuthMe } from "../../redux/slices/auth";
+import store from 'redux/store';
+import { fetchTags } from 'redux/slices/tags';
+import { fetchSortedComments } from 'redux/slices/comments';
+import { fetchAuthMe } from 'redux/slices/auth';
 
 // -- Styles
-import styles from "./Home.module.scss";
+import styles from './Home.module.scss';
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ export const Home = () => {
   const [activeTab, setActiveTab] = React.useState(0);
 
   React.useEffect(() => {
-    document.title = "Главная страница";
+    document.title = 'Главная страница';
     dispatch(fetchTags());
     dispatch(fetchSortedComments());
     dispatch(fetchAuthMe());

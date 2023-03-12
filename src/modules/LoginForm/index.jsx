@@ -1,22 +1,23 @@
-import React from "react";
+import React from 'react';
 
 // -- Material UI
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
 
 // -- React-redux
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 
 // -- Redux store
-import { fetchAuth, selectIsAuth } from "../../redux/slices/auth";
+import { fetchAuth, selectIsAuth } from 'redux/slices/auth';
 
 // -- Styles
-import styles from "./Login.module.scss";
-import { AlertMessage } from "../../components/AlertMessage";
+import styles from './scss/Login.module.scss';
+
+import { AlertMessage } from 'components/AlertMessage';
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
@@ -25,22 +26,22 @@ export const LoginForm = () => {
 
   // -- Уведомления об операциях
   const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState("");
-  const [alertType, setAlertType] = React.useState("info");
+  const [alertText, setAlertText] = React.useState('');
+  const [alertType, setAlertType] = React.useState('info');
 
   const { register, handleSubmit, formState } = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const onSubmitAuth = async (values) => {
     const data = await dispatch(fetchAuth(values));
 
-    if ("token" in data.payload) {
-      window.localStorage.setItem("token", data.payload.token);
+    if ('token' in data.payload) {
+      window.localStorage.setItem('token', data.payload.token);
     }
 
     if (data.payload.isError) {
@@ -48,11 +49,11 @@ export const LoginForm = () => {
         data.payload.message ? data.payload.message : data.payload[0].msg
       );
       setOpen(true);
-      setAlertType("error");
+      setAlertType('error');
     } else {
-      setAlertText("Вы успешно авторизовались!");
+      setAlertText('Вы успешно авторизовались!');
       setOpen(true);
-      setAlertType("success");
+      setAlertType('success');
     }
   };
 
@@ -79,7 +80,7 @@ export const LoginForm = () => {
             label="E-Mail"
             error={Boolean(formState.errors.email?.message)}
             helperText={formState.errors.email?.message}
-            {...register("email", { required: "Укажите почту" })}
+            {...register('email', { required: 'Укажите почту' })}
             fullWidth
           />
           <TextField
@@ -88,7 +89,7 @@ export const LoginForm = () => {
             label="Пароль"
             error={Boolean(formState.errors.password?.message)}
             fullWidth
-            {...register("password", { required: "Введите пароль" })}
+            {...register('password', { required: 'Введите пароль' })}
             helperText={formState.errors.password?.message}
           />
           <Button

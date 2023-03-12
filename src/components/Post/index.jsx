@@ -1,30 +1,30 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 // -- clsx for css
-import clsx from "clsx";
+import clsx from 'clsx';
 
 // -- Styles
-import styles from "./Post.module.scss";
+import styles from './Post.module.scss';
 
 // -- Material UI
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Clear";
-import EditIcon from "@mui/icons-material/Edit";
-import EyeIcon from "@mui/icons-material/RemoveRedEyeOutlined";
-import CommentIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Clear';
+import EditIcon from '@mui/icons-material/Edit';
+import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 
 // React-redux
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 // -- Components
-import { UserInfo } from "../UserInfo";
-import { PostSkeleton } from "./Skeleton";
+import { UserInfo } from '../UserInfo';
+import { PostSkeleton } from './Skeleton';
 
 // -- Redux state
-import { fetchRemovePost } from "../../redux/slices/posts";
-import { fetchPostsLikeTag } from "../../redux/slices/tags";
+import { fetchRemovePost } from 'redux/slices/posts';
+import { fetchPostsLikeTag } from 'redux/slices/tags';
 
 export const Post = ({
   id,
@@ -52,23 +52,23 @@ export const Post = ({
   }
 
   const onClickRemove = () => {
-    if (window.confirm("Вы действительно хотите удалить статью?")) {
+    if (window.confirm('Вы действительно хотите удалить статью?')) {
       try {
         dispatch(fetchRemovePost(id));
         setOpen(true);
-        setAlertText("Статья успешно удалена!");
-        setAlertType("success");
+        setAlertText('Статья успешно удалена!');
+        setAlertType('success');
       } catch (error) {
         setOpen(true);
-        setAlertText("Ошибка при удалении статьи!");
-        setAlertType("error");
+        setAlertText('Ошибка при удалении статьи!');
+        setAlertType('error');
       }
     }
   };
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
-      {isEditable || authUser?.rank === "admin" ? (
+      {isEditable || authUser?.rank === 'admin' ? (
         <div className={styles.editButtons}>
           <Link to={`/posts/${id}/edit`}>
             <IconButton color="primary">
@@ -80,7 +80,7 @@ export const Post = ({
           </IconButton>
         </div>
       ) : (
-        ""
+        ''
       )}
       {imageUrl && (
         <Link to={`/posts/${id}`}>

@@ -1,13 +1,13 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React from 'react';
+import { useDispatch } from 'react-redux';
 
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
-import { resetSearchString } from "../../redux/slices/utils";
-import { fetchSortedPostsLikeTag } from "../../redux/slices/tags";
-import { fetchPosts, fetchSortedPosts } from "../../redux/slices/posts";
-import { useParams } from "react-router-dom";
+import { resetSearchString } from 'redux/slices/utils';
+import { fetchSortedPostsLikeTag } from 'redux/slices/tags';
+import { fetchPosts, fetchSortedPosts } from 'redux/slices/posts';
+import { useParams } from 'react-router-dom';
 
 export const SortTabs = ({ activeTab, setActiveTab }) => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ export const SortTabs = ({ activeTab, setActiveTab }) => {
   const onSortPosts = (value) => {
     value === 1 ? setActiveTab(1) : setActiveTab(0);
     if (Object.entries(name).length) {
-      console.log("active name", name);
+      console.log('active name', name);
       dispatch(fetchSortedPostsLikeTag({ value, name }));
     } else {
       dispatch(fetchSortedPosts(value));

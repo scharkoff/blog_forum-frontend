@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 
 // -- Material UI
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 // -- React-redux
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { fetchUpdateUserLogin } from "../../../redux/slices/auth";
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { fetchUpdateUserLogin } from 'redux/slices/auth';
 
 export const UserLoginForm = React.memo(
   ({
@@ -25,9 +25,9 @@ export const UserLoginForm = React.memo(
     const fullNameForm = useForm({
       defaultValues: {
         id,
-        fullName: "",
+        fullName: '',
       },
-      mode: "onChange",
+      mode: 'onChange',
     });
 
     const onSubmitLogin = async (values) => {
@@ -36,23 +36,23 @@ export const UserLoginForm = React.memo(
       if (data.payload.isError) {
         setAlertText(data.payload[0].msg);
         setOpen(true);
-        setAlertType("error");
+        setAlertType('error');
       } else {
-        setAlertText("Логин пользователя успешно изменен");
+        setAlertText('Логин пользователя успешно изменен');
         setOpen(true);
-        setAlertType("success");
+        setAlertType('success');
       }
     };
     return (
       <form
         onSubmit={fullNameForm.handleSubmit(onSubmitLogin)}
-        style={{ textAlign: "left" }}
+        style={{ textAlign: 'left' }}
       >
         <Grid container spacing={1} alignItems="center" marginTop={2}>
           <Grid item>
             <TextField
-              {...fullNameForm.register("fullName", {
-                required: "Введите новый логин!",
+              {...fullNameForm.register('fullName', {
+                required: 'Введите новый логин!',
               })}
               variant="standard"
               placeholder="Введите новый логин..."
@@ -74,8 +74,8 @@ export const UserLoginForm = React.memo(
               onClick={() => {
                 const values = fullNameForm.getValues();
                 if (values.fullName.length < 3) {
-                  fullNameForm.setError("fullName", {
-                    message: "Минимальная длина имени 3 символа!",
+                  fullNameForm.setError('fullName', {
+                    message: 'Минимальная длина имени 3 символа!',
                   });
                 }
               }}

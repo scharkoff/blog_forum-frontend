@@ -1,15 +1,15 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
-import { fetchUpdateUserLogin } from "../../../redux/slices/auth";
+import { fetchUpdateUserLogin } from 'redux/slices/auth';
 
 export const ProfileLoginForm = React.memo(
   ({ user, login, setLogin, setAlertText, setAlertType, setOpen }) => {
@@ -23,20 +23,20 @@ export const ProfileLoginForm = React.memo(
       if (data.payload.isError) {
         setAlertText(data.payload[0].msg);
         setOpen(true);
-        setAlertType("error");
+        setAlertType('error');
       } else {
-        setAlertText("Логин успешно изменен");
+        setAlertText('Логин успешно изменен');
         setOpen(true);
-        setAlertType("success");
+        setAlertType('success');
       }
     };
 
     const fullNameForm = useForm({
       defaultValues: {
         id,
-        fullName: "",
+        fullName: '',
       },
-      mode: "onChange",
+      mode: 'onChange',
     });
 
     return (
@@ -50,8 +50,8 @@ export const ProfileLoginForm = React.memo(
         >
           <Grid item>
             <TextField
-              {...fullNameForm.register("fullName", {
-                required: "Введите новый логин!",
+              {...fullNameForm.register('fullName', {
+                required: 'Введите новый логин!',
               })}
               variant="standard"
               placeholder="Введите новый логин..."
@@ -71,8 +71,8 @@ export const ProfileLoginForm = React.memo(
               onClick={() => {
                 const values = fullNameForm.getValues();
                 if (values.fullName.length < 3) {
-                  fullNameForm.setError("fullName", {
-                    message: "Минимальная длина имени 3 символа!",
+                  fullNameForm.setError('fullName', {
+                    message: 'Минимальная длина имени 3 символа!',
                   });
                 }
               }}
