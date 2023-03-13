@@ -7,6 +7,7 @@ import { ProfileAvatarForm } from 'components/ProfileForms/ProfileAvatarForm/ind
 import { ProfileLoginForm } from 'components/ProfileForms/ProfileLoginForm/index.jsx';
 import { ProfileEmailForm } from 'components/ProfileForms/ProfileEmailForm/index.jsx';
 import { ProfilePasswordForm } from 'components/ProfileForms/ProfilePasswordForm/index.jsx';
+import { useAlertMessage } from 'hooks/useAlertMessage';
 
 export const ProfileForm = () => {
   const [login, setLogin] = React.useState('');
@@ -14,9 +15,7 @@ export const ProfileForm = () => {
   const [email, setEmail] = React.useState('');
   const [avatarUrl, setAvatarUrl] = React.useState('');
 
-  const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState('');
-  const [alertType, setAlertType] = React.useState('info');
+  const [alertVariables, setAlertOptions] = useAlertMessage();
 
   const user = useSelector((state) => state.auth.data);
 
@@ -28,46 +27,35 @@ export const ProfileForm = () => {
     }
   }, [user]);
 
+  React.useEffect(() => {}, [alertVariables]);
+
   return (
     <div>
-      <AlertMessage
-        message={alertText}
-        type={alertType}
-        open={open}
-        setOpen={setOpen}
-      />
+      <AlertMessage {...alertVariables} />
 
       <ProfileAvatarForm
         avatarUrl={avatarUrl}
-        setAlertText={setAlertText}
-        setAlertType={setAlertType}
-        setOpen={setOpen}
+        setAlertOptions={setAlertOptions}
       />
 
       <ProfileLoginForm
         user={user}
         login={login}
         setLogin={setLogin}
-        setAlertText={setAlertText}
-        setAlertType={setAlertType}
-        setOpen={setOpen}
+        setAlertOptions={setAlertOptions}
       />
 
       <ProfileEmailForm
         user={user}
         email={email}
         setEmail={setEmail}
-        setAlertText={setAlertText}
-        setAlertType={setAlertType}
-        setOpen={setOpen}
+        setAlertOptions={setAlertOptions}
       />
 
       <ProfilePasswordForm
         password={password}
         setPassword={setPassword}
-        setAlertText={setAlertText}
-        setAlertType={setAlertType}
-        setOpen={setOpen}
+        setAlertOptions={setAlertOptions}
       />
     </div>
   );

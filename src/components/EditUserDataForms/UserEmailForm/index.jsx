@@ -11,15 +11,7 @@ import { useDispatch } from 'react-redux';
 import { fetchUpdateUserEmail } from 'redux/slices/auth';
 
 export const UserEmailForm = React.memo(
-  ({
-    id,
-    email,
-    setEmail,
-    editbleUserData,
-    setAlertText,
-    setAlertType,
-    setOpen,
-  }) => {
+  ({ id, email, setEmail, editbleUserData, setAlertOptions }) => {
     const dispatch = useDispatch();
 
     const emailForm = useForm({
@@ -34,13 +26,9 @@ export const UserEmailForm = React.memo(
       const data = await dispatch(fetchUpdateUserEmail(values));
 
       if (data.payload.isError) {
-        setAlertText(data.payload[0].msg);
-        setOpen(true);
-        setAlertType('error');
+        setAlertOptions(true, 'error', data.payload[0]?.msg);
       } else {
-        setAlertText('Почта пользователя успешно изменена');
-        setOpen(true);
-        setAlertType('success');
+        setAlertOptions(true, 'success', 'Почта пользователя успешно изменена');
       }
     };
 

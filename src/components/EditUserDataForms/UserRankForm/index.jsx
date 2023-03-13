@@ -12,15 +12,7 @@ import { useDispatch } from 'react-redux';
 import { fetchUpdateUserRank } from 'redux/slices/auth';
 
 export const UserRankForm = React.memo(
-  ({
-    id,
-    rank,
-    setRank,
-    editbleUserData,
-    setAlertText,
-    setAlertType,
-    setOpen,
-  }) => {
+  ({ id, rank, setRank, editbleUserData, setAlertOptions }) => {
     const dispatch = useDispatch();
 
     const handleChangeRank = (event) => {
@@ -39,13 +31,9 @@ export const UserRankForm = React.memo(
       const data = await dispatch(fetchUpdateUserRank(values));
 
       if (data.payload.isError) {
-        setAlertText(data.payload[0].msg);
-        setOpen(true);
-        setAlertType('error');
+        setAlertOptions(true, 'error', data.payload[0]?.msg);
       } else {
-        setAlertText('Ранг пользователя успешно изменен');
-        setOpen(true);
-        setAlertType('success');
+        setAlertOptions(true, 'success', 'Ранг пользователя успешно изменен');
       }
     };
 

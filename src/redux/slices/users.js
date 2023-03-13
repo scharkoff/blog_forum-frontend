@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "../../configs/axios/axios";
+import axios from "configs/axios/axios";
 
 // -- Получить всех пользователей
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
@@ -7,7 +7,7 @@ export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
     const { data } = await axios.get("/users");
     return data;
   } catch (error) {
-    return error;
+    return { ...error.response?.data, isError: true };
   }
 });
 
@@ -27,7 +27,7 @@ export const fetchDeleteUser = createAsyncThunk(
       const { data } = await axios.delete(`/users/delete/${id}`);
       return data;
     } catch (error) {
-      return { ...error.response.data, isError: true };
+      return { ...error.response?.data, isError: true };
     }
   }
 );

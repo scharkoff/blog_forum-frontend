@@ -18,19 +18,17 @@ import axios from 'configs/axios/axios';
 // -- Redux state
 import { fetchComments } from 'redux/slices/comments';
 import { AlertMessage } from 'components/AlertMessage';
+import { useAlertMessage } from 'hooks/useAlertMessage';
 
 export const FullPostForm = () => {
   const [data, setData] = React.useState();
   const [isLoading, setLoading] = React.useState(true);
   const { id } = useParams();
-  const allComments = useSelector((state) => state.posts.comments.items);
+  const allComments = useSelector((state) => state.posts?.comments?.items);
 
   const dispatch = useDispatch();
 
-  // -- Уведомления об операциях
-  const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState('');
-  const [alertType, setAlertType] = React.useState('info');
+  const [alertVariables, setAlertOptions] = useAlertMessage();
 
   React.useEffect(() => {
     dispatch(fetchComments());
@@ -44,9 +42,7 @@ export const FullPostForm = () => {
         setLoading(false);
       })
       .catch(() => {
-        setAlertText('Ошибка при получении статьи!');
-        setOpen(true);
-        setAlertType('error');
+        setAlertOptions(true, 'error', 'Ошибка при получении статьи!');
       });
   }, []);
 
@@ -56,12 +52,7 @@ export const FullPostForm = () => {
 
   return (
     <>
-      <AlertMessage
-        message={alertText}
-        type={alertType}
-        open={open}
-        setOpen={setOpen}
-      />
+      <AlertMessage {...alertVariables} />
 
       <Post
         id={data._id}

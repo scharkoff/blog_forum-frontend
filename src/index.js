@@ -17,7 +17,6 @@ import { ThemeProvider } from "@mui/material";
 import store from "./redux/store";
 import App from "./app/App";
 
-// -- root
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(

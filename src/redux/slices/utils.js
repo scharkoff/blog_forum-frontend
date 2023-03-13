@@ -16,7 +16,6 @@ const utilsSlice = createSlice({
     reducers: {
         resetSearchString(state, action) {
             state.search.resetSearchString = action.payload;
-
         },
 
         setIsMobile(state, action) {

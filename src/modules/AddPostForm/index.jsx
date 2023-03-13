@@ -25,6 +25,7 @@ import { selectIsAuth } from 'redux/slices/auth';
 import axios from 'configs/axios/axios';
 import { onSubmitPost } from './api/submitPost';
 import { handleChangeFile } from './api/handleChangeFile';
+import { useAlertMessage } from 'hooks/useAlertMessage';
 
 export const AddPostForm = () => {
   const isAuth = useSelector(selectIsAuth);
@@ -33,10 +34,7 @@ export const AddPostForm = () => {
 
   const { id } = useParams();
 
-  // -- Уведомления об операциях
-  const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState('');
-  const [alertType, setAlertType] = React.useState('info');
+  const [alertVariables, setAlertOptions] = useAlertMessage();
 
   const [text, setText] = React.useState('');
   const [isLoading, setLoading] = React.useState(false);
@@ -62,9 +60,7 @@ export const AddPostForm = () => {
           setAuthorId(data.user?._id);
         })
         .catch((err) => {
-          setAlertText('Ошибка при получении статьи!');
-          setAlertType('error');
-          setOpen(true);
+          setAlertOptions(true, 'error', 'Ошибка при получении статьи!');
         });
     }
   }, []);
@@ -100,18 +96,14 @@ export const AddPostForm = () => {
     authorId,
     isEditing,
     setLoading,
-    setAlertText,
-    setAlertType,
-    setOpen,
+    setAlertOptions,
     navigate,
     id,
   };
 
   const handleChangeFileDTO = {
     setImageUrl,
-    setAlertText,
-    setAlertType,
-    setOpen,
+    setAlertOptions,
   };
 
   if (!window.localStorage.getItem('token') && !isAuth) {
@@ -120,12 +112,7 @@ export const AddPostForm = () => {
 
   return (
     <div>
-      <AlertMessage
-        message={alertText}
-        type={alertType}
-        open={open}
-        setOpen={setOpen}
-      />
+      <AlertMessage {...alertVariables} />
 
       <Paper elevation={0} style={{ padding: 30 }}>
         <Button

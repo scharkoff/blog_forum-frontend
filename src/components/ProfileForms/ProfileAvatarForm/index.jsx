@@ -14,7 +14,7 @@ import { useForm } from 'react-hook-form';
 import { fetchUpdateUserAvatar } from 'redux/slices/auth.js';
 
 export const ProfileAvatarForm = React.memo(
-  ({ avatarUrl, setAlertText, setAlertType, setOpen }) => {
+  ({ avatarUrl, setAlertOptions }) => {
     const dispatch = useDispatch();
 
     const { id } = useParams();
@@ -32,9 +32,7 @@ export const ProfileAvatarForm = React.memo(
         const { data } = await axios.post('/upload', formData);
         setNewAvatarUrl(data.url);
       } catch (error) {
-        setAlertText('Не удалось загрузить изображение!');
-        setAlertType('error');
-        setOpen(true);
+        setAlertOptions(true, 'error', 'Не удалось загрузить изображение!');
       }
     };
 
@@ -42,13 +40,9 @@ export const ProfileAvatarForm = React.memo(
       const data = await dispatch(fetchUpdateUserAvatar(values));
 
       if (data.payload.isError) {
-        setAlertText(data.payload[0].msg);
-        setOpen(true);
-        setAlertType('error');
+        setAlertOptions(true, 'error', data?.payload[0]?.msg);
       } else {
-        setAlertText('Аватар успешно изменен');
-        setOpen(true);
-        setAlertType('success');
+        setAlertOptions(true, 'success', 'Аватар успешно изменен');
       }
     };
 

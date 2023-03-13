@@ -15,7 +15,7 @@ import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 
 // React-redux
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // -- Components
@@ -39,32 +39,37 @@ export const Post = ({
   isFullPost,
   isLoading,
   isEditable,
-  setOpen,
-  setAlertText,
-  setAlertType,
+  setAlertOptions,
 }) => {
   const dispatch = useDispatch();
 
-  const authUser = useSelector((state) => state.auth.data);
+  const authUser = useSelector((state) => state.auth?.data);
 
-  if (isLoading) {
-    return <PostSkeleton />;
-  }
+  const navigate = useNavigate();
 
   const onClickRemove = () => {
     if (window.confirm('Вы действительно хотите удалить статью?')) {
       try {
         dispatch(fetchRemovePost(id));
-        setOpen(true);
-        setAlertText('Статья успешно удалена!');
-        setAlertType('success');
+
+        if (isFullPost) {
+          navigate('/');
+          return navigate(0);
+        }
+        setAlertOptions(true, 'success', 'Статья успешно удалена!');
       } catch (error) {
-        setOpen(true);
-        setAlertText('Ошибка при удалении статьи!');
-        setAlertType('error');
+        if (isFullPost) {
+          navigate('/');
+          return navigate(0);
+        }
+        setAlertOptions(true, 'error', 'Ошибка при удалении статьи!');
       }
     }
   };
+
+  if (isLoading) {
+    return <PostSkeleton />;
+  }
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>

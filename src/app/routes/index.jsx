@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from 'react-router-dom';
 import {
   AddPost,
   AdminPanel,
@@ -10,7 +10,7 @@ import {
   Login,
   Profile,
   Registation,
-} from "../../pages";
+} from 'pages';
 
 export const AllRoutes = () => {
   return (

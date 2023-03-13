@@ -1,13 +1,18 @@
 // -- Imports
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../configs/axios/axios";
+import axios from "configs/axios/axios";
 
 // -- Запрос на получение всех комментариев
 export const fetchComments = createAsyncThunk(
   "posts/fetchComments",
   async () => {
-    const { data } = await axios.get("/posts/comments");
-    return data;
+    try {
+      const { data } = await axios.get("/posts/comments");
+      return data;
+    } catch (error) {
+      return { ...error.response?.data, isError: true };
+
+    }
   }
 );
 
@@ -15,20 +20,24 @@ export const fetchComments = createAsyncThunk(
 export const fetchSortedComments = createAsyncThunk(
   "posts/fetchComments",
   async () => {
-    const { data } = await axios.get("/posts/comments");
-    return data.reverse()
-      .slice(0, 5)
-      .map((item) => {
-        return {
-          user: {
-            fullName: item.user?.fullName,
-            avatarUrl: item.user?.avatarUrl,
-            rank: item.user?.rank,
-          },
-          text: item.text,
-          commentId: item._id,
-        };
-      });
+    try {
+      const { data } = await axios.get("/posts/comments");
+      return data.reverse()
+        .slice(0, 5)
+        .map((item) => {
+          return {
+            user: {
+              fullName: item.user?.fullName,
+              avatarUrl: item.user?.avatarUrl,
+              rank: item.user?.rank,
+            },
+            text: item.text,
+            commentId: item._id,
+          };
+        });
+    } catch (error) {
+      return { ...error.response?.data, isError: true };
+    }
   }
 );
 
@@ -36,11 +45,15 @@ export const fetchSortedComments = createAsyncThunk(
 export const fetchRemoveComment = createAsyncThunk(
   "posts/fetchRemoveComment",
   async (data) => {
-    const fields = {
-      commentId: data.commentId,
-      postId: data.id.id,
-    };
-    axios.post(`/posts/${data.id}/removeComment`, fields);
+    try {
+      const fields = {
+        commentId: data.commentId,
+        postId: data.id.id,
+      };
+      axios.post(`/posts/${data.id}/removeComment`, fields);
+    } catch (error) {
+      return { ...error.response?.data, isError: true };
+    }
   }
 );
 
@@ -50,7 +63,7 @@ export const fetchEditComment = createAsyncThunk(
   async (res) => {
     const comment = {
       commentId: res.commentId,
-      postId: res.id.id,
+      postId: res.id?.id,
       text: res.text,
     };
 

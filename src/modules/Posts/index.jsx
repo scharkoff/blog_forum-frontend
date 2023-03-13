@@ -10,6 +10,7 @@ import { SearchString } from 'components/SearchString';
 // -- React-redux
 import { useSelector } from 'react-redux';
 import { AlertMessage } from 'components/AlertMessage';
+import { useAlertMessage } from 'hooks/useAlertMessage';
 
 export const Posts = () => {
   const state = store.getState();
@@ -30,19 +31,11 @@ export const Posts = () => {
 
   const isPostsLoading = posts.status === 'loading';
 
-  // -- Уведомления
-  const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState('');
-  const [alertType, setAlertType] = React.useState('info');
+  const [alertVariables, setAlertOptions] = useAlertMessage();
 
   return (
     <div>
-      <AlertMessage
-        message={alertText}
-        type={alertType}
-        open={open}
-        setOpen={setOpen}
-      />
+      <AlertMessage {...alertVariables} />
 
       <SearchString setPostsArray={setPostsArray} copyOfPosts={copyOfPosts} />
 
@@ -67,9 +60,7 @@ export const Posts = () => {
             commentsCount={obj.commentsCount}
             tags={obj.tags}
             isEditable={userData?._id === obj?.user?._id}
-            setOpen={setOpen}
-            setAlertText={setAlertText}
-            setAlertType={setAlertType}
+            setAlertOptions={setAlertOptions}
           />
         )
       )}

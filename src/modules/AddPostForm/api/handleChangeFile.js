@@ -1,6 +1,6 @@
-import axios from "../../../configs/axios/axios";
+import axios from "configs/axios/axios";
 
-export const handleChangeFile = async (event, { setImageUrl, setAlertText, setAlertType, setOpen }) => {
+export const handleChangeFile = async (event, { setImageUrl, setAlertOptions }) => {
     try {
         const formData = new FormData();
         const file = event.target.files[0];
@@ -8,8 +8,6 @@ export const handleChangeFile = async (event, { setImageUrl, setAlertText, setAl
         const { data } = await axios.post("/upload", formData);
         setImageUrl(data.url);
     } catch (error) {
-        setAlertText("Не удалось загрузить изображение!");
-        setAlertType("error");
-        setOpen(true);
+        setAlertOptions(true, "error", "Не удалось загрузить изображение!");
     }
 };

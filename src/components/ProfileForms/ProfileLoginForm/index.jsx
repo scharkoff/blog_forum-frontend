@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { fetchUpdateUserLogin } from 'redux/slices/auth';
 
 export const ProfileLoginForm = React.memo(
-  ({ user, login, setLogin, setAlertText, setAlertType, setOpen }) => {
+  ({ user, login, setLogin, setAlertOptions }) => {
     const dispatch = useDispatch();
 
     const { id } = useParams();
@@ -21,13 +21,9 @@ export const ProfileLoginForm = React.memo(
       const data = await dispatch(fetchUpdateUserLogin(values));
 
       if (data.payload.isError) {
-        setAlertText(data.payload[0].msg);
-        setOpen(true);
-        setAlertType('error');
+        setAlertOptions(true, 'error', data?.payload[0]?.msg);
       } else {
-        setAlertText('Логин успешно изменен');
-        setOpen(true);
-        setAlertType('success');
+        setAlertOptions(true, 'success', 'Логин успешно изменен');
       }
     };
 

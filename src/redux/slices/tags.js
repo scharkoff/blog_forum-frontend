@@ -1,16 +1,20 @@
 // -- Imports
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../configs/axios/axios";
+import axios from "configs/axios/axios";
 
 // -- Запрос на получение статей по конкретному тегу
 export const fetchPostsLikeTag = createAsyncThunk(
   "posts/fetchPostsLikeTags",
   async (name) => {
-    const { data } = await axios.get("/posts");
+    try {
+      const { data } = await axios.get("/posts");
 
-    if (!name) return data;
+      if (!name) return data;
 
-    return data.filter((post) => post.tags.includes(name)).reverse();
+      return data.filter((post) => post.tags?.includes(name)).reverse();
+    } catch (error) {
+      return { ...error.response?.data, isError: true };
+    }
   }
 );
 
@@ -26,21 +30,28 @@ export const fetchActiveTag = createAsyncThunk(
 export const fetchSortedPostsLikeTag = createAsyncThunk(
   "posts/fetchSortedPostsLikeTag",
   async ({ value, name }) => {
-    const { data } = await axios.get("/posts");
-    const tagName = name.name;
+    try {
+      const { data } = await axios.get("/posts");
+      const tagName = name.name;
 
-    if (value === 1) {
-      return data
-        .filter((post) => post.tags.includes(tagName).reverse())
+      if (value === 1) {
+        return data
+          .filter((post) => post.tags.includes(tagName).reverse())
+      }
 
+      return data.filter((post) => post.tags.includes(tagName)).reverse();
+    } catch (error) {
+      return { ...error.response?.data, isError: true };
     }
-
-    return data.filter((post) => post.tags.includes(tagName)).reverse();
   }
 );
 
 // -- Запрос на  получение тегов
 export const fetchTags = createAsyncThunk("posts/fetchTags", async () => {
-  const { data } = await axios.get("/tags");
-  return data;
+  try {
+    const { data } = await axios.get("/tags");
+    return data;
+  } catch (error) {
+    return { ...error.response?.data, isError: true };
+  }
 });

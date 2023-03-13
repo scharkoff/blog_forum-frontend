@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form';
 import { fetchUpdateUserEmail } from 'redux/slices/auth';
 
 export const ProfileEmailForm = React.memo(
-  ({ user, email, setEmail, setAlertText, setAlertType, setOpen }) => {
+  ({ user, email, setEmail, setAlertOptions }) => {
     const dispatch = useDispatch();
 
     const { id } = useParams();
@@ -30,13 +30,9 @@ export const ProfileEmailForm = React.memo(
       const data = await dispatch(fetchUpdateUserEmail(values));
 
       if (data.payload.isError) {
-        setAlertText(data.payload[0].msg);
-        setOpen(true);
-        setAlertType('error');
+        setAlertOptions(true, 'error', data?.payload[0]?.msg);
       } else {
-        setAlertText('Почта успешно изменена');
-        setOpen(true);
-        setAlertType('success');
+        setAlertOptions(true, 'success', 'Почта успешно изменена');
       }
     };
 

@@ -18,16 +18,14 @@ import { fetchAuth, selectIsAuth } from 'redux/slices/auth';
 import styles from './scss/Login.module.scss';
 
 import { AlertMessage } from 'components/AlertMessage';
+import { useAlertMessage } from 'hooks/useAlertMessage';
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
 
   const isAuth = useSelector(selectIsAuth);
 
-  // -- Уведомления об операциях
-  const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState('');
-  const [alertType, setAlertType] = React.useState('info');
+  const [alertVariables, setAlertOptions] = useAlertMessage();
 
   const { register, handleSubmit, formState } = useForm({
     defaultValues: {
@@ -41,19 +39,17 @@ export const LoginForm = () => {
     const data = await dispatch(fetchAuth(values));
 
     if ('token' in data.payload) {
-      window.localStorage.setItem('token', data.payload.token);
+      window.localStorage.setItem('token', data.payload?.token);
     }
 
     if (data.payload.isError) {
-      setAlertText(
-        data.payload.message ? data.payload.message : data.payload[0].msg
+      setAlertOptions(
+        true,
+        'error',
+        data.payload?.message ? data.payload?.message : data.payload[0]?.msg
       );
-      setOpen(true);
-      setAlertType('error');
     } else {
-      setAlertText('Вы успешно авторизовались!');
-      setOpen(true);
-      setAlertType('success');
+      setAlertOptions(true, 'success', 'Вы успешно авторизовались!');
     }
   };
 
@@ -63,12 +59,7 @@ export const LoginForm = () => {
 
   return (
     <div>
-      <AlertMessage
-        message={alertText}
-        type={alertType}
-        open={open}
-        setOpen={setOpen}
-      />
+      <AlertMessage {...alertVariables} />
 
       <Paper elevation={0} classes={{ root: styles.root }}>
         <Typography classes={{ root: styles.title }} variant="h5">

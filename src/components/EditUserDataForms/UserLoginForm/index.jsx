@@ -11,15 +11,7 @@ import { useDispatch } from 'react-redux';
 import { fetchUpdateUserLogin } from 'redux/slices/auth';
 
 export const UserLoginForm = React.memo(
-  ({
-    id,
-    login,
-    setLogin,
-    editbleUserData,
-    setAlertText,
-    setAlertType,
-    setOpen,
-  }) => {
+  ({ id, login, setLogin, editbleUserData, setAlertOptions }) => {
     const dispatch = useDispatch();
 
     const fullNameForm = useForm({
@@ -34,13 +26,9 @@ export const UserLoginForm = React.memo(
       const data = await dispatch(fetchUpdateUserLogin(values));
 
       if (data.payload.isError) {
-        setAlertText(data.payload[0].msg);
-        setOpen(true);
-        setAlertType('error');
+        setAlertOptions(true, 'error', data.payload[0]?.msg);
       } else {
-        setAlertText('Логин пользователя успешно изменен');
-        setOpen(true);
-        setAlertType('success');
+        setAlertOptions(true, 'success', 'Логин пользователя успешно изменен');
       }
     };
     return (

@@ -12,9 +12,10 @@ import { UserLoginForm } from 'components/EditUserDataForms/UserLoginForm/index.
 import { UserEmailForm } from 'components/EditUserDataForms/UserEmailForm/index.jsx';
 import { UserRankForm } from 'components/EditUserDataForms/UserRankForm/index.jsx';
 import { UserPasswordForm } from 'components/EditUserDataForms/UserPasswordForm/index.jsx';
+import { useAlertMessage } from 'hooks/useAlertMessage';
 
 export const EditUserDataForm = () => {
-  const editbleUserData = useSelector((state) => state.users.editbleUserData);
+  const editbleUserData = useSelector((state) => state.users?.editbleUserData);
 
   const { id } = useParams();
 
@@ -23,12 +24,8 @@ export const EditUserDataForm = () => {
   const [email, setEmail] = React.useState('');
   const [rank, setRank] = React.useState('');
 
-  // -- Уведомления об операциях
-  const [open, setOpen] = React.useState(false);
-  const [alertText, setAlertText] = React.useState('');
-  const [alertType, setAlertType] = React.useState('info');
+  const [alertVariables, setAlertOptions] = useAlertMessage();
 
-  // -- useEffect
   React.useEffect(() => {
     if (editbleUserData) {
       setLogin(editbleUserData.login);
@@ -39,12 +36,7 @@ export const EditUserDataForm = () => {
 
   return (
     <div>
-      <AlertMessage
-        message={alertText}
-        type={alertType}
-        open={open}
-        setOpen={setOpen}
-      />
+      <AlertMessage {...alertVariables} />
 
       <Typography variant="h5" gutterBottom>
         Изменение данных пользователя
@@ -55,9 +47,7 @@ export const EditUserDataForm = () => {
         login={login}
         setLogin={setLogin}
         editbleUserData={editbleUserData}
-        setAlertText={setAlertText}
-        setAlertType={setAlertType}
-        setOpen={setOpen}
+        setAlertOptions={setAlertOptions}
       />
 
       <UserEmailForm
@@ -65,9 +55,7 @@ export const EditUserDataForm = () => {
         email={email}
         setEmail={setEmail}
         editbleUserData={editbleUserData}
-        setAlertText={setAlertText}
-        setAlertType={setAlertType}
-        setOpen={setOpen}
+        setAlertOptions={setAlertOptions}
       />
 
       <UserRankForm
@@ -75,9 +63,7 @@ export const EditUserDataForm = () => {
         rank={rank}
         setRank={setRank}
         editbleUserData={editbleUserData}
-        setAlertText={setAlertText}
-        setAlertType={setAlertType}
-        setOpen={setOpen}
+        setAlertOptions={setAlertOptions}
       />
 
       <UserPasswordForm
@@ -85,9 +71,7 @@ export const EditUserDataForm = () => {
         password={password}
         setPassword={setPassword}
         editbleUserData={editbleUserData}
-        setAlertText={setAlertText}
-        setAlertType={setAlertType}
-        setOpen={setOpen}
+        setAlertOptions={setAlertOptions}
       />
     </div>
   );

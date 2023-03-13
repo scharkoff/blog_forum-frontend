@@ -1,6 +1,5 @@
-// -- Imports
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../configs/axios/axios";
+import axios from "configs/axios/axios";
 
 // -- Comments
 import {
@@ -20,21 +19,31 @@ import {
 
 // -- Запрос на получение всех статей
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  const { data } = await axios.get("/posts");
-  return data.reverse();
+  try {
+    const { data } = await axios.get("/posts");
+    return data.reverse();
+  } catch (error) {
+    return { ...error.response.data, isError: true };
+  }
+
 });
 
 // -- Запрос на получение отсортированных статей
 export const fetchSortedPosts = createAsyncThunk(
   "posts/fetchSortedPosts",
   async (value) => {
-    const { data } = await axios.get("/posts");
+    try {
+      const { data } = await axios.get("/posts");
 
-    if (value === 1) {
-      return data.sort((a, b) => b.viewsCount - a.viewsCount);
+      if (value === 1) {
+        return data.sort((a, b) => b.viewsCount - a.viewsCount);
+      }
+
+      return data.reverse();
+    } catch (error) {
+      return { ...error.response.data, isError: true };
     }
 
-    return data.reverse();
   }
 );
 
@@ -42,12 +51,15 @@ export const fetchSortedPosts = createAsyncThunk(
 export const fetchRemovePost = createAsyncThunk(
   "posts/fetchRemovePost",
   async (id) => {
-    const { data } = await axios.delete(`/posts/${id}`);
-    return data;
+    try {
+      const { data } = await axios.delete(`/posts/${id}`);
+      return data;
+    } catch (error) {
+      return { ...error.response.data, isError: true };
+    }
+
   }
 );
-
-
 
 // -- Конфиг для стейта
 const initialState = {

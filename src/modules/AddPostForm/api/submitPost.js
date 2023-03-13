@@ -1,6 +1,6 @@
-import axios from "../../../configs/axios/axios";
+import axios from "configs/axios/axios";
 
-export const onSubmitPost = async ({ title, text, imageUrl, tags, authorId, isEditing, setLoading, setAlertText, setAlertType, setOpen, navigate, id }) => {
+export const onSubmitPost = async ({ title, text, imageUrl, tags, authorId, isEditing, setLoading, setAlertOptions, navigate, id }) => {
     try {
         setLoading(true);
 
@@ -27,8 +27,6 @@ export const onSubmitPost = async ({ title, text, imageUrl, tags, authorId, isEd
 
         navigate(`/posts/${_id}`);
     } catch (error) {
-        setAlertText(error.response?.data[0]?.msg);
-        setAlertType("error");
-        setOpen(true);
+        setAlertOptions(true, "error", error.response?.data[0]?.msg);
     }
 };
