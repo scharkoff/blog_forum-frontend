@@ -20,6 +20,7 @@ import { PostSkeleton } from './Skeleton';
 
 import { fetchPosts, fetchRemovePost } from 'redux/slices/posts';
 import { fetchPostsLikeTag } from 'redux/slices/tags';
+import axios from 'axios';
 
 export const Post = ({
   id,
@@ -83,6 +84,11 @@ export const Post = ({
           <img
             className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
             src={imageUrl}
+            onError={(e) =>
+              (e.target.src = `${
+                process.env.REACT_APP_API_URL || 'http://localhost:4444'
+              }/uploads/no-post-photo.png`)
+            }
             alt={title}
           />
         </Link>
