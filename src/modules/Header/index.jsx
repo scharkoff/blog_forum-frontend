@@ -13,7 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchPosts, setActiveTag } from 'redux/slices/posts';
 import { logout, selectIsAuth } from 'redux/slices/auth';
-import { resetSearchString } from 'redux/slices/utils';
+import { setActiveTab, resetSearchString } from 'redux/slices/utils';
 import { Avatar } from '@mui/material';
 
 export const Header = () => {
@@ -40,6 +40,7 @@ export const Header = () => {
             onClick={() => {
               dispatch(fetchPosts());
               dispatch(setActiveTag(null));
+              dispatch(setActiveTab(0));
               dispatch(resetSearchString(new Date().valueOf()));
             }}
             className={styles.logo}

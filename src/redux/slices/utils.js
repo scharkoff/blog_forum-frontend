@@ -7,6 +7,10 @@ const initialState = {
 
     isMobile: {
         value: false,
+    },
+
+    activeTabs: {
+        activeId: 0
     }
 };
 
@@ -20,10 +24,15 @@ const utilsSlice = createSlice({
 
         setIsMobile(state, action) {
             state.isMobile.value = action.payload;
+        },
+
+        setActiveTab(state, action) {
+            state.activeTabs.activeId = action.payload;
         }
+
     }
 })
 
-export const { resetSearchString, setIsMobile } = utilsSlice.actions;
+export const { resetSearchString, setIsMobile, setActiveTab } = utilsSlice.actions;
 export const utilsReducer = utilsSlice.reducer;
 

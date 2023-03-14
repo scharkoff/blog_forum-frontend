@@ -2,7 +2,7 @@ import React from 'react';
 
 import Grid from '@mui/material/Grid';
 
-import { SortTabs } from 'modules';
+import { SortTabs } from 'components';
 
 import { TagsBlock } from 'components/TagsBlock';
 import { CommentsBlock } from 'components/CommentsBlock';
@@ -28,7 +28,14 @@ export const Home = () => {
 
   const isHomePage = useSelector((state) => state.posts?.posts?.home);
 
-  const [activeTab, setActiveTab] = React.useState(0);
+  const { status } = useSelector((state) => state.posts?.comments);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    if (status === 'loaded') {
+      setIsLoading(false);
+    }
+  }, [status]);
 
   React.useEffect(() => {
     document.title = 'Главная страница';
@@ -39,7 +46,7 @@ export const Home = () => {
 
   return (
     <>
-      <SortTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+      <SortTabs />
 
       <Grid container spacing={4} className={styles.contentWrapper}>
         <Grid xs={8} item className={styles.posts}>
@@ -49,13 +56,13 @@ export const Home = () => {
         <Grid xs={4} item className={styles.tags}>
           <TagsBlock
             isHomePage={isHomePage}
-            items={tags.items ? tags.items : []}
-            isLoading={false}
+            tags={tags.items ? tags.items : []}
+            isLoading={isLoading}
           />
           <CommentsBlock
             className={styles.comments}
             items={comments.items ? comments.items : []}
-            isLoading={false}
+            isLoading={isLoading}
             isEditable={false}
           />
         </Grid>

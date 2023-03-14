@@ -5,5 +5,4 @@ export { EditUserDataForm } from "./EditUserDataForm";
 export { ProfileForm } from "./ProfileForm";
 export { FullPostForm } from "./FullPostForm";
 export { AdminPanelTable } from "./AdminPanelTable";
-export { SortTabs } from "./SortTabs"
 export { Posts } from "./Posts"

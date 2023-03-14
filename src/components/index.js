@@ -8,3 +8,4 @@ export * from "./UsersTable";
 export * from "./AdminSearchString";
 export * from "./AlertMessage";
 export * from "./CommentsBlock";
+export * from "./SortTabs";

@@ -1,23 +1,29 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
-import { resetSearchString } from 'redux/slices/utils';
+import { resetSearchString, setActiveTab } from 'redux/slices/utils';
 import { fetchSortedPostsLikeTag } from 'redux/slices/tags';
 import { fetchPosts, fetchSortedPosts } from 'redux/slices/posts';
 import { useParams } from 'react-router-dom';
 
-export const SortTabs = ({ activeTab, setActiveTab }) => {
+export const SortTabs = () => {
   const dispatch = useDispatch();
 
   const tagName = useParams();
 
+  const { activeId } = useSelector((state) => state.utils?.activeTabs);
+
   const onSortPosts = (value) => {
-    value === 1 ? setActiveTab(1) : setActiveTab(0);
+    if (value === 1) {
+      dispatch(setActiveTab(1));
+    } else {
+      dispatch(setActiveTab(0));
+    }
+
     if (Object.entries(tagName).length) {
-      console.log('active tagName', tagName);
       dispatch(fetchSortedPostsLikeTag({ value, tagName }));
     } else {
       dispatch(fetchSortedPosts(value));
@@ -26,14 +32,18 @@ export const SortTabs = ({ activeTab, setActiveTab }) => {
 
   React.useEffect(() => {
     if (Object.entries(tagName).length) {
-      dispatch(fetchSortedPostsLikeTag({ activeTab, tagName }));
+      dispatch(fetchSortedPostsLikeTag({ activeId, tagName }));
     } else {
       dispatch(fetchPosts());
     }
   }, []);
 
+  React.useEffect(() => {
+    setActiveTab(activeId);
+  }, [activeId]);
+
   return (
-    <Tabs value={activeTab} aria-label="Sort tabs" style={{ marginBottom: 15 }}>
+    <Tabs value={activeId} aria-label="Sort tabs" style={{ marginBottom: 15 }}>
       <Tab
         onClick={() => {
           onSortPosts(0);
