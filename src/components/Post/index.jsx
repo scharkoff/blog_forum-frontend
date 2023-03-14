@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// -- clsx for css
 import clsx from 'clsx';
 
-// -- Styles
 import styles from './Post.module.scss';
 
-// -- Material UI
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
@@ -18,12 +15,10 @@ import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-// -- Components
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
 
-// -- Redux state
-import { fetchRemovePost } from 'redux/slices/posts';
+import { fetchPosts, fetchRemovePost } from 'redux/slices/posts';
 import { fetchPostsLikeTag } from 'redux/slices/tags';
 
 export const Post = ({
@@ -39,7 +34,6 @@ export const Post = ({
   isFullPost,
   isLoading,
   isEditable,
-  setAlertOptions,
 }) => {
   const dispatch = useDispatch();
 
@@ -51,18 +45,15 @@ export const Post = ({
     if (window.confirm('Вы действительно хотите удалить статью?')) {
       try {
         dispatch(fetchRemovePost(id));
+        dispatch(fetchPosts());
 
         if (isFullPost) {
-          navigate('/');
-          return navigate(0);
+          return navigate('/');
         }
-        setAlertOptions(true, 'success', 'Статья успешно удалена!');
       } catch (error) {
         if (isFullPost) {
-          navigate('/');
-          return navigate(0);
+          return navigate('/');
         }
-        setAlertOptions(true, 'error', 'Ошибка при удалении статьи!');
       }
     }
   };

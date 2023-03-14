@@ -1,15 +1,11 @@
 import React from 'react';
 
-// -- Material UI
 import { Typography } from '@mui/material';
 
-// -- React-redux
 import { useDispatch, useSelector } from 'react-redux';
 
-// -- Redux state
 import { fetchUsers } from 'redux/slices/users.js';
 
-// -- Components
 import { UsersTable } from 'components/UsersTable/index.jsx';
 import { AlertMessage } from 'components/AlertMessage/index.jsx';
 import { useAlertMessage } from 'hooks/useAlertMessage';

@@ -1,12 +1,10 @@
 import React from 'react';
 
-// -- Material UI
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { Select } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 
-// -- React-redux
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { fetchUpdateUserRank } from 'redux/slices/auth';

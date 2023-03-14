@@ -1,20 +1,16 @@
 import React from 'react';
 
-// -- Material UI
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
-// -- React-redux
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-// -- Redux store
 import { fetchAuth, selectIsAuth } from 'redux/slices/auth';
 
-// -- Styles
 import styles from './scss/Login.module.scss';
 
 import { AlertMessage } from 'components/AlertMessage';

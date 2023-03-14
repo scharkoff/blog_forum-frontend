@@ -1,9 +1,7 @@
 import React from 'react';
 
-// -- Material UI
 import Button from '@mui/material/Button';
 
-// -- Table
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,11 +11,9 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
-// -- React-redux
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-// -- Redux state
 import { fetchDeleteUser, fetchEditUserData } from 'redux/slices/users.js';
 import { AdminSearchString } from '../AdminSearchString/index.jsx';
 

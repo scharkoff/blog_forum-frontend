@@ -1,11 +1,9 @@
 import React from 'react';
 
-// -- Material UI
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-// -- React-redux
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { fetchUpdateUserPassword } from 'redux/slices/auth';

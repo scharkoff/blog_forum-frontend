@@ -1,22 +1,18 @@
 import React from 'react';
 
-// -- Styles
 import styles from './AddComment.module.scss';
 
-// -- Material UI
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 
-// -- React-redux
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-// -- Redux state
-import { fetchCancelEditMode, fetchComments } from 'redux/slices/comments';
+import { fetchComments } from 'redux/slices/comments';
 
-// -- Axios
 import axios from 'configs/axios/axios';
+import { closeCommentEditMode } from 'redux/slices/posts';
 
 export const AddComment = () => {
   const dispatch = useDispatch();
@@ -67,7 +63,7 @@ export const AddComment = () => {
   };
 
   const onCancel = async () => {
-    dispatch(fetchCancelEditMode());
+    dispatch(closeCommentEditMode());
     setText('');
   };
 

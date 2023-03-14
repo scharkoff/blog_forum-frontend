@@ -12,21 +12,21 @@ import { useParams } from 'react-router-dom';
 export const SortTabs = ({ activeTab, setActiveTab }) => {
   const dispatch = useDispatch();
 
-  const name = useParams();
+  const tagName = useParams();
 
   const onSortPosts = (value) => {
     value === 1 ? setActiveTab(1) : setActiveTab(0);
-    if (Object.entries(name).length) {
-      console.log('active name', name);
-      dispatch(fetchSortedPostsLikeTag({ value, name }));
+    if (Object.entries(tagName).length) {
+      console.log('active tagName', tagName);
+      dispatch(fetchSortedPostsLikeTag({ value, tagName }));
     } else {
       dispatch(fetchSortedPosts(value));
     }
   };
 
   React.useEffect(() => {
-    if (Object.entries(name).length) {
-      dispatch(fetchSortedPostsLikeTag({ activeTab, name }));
+    if (Object.entries(tagName).length) {
+      dispatch(fetchSortedPostsLikeTag({ activeTab, tagName }));
     } else {
       dispatch(fetchPosts());
     }

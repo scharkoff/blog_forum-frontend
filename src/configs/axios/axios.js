@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// -- Базовый URL для отправки запросов
+
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL || "http://localhost:4444/",
 });

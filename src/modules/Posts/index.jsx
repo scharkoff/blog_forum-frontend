@@ -1,13 +1,10 @@
 import React from 'react';
 
-// -- Redux state
 import store from 'redux/store';
 
-// -- Components
 import { Post } from 'components/Post';
 import { SearchString } from 'components/SearchString';
 
-// -- React-redux
 import { useSelector } from 'react-redux';
 import { AlertMessage } from 'components/AlertMessage';
 import { useAlertMessage } from 'hooks/useAlertMessage';
@@ -20,18 +17,22 @@ export const Posts = () => {
   const [postsArray, setPostsArray] = React.useState([]);
   const [copyOfPosts, setCopyOfPosts] = React.useState([]);
 
+  const [alertVariables, setAlertOptions] = useAlertMessage();
+
   React.useEffect(() => {
     if (posts.items) {
       setPostsArray(posts.items);
       setCopyOfPosts(posts.items);
     }
+
+    if (posts.status === 'removed') {
+      setAlertOptions(true, 'success', 'Статья успешно удалена!');
+    }
   }, [posts.items]);
 
-  const userData = useSelector((state) => state.auth.data);
+  const userData = useSelector((state) => state.auth?.data);
 
   const isPostsLoading = posts.status === 'loading';
-
-  const [alertVariables, setAlertOptions] = useAlertMessage();
 
   return (
     <div>
@@ -60,7 +61,6 @@ export const Posts = () => {
             commentsCount={obj.commentsCount}
             tags={obj.tags}
             isEditable={userData?._id === obj?.user?._id}
-            setAlertOptions={setAlertOptions}
           />
         )
       )}

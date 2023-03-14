@@ -1,22 +1,17 @@
 import React from 'react';
 
-// -- Material UI
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import AddIcon from '@mui/icons-material/Add';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
-// -- Styles
 import styles from './Header.module.scss';
 
-// -- React-Redux
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-// -- Redux state
-import { fetchPosts } from 'redux/slices/posts';
-import { fetchActiveTag } from 'redux/slices/tags';
+import { fetchPosts, setActiveTag } from 'redux/slices/posts';
 import { logout, selectIsAuth } from 'redux/slices/auth';
 import { resetSearchString } from 'redux/slices/utils';
 import { Avatar } from '@mui/material';
@@ -44,7 +39,7 @@ export const Header = () => {
           <Link
             onClick={() => {
               dispatch(fetchPosts());
-              dispatch(fetchActiveTag(null));
+              dispatch(setActiveTag(null));
               dispatch(resetSearchString(new Date().valueOf()));
             }}
             className={styles.logo}

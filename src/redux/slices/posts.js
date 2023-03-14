@@ -1,67 +1,48 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "configs/axios/axios";
 
-// -- Comments
+
 import {
   fetchComments,
   fetchRemoveComment,
-  fetchEditComment,
-  fetchCancelEditMode,
 } from "./comments";
 
-// -- Tags
+
 import {
-  fetchActiveTag,
   fetchPostsLikeTag,
   fetchSortedPostsLikeTag,
   fetchTags,
 } from "./tags";
 
-// -- Запрос на получение всех статей
-export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  try {
-    const { data } = await axios.get("/posts");
-    return data.reverse();
-  } catch (error) {
-    return { ...error.response.data, isError: true };
-  }
 
+export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
+  const { data } = await axios.get("/posts");
+  return data.reverse();
 });
 
-// -- Запрос на получение отсортированных статей
+
 export const fetchSortedPosts = createAsyncThunk(
   "posts/fetchSortedPosts",
   async (value) => {
-    try {
-      const { data } = await axios.get("/posts");
+    const { data } = await axios.get("/posts");
 
-      if (value === 1) {
-        return data.sort((a, b) => b.viewsCount - a.viewsCount);
-      }
-
-      return data.reverse();
-    } catch (error) {
-      return { ...error.response.data, isError: true };
+    if (value === 1) {
+      return data.sort((a, b) => b.viewsCount - a.viewsCount);
     }
 
+    return data.reverse();
   }
 );
 
-// -- Запрос на удаление статьи по ее индентификатору
 export const fetchRemovePost = createAsyncThunk(
   "posts/fetchRemovePost",
   async (id) => {
-    try {
-      const { data } = await axios.delete(`/posts/${id}`);
-      return data;
-    } catch (error) {
-      return { ...error.response.data, isError: true };
-    }
-
+    const { data } = await axios.delete(`/posts/${id}`);
+    return data;
   }
 );
 
-// -- Конфиг для стейта
+
 const initialState = {
   posts: {
     items: [],
@@ -81,11 +62,29 @@ const initialState = {
 const postsSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {},
+  reducers: {
+    closeCommentEditMode: (state) => {
+      state.comments.editMode = false;
+    },
+
+    setActiveTag: (state, action) => {
+      state.tags.activeTag = action.payload;
+    },
+
+    setEditCommentValues: (state, action) => {
+      state.comments.editbleComment = {
+        commentId: action.payload.commentId,
+        postId: action.payload.id?.id,
+        text: action.payload.text,
+      };
+      state.comments.editMode = true;
+      state.comments.status = "loaded";
+    },
+
+  },
   extraReducers: {
-    // -- Получение статей
+
     [fetchPosts.pending]: (state, action) => {
-      state.posts.items = action.payload;
       state.posts.status = "loading";
     },
     [fetchPosts.fulfilled]: (state, action) => {
@@ -94,12 +93,10 @@ const postsSlice = createSlice({
       state.posts.home = true;
     },
     [fetchPosts.rejected]: (state, action) => {
-      state.posts.items = [];
       state.posts.status = "error";
     },
-    // -- Получение отсортированных статей
+
     [fetchSortedPosts.pending]: (state, action) => {
-      state.posts.items = action.payload;
       state.posts.status = "loading";
     },
     [fetchSortedPosts.fulfilled]: (state, action) => {
@@ -107,12 +104,10 @@ const postsSlice = createSlice({
       state.posts.status = "loaded";
     },
     [fetchSortedPosts.rejected]: (state, action) => {
-      state.posts.items = [];
       state.posts.status = "error";
     },
-    // -- Получение статей по тегу
+
     [fetchPostsLikeTag.pending]: (state, action) => {
-      state.posts.items = action.payload;
       state.posts.status = "loading";
     },
     [fetchPostsLikeTag.fulfilled]: (state, action) => {
@@ -121,24 +116,34 @@ const postsSlice = createSlice({
       state.posts.home = false;
     },
     [fetchPostsLikeTag.rejected]: (state, action) => {
-      state.posts.items = [];
       state.posts.status = "error";
     },
-    // -- Получение отсортированных статей по тегу
+
     [fetchSortedPostsLikeTag.pending]: (state, action) => {
-      state.posts.items = action.payload;
       state.posts.status = "loading";
     },
     [fetchSortedPostsLikeTag.fulfilled]: (state, action) => {
-      state.posts.items = action.payload;
+      state.posts.items = action.payload
       state.posts.status = "loaded";
       state.posts.home = false;
     },
     [fetchSortedPostsLikeTag.rejected]: (state, action) => {
-      state.posts.items = [];
       state.posts.status = "error";
     },
-    // -- Получение тегов
+
+    [fetchRemovePost.fulfilled]: (state, action) => {
+      state.posts.items = state.posts.items.filter(
+        (obj) => obj._id !== action.meta.arg
+      );
+      state.posts.status = "removed";
+    },
+    [fetchRemovePost.pending]: (state) => {
+      state.posts.status = "loading";
+    },
+    [fetchRemovePost.rejected]: (state) => {
+      state.posts.status = "error";
+    },
+
     [fetchTags.pending]: (state, action) => {
       state.tags.items = action.payload;
       state.tags.status = "loading";
@@ -148,27 +153,9 @@ const postsSlice = createSlice({
       state.tags.status = "loaded";
     },
     [fetchTags.rejected]: (state, action) => {
-      state.tags.items = [];
       state.tags.status = "error";
     },
-    // -- Установить активный тег
-    [fetchActiveTag.fulfilled]: (state, action) => {
-      state.tags.activeTag = action.payload;
-    },
-    // -- Удаление статьи
-    [fetchRemovePost.pending]: (state, action) => {
-      state.posts.items = state.posts.items.filter(
-        (obj) => obj._id !== action.meta.arg
-      );
-      state.posts.alertStatus = "success";
-      state.posts.alertMessage = "Запись успешно удалена!";
-    },
-    [fetchRemovePost.rejected]: (state) => {
-      state.posts.status = "error";
-      state.posts.alertStatus = "error";
-      state.posts.alertMessage = "Произошла ошибка при удалении статьи!";
-    },
-    // -- Получение комментариев
+
     [fetchComments.pending]: (state, action) => {
       state.comments.items = action.payload;
       state.comments.status = "loading";
@@ -180,11 +167,10 @@ const postsSlice = createSlice({
       state.comments.editMode = false;
     },
     [fetchComments.rejected]: (state, action) => {
-      state.comments.items = [];
       state.comments.status = "error";
       state.comments.editMode = false;
     },
-    // -- Удаление комментария
+
     [fetchRemoveComment.pending]: (state, action) => {
       state.comments.items = state.comments.items.filter(
         (obj) => obj._id !== action.meta.arg.commentId
@@ -196,26 +182,8 @@ const postsSlice = createSlice({
       state.comments.status = "error";
       state.comments.editMode = false;
     },
-
-    // -- Изменение комментария
-    [fetchEditComment.fulfilled]: (state, action) => {
-      state.comments.editbleComment = action.payload;
-      state.comments.editMode = true;
-      state.comments.status = "loaded";
-    },
-    [fetchEditComment.rejected]: (state, action) => {
-      state.comments.status = "error";
-    },
-
-    // -- Выключение режима редактирования
-    [fetchCancelEditMode.fulfilled]: (state, action) => {
-      state.comments.editMode = false;
-    },
-    [fetchCancelEditMode.rejected]: (state, action) => {
-      state.comments.status = "error";
-    },
-
   },
 });
 
 export const postsReducer = postsSlice.reducer;
+export const { closeCommentEditMode, setActiveTag, setEditCommentValues } = postsSlice.actions;

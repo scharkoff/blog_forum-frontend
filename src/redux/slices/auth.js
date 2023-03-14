@@ -1,101 +1,69 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "configs/axios/axios";
 
-// -- Запрос на авторизацию
+
 export const fetchAuth = createAsyncThunk("auth/fetchAuth", async (params) => {
-  try {
-    const { data } = await axios.post("/auth/login", params);
-    return data;
-  } catch (error) {
-    return { ...error.response?.data, isError: true };
-  }
+  const { data } = await axios.post("/auth/login", params);
+  return data;
 });
 
-// -- Запрос на регистрацию
+
 export const fetchRegister = createAsyncThunk(
   "auth/fetchRegister",
   async (params) => {
-    try {
-      const { data } = await axios.post("/auth/register", params);
-      return data;
-    } catch (error) {
-      return { ...error.response?.data, isError: true };
-    }
+    const { data } = await axios.post("/auth/register", params);
+    return data;
   }
 );
 
-// -- Запрос на проверку авторизованности
+
 export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async () => {
-  try {
-    const { data } = await axios.get("/auth/me");
-    return data;
-  } catch (error) {
-    return { ...error.response?.data, isError: true };
-  }
+  const { data } = await axios.get("/auth/me");
+  return data;
 });
 
-// -- Запрос на обновление логина пользователя
+
 export const fetchUpdateUserLogin = createAsyncThunk(
   "auth/updateUserLogin",
   async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserLogin", params);
-      return data;
-    } catch (error) {
-      return { ...error.response?.data, isError: true };
-    }
+    const { data } = await axios.patch("/auth/updateUserLogin", params);
+    return data;
   }
 );
 
-// -- Запрос на обновление логина пользователя
+
 export const fetchUpdateUserRank = createAsyncThunk(
   "auth/fetchUpdateUserRank",
   async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserRank", params);
-      return data;
-    } catch (error) {
-      return { ...error.response?.data, isError: true };
-    }
+    const { data } = await axios.patch("/auth/updateUserRank", params);
+    return data;
   }
 );
 
-// -- Запрос на обновление почты пользователя
+
 export const fetchUpdateUserEmail = createAsyncThunk(
   "auth/updateUserEmail",
   async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserEmail", params);
-      return data;
-    } catch (error) {
-      return { ...error.response?.data, isError: true };
-    }
+    const { data } = await axios.patch("/auth/updateUserEmail", params);
+    return data;
   }
 );
 
-// -- Запрос на обновление пароля пользователя
+
 export const fetchUpdateUserPassword = createAsyncThunk(
   "auth/updateUserPassword",
   async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserPassword", params);
-      return data;
-    } catch (error) {
-      return { ...error.response?.data, isError: true };
-    }
+    const { data } = await axios.patch("/auth/updateUserPassword", params);
+    return data;
   }
 );
 
-// -- Запрос на обновление аватар пользователя
+
 export const fetchUpdateUserAvatar = createAsyncThunk(
   "auth/updateUserAvatar",
   async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserAvatar", params);
-      return data;
-    } catch (error) {
-      return { ...error.response?.data, isError: true };
-    }
+    const { data } = await axios.patch("/auth/updateUserAvatar", params);
+    return data;
   }
 );
 

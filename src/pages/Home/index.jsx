@@ -1,26 +1,20 @@
 import React from 'react';
 
-// -- Material UI
 import Grid from '@mui/material/Grid';
 
-// -- Modules
 import { SortTabs } from 'modules';
 
-// -- Components
 import { TagsBlock } from 'components/TagsBlock';
 import { CommentsBlock } from 'components/CommentsBlock';
 import { Posts } from 'modules/Posts';
 
-// -- React-redux
 import { useDispatch, useSelector } from 'react-redux';
 
-// -- Redux state
 import store from 'redux/store';
 import { fetchTags } from 'redux/slices/tags';
 import { fetchSortedComments } from 'redux/slices/comments';
 import { fetchAuthMe } from 'redux/slices/auth';
 
-// -- Styles
 import styles from './Home.module.scss';
 
 export const Home = () => {
@@ -32,7 +26,7 @@ export const Home = () => {
 
   let { tags } = useSelector((state) => state.posts);
 
-  const isHomePage = useSelector((state) => state.posts.posts.home);
+  const isHomePage = useSelector((state) => state.posts?.posts?.home);
 
   const [activeTab, setActiveTab] = React.useState(0);
 

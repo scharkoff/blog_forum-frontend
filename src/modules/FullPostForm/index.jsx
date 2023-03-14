@@ -1,21 +1,16 @@
 import React from 'react';
 
-// -- Components
 import { Post } from 'components/Post';
 import { AddComment } from 'components/AddComment';
 import { CommentsBlock } from 'components/CommentsBlock';
 
-// -- React markdown
 import ReactMarkdown from 'react-markdown';
 
-// -- React-redux
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-// -- Axios
 import axios from 'configs/axios/axios';
 
-// -- Redux state
 import { fetchComments } from 'redux/slices/comments';
 import { AlertMessage } from 'components/AlertMessage';
 import { useAlertMessage } from 'hooks/useAlertMessage';

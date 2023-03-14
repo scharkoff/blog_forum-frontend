@@ -1,21 +1,17 @@
 import React from 'react';
 
-// -- Material UI
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 
-// -- React-redux
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-// -- Redux state
 import { fetchRegister, selectIsAuth } from 'redux/slices/auth';
 
-// -- Imports styles
 import styles from './Registration.module.scss';
 import { AlertMessage } from 'components/AlertMessage';
 import { useAlertMessage } from 'hooks/useAlertMessage';

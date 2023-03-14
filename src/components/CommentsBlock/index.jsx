@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// -- Components
 import { SideBlock } from '../SideBlock';
 
-// -- Material UI
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
@@ -17,49 +15,39 @@ import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
 
-// -- Styles
 import styles from '../UserInfo/UserInfo.module.scss';
 
-// -- React-redux
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-// -- Redux state
 import { selectIsAuth } from 'redux/slices/auth.js';
-import { fetchEditComment, fetchRemoveComment } from 'redux/slices/comments';
+import { fetchRemoveComment } from 'redux/slices/comments';
+import { setEditCommentValues } from 'redux/slices/posts';
 
 export const CommentsBlock = React.memo(
   ({ items, children, isLoading = true, isEditble }) => {
-    // -- Redux dispatch
     const dispatch = useDispatch();
 
-    // -- Проверка на авторизацию
     const isAuth = useSelector(selectIsAuth);
 
-    // -- useParams
     const id = useParams();
 
-    // -- Auth userId
     const userId = useSelector((state) =>
       state.auth.data ? state.auth.data._id : null
     );
 
-    // -- Auth user rank
     const userRank = useSelector((state) =>
       state.auth.data ? state.auth.data.rank : null
     );
 
-    // -- Functions
-    // -- Обработка клика по кнопке "Удалить" комментарий
     function onRemoveComment(commentId) {
       if (window.confirm('Вы действительно хотите удалить комментарий?')) {
         dispatch(fetchRemoveComment({ commentId, id }));
       }
     }
 
-    // -- Обрабокта клика по кнопке "Сохранить" комментарий
     function onEditComment(commentId, text) {
-      dispatch(fetchEditComment({ id, commentId, text }));
+      dispatch(setEditCommentValues({ id, commentId, text }));
     }
 
     return (

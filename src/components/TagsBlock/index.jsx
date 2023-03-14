@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// -- Material UI imports
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -10,17 +9,15 @@ import TagIcon from '@mui/icons-material/Tag';
 import ListItemText from '@mui/material/ListItemText';
 import Skeleton from '@mui/material/Skeleton';
 
-// -- React-redux
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-// -- Components
 import { SideBlock } from '../SideBlock';
 
-// -- Redux state
-import { fetchActiveTag, fetchPostsLikeTag } from 'redux/slices/tags';
+import { fetchPostsLikeTag } from 'redux/slices/tags';
 import { resetSearchString } from 'redux/slices/utils';
+import { setActiveTag } from 'redux/slices/posts';
 
 export const TagsBlock = React.memo(({ items, isLoading = true }) => {
   const dispatch = useDispatch();
@@ -37,7 +34,7 @@ export const TagsBlock = React.memo(({ items, isLoading = true }) => {
   }, [activeTag]);
 
   const onGetPosts = (name) => {
-    dispatch(fetchActiveTag(name));
+    dispatch(setActiveTag(name));
     dispatch(fetchPostsLikeTag(name));
     setActiveTagName(name);
   };

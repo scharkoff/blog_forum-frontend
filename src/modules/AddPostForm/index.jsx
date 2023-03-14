@@ -1,27 +1,21 @@
 import React from 'react';
 
-// -- Material UI
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
 import { AlertMessage } from 'components/AlertMessage';
 
-// -- Material UI simple editor
 import SimpleMDE from 'react-simplemde-editor';
 
-// -- Styles
 import 'easymde/dist/easymde.min.css';
 import styles from './scss/AddPost.module.scss';
 
-// -- React-redux
 import { Navigate, useNavigate, useParams, Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-// -- Redux state
 import { selectIsAuth } from 'redux/slices/auth';
 
-// -- Axios
 import axios from 'configs/axios/axios';
 import { onSubmitPost } from './api/submitPost';
 import { handleChangeFile } from './api/handleChangeFile';
@@ -29,6 +23,7 @@ import { useAlertMessage } from 'hooks/useAlertMessage';
 
 export const AddPostForm = () => {
   const isAuth = useSelector(selectIsAuth);
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -99,6 +94,7 @@ export const AddPostForm = () => {
     setAlertOptions,
     navigate,
     id,
+    dispatch,
   };
 
   const handleChangeFileDTO = {

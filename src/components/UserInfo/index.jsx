@@ -1,10 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import Avatar from "@mui/material/Avatar";
+import Avatar from '@mui/material/Avatar';
 
-// -- Styles
-import styles from "./UserInfo.module.scss";
+import styles from './UserInfo.module.scss';
 
 export const UserInfo = ({ avatarUrl, fullName, additionalText, rank }) => {
   return (
@@ -15,15 +14,15 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText, rank }) => {
         src={
           avatarUrl
             ? `${
-                process.env.REACT_APP_API_URL || "http://localhost:4444"
+                process.env.REACT_APP_API_URL || 'http://localhost:4444'
               }${avatarUrl}`
-            : "./images/noavatar.png"
+            : './images/noavatar.png'
         }
       />
       <div className={styles.userDetails}>
         <span className={styles.userName}>
-          {fullName}{" "}
-          <span className={rank === "user" ? styles.rank : styles.admin}>
+          {fullName}{' '}
+          <span className={rank === 'user' ? styles.rank : styles.admin}>
             {rank}
           </span>
         </span>

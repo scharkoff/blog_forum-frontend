@@ -1,9 +1,7 @@
 import React from 'react';
 
-// -- Material UI
 import { Typography } from '@mui/material';
 
-// -- React-redux
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
