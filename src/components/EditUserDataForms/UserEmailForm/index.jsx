@@ -21,10 +21,18 @@ export const UserEmailForm = React.memo(
     });
 
     const onSubmitEmail = async (values) => {
-      const data = await dispatch(fetchUpdateUserEmail(values));
+      const request = await dispatch(fetchUpdateUserEmail(values));
 
-      if (data.payload.isError) {
-        setAlertOptions(true, 'error', data.payload[0]?.msg);
+      console.log('user email data', request);
+
+      if (request.payload?.isError) {
+        setAlertOptions(
+          true,
+          'error',
+          request.payload?.message
+            ? request.payload?.message
+            : request.payload[0]?.msg
+        );
       } else {
         setAlertOptions(true, 'success', 'Почта пользователя успешно изменена');
       }

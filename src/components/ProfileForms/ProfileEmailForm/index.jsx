@@ -28,9 +28,9 @@ export const ProfileEmailForm = React.memo(
 
     const onSubmitEmail = async (values) => {
       const data = await dispatch(fetchUpdateUserEmail(values));
-
+      console.log('data', data);
       if (data.payload.isError) {
-        setAlertOptions(true, 'error', data?.payload[0]?.msg);
+        setAlertOptions(true, 'error', data?.payload[0]?.message);
       } else {
         setAlertOptions(true, 'success', 'Почта успешно изменена');
       }
