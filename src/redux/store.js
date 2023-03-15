@@ -9,7 +9,7 @@ const store = configureStore({
     posts: postsReducer,
     auth: authReducer,
     users: usersReducer,
-    utils: utilsReducer
+    utils: utilsReducer,
   },
 });
 

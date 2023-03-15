@@ -1,65 +1,48 @@
-import React from "react";
+import React from 'react';
 
-// -- Styles
-import styles from "./AddComment.module.scss";
+import styles from './AddComment.module.scss';
 
-// -- Material UI
-import TextField from "@mui/material/TextField";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
+import TextField from '@mui/material/TextField';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
 
-// -- React-redux
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-// -- Redux state
-import {
-  fetchCancelEditMode,
-  fetchComments,
-} from "../../redux/slices/comments";
+import { fetchComments } from 'redux/slices/comments';
 
-// -- Axios
-import axios from "../../axios";
+import axios from 'configs/axios/axios';
+import { closeCommentEditMode } from 'redux/slices/posts';
 
 export const AddComment = () => {
-  // -- Redux dispatch
   const dispatch = useDispatch();
 
-  // -- useState
   const [user, setUser] = React.useState(null);
-  const [text, setText] = React.useState("");
+  const [text, setText] = React.useState('');
 
-  // -- useParams
   const { id } = useParams();
 
-  // -- useSelector
   const { editMode } = useSelector((state) => state.posts.comments);
   let { editbleComment } = useSelector((state) => state.posts.comments);
-  // -- User data
+
   const { data } = useSelector((state) => state.auth);
 
-  // -- useEffect
-  // -- Проверка на авторизацию
   React.useEffect(() => {
-    axios.get("/auth/me").then((res) => {
+    axios.get('/auth/me').then((res) => {
       setUser(res.data);
     });
   }, []);
 
-  // -- Установка текста для редактирования существующего комментария
   React.useEffect(() => {
     if (editbleComment) {
       setText(editbleComment.text);
     }
   }, [editbleComment]);
 
-  // -- Сбрасывать значение комментария в режиме редактирования при выходе со страницы
   React.useEffect(() => {
-    setText("");
+    setText('');
   }, [id]);
 
-  // -- Functions
-  // -- Обработка клика по кнопке "Отправить" и "Сохранить"
   const onSubmit = async () => {
     try {
       const fields = {
@@ -73,16 +56,15 @@ export const AddComment = () => {
         ? await axios.post(`/posts/${id}/addComment`, fields)
         : await axios.patch(`/posts/${id}/updateComment`, fields);
       dispatch(fetchComments());
-      setText("");
+      setText('');
     } catch (error) {
-      alert("Ошибка при создании комментария!");
+      alert('Ошибка при создании комментария!');
     }
   };
 
-  // -- Обработка клика по кнопке "Отменить"
   const onCancel = async () => {
-    dispatch(fetchCancelEditMode());
-    setText("");
+    dispatch(closeCommentEditMode());
+    setText('');
   };
 
   return (
@@ -92,10 +74,10 @@ export const AddComment = () => {
           classes={{ root: styles.avatar }}
           src={
             user
-              ? `${process.env.REACT_APP_API_URL || "http://localhost:4444"}${
+              ? `${process.env.REACT_APP_API_URL || 'http://localhost:4444'}${
                   user.avatarUrl
                 }`
-              : ""
+              : ''
           }
         />
         <div className={styles.form}>
@@ -115,16 +97,16 @@ export const AddComment = () => {
             onClick={onSubmit}
             variant="contained"
             disabled={!text ? true : false}
-            color={editMode ? "secondary" : "primary"}
+            color={editMode ? 'secondary' : 'primary'}
           >
-            {!editMode ? "Отправить" : "Сохранить"}
+            {!editMode ? 'Отправить' : 'Сохранить'}
           </Button>
 
           {editMode ? (
             <Button
               style={{ marginLeft: 10 }}
               onClick={onCancel}
-              color={editMode ? "secondary" : "primary"}
+              color={editMode ? 'secondary' : 'primary'}
             >
               Отменить
             </Button>

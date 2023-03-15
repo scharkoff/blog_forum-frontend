@@ -1,8 +1,6 @@
-// -- Imports
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../axios";
+import axios from "configs/axios/axios";
 
-// -- Запрос на получение статей по конкретному тегу
 export const fetchPostsLikeTag = createAsyncThunk(
   "posts/fetchPostsLikeTags",
   async (name) => {
@@ -10,35 +8,30 @@ export const fetchPostsLikeTag = createAsyncThunk(
 
     if (!name) return data;
 
-    return data.filter((post) => post.tags.includes(name)).reverse();
+    return data.filter((post) => post.tags?.includes(name)).reverse();
   }
 );
 
-// -- Запрос на получение статей по конкретному тегу
-export const fetchActiveTag = createAsyncThunk(
-  "posts/fetchActiveTag",
-  async (name) => {
-    return name;
-  }
-);
 
-// -- Запрос на получение отсортированных статей по конкретному тегу
 export const fetchSortedPostsLikeTag = createAsyncThunk(
-  "posts/fetchPostsLikeTags",
-  async ({ value, name }) => {
+  "posts/fetchSortedPostsLikeTag",
+  async ({ value, tagName }) => {
+    console.log(value, tagName)
     const { data } = await axios.get("/posts");
+    const tag = tagName.name;
 
     if (value === 1) {
       return data
-        .filter((post) => post.tags.includes(name))
+        .filter((post) => post.tags.includes(tag))
         .sort((a, b) => b.viewsCount - a.viewsCount);
+
     }
 
-    return data.filter((post) => post.tags.includes(name)).reverse();
+    return data.filter((post) => post.tags.includes(tag)).reverse();
   }
 );
 
-// -- Запрос на  получение тегов
+
 export const fetchTags = createAsyncThunk("posts/fetchTags", async () => {
   const { data } = await axios.get("/tags");
   return data;

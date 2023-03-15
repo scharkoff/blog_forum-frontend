@@ -1,12 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-// -- Styles
-import styles from "./SideBlock.module.scss";
+import styles from './SideBlock.module.scss';
 
-// -- Material UI
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
 
 export const SideBlock = ({ title, children }) => {
   return (

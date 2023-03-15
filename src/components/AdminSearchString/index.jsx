@@ -1,16 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-// -- Styles
-import styles from "./AdminSearchString.module.scss";
+import styles from './AdminSearchString.module.scss';
 
-// -- Material UI
-import TextField from "@mui/material/TextField";
-import { Search } from "@mui/icons-material";
+import TextField from '@mui/material/TextField';
+import { Search } from '@mui/icons-material';
 
 export const AdminSearchString = ({ setRows, copyOfRows }) => {
   const [activeSearchIcon, setActiveSearchIcon] = React.useState(false);
-  const [searchText, setSearchText] = React.useState("");
+  const [searchText, setSearchText] = React.useState('');
 
   const getUsersLikeSearchText = (e) => {
     const words = e.target.value;
@@ -39,7 +37,7 @@ export const AdminSearchString = ({ setRows, copyOfRows }) => {
       />
       <Search
         style={{ marginTop: 20 }}
-        color={!activeSearchIcon ? "disabled" : "primary"}
+        color={!activeSearchIcon ? 'disabled' : 'primary'}
       />
     </>
   );

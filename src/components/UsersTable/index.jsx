@@ -1,32 +1,26 @@
-import React from "react";
+import React from 'react';
 
-// -- Material UI
-import Button from "@mui/material/Button";
-// -- Table
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
+import Button from '@mui/material/Button';
 
-// -- React-redux
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
 
-// -- Redux state
-import {
-  fetchDeleteUser,
-  fetchEditUserData,
-} from "../../redux/slices/users.js";
-import { AdminSearchString } from "../AdminSearchString/index.jsx";
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-export const UsersTable = ({ setAlertText, setAlertType, setOpen, user }) => {
+import { fetchDeleteUser, fetchEditUserData } from 'redux/slices/users.js';
+import { AdminSearchString } from '../AdminSearchString/index.jsx';
+
+export const UsersTable = ({ user, setAlertOptions }) => {
   const dispatch = useDispatch();
 
-  const users = useSelector((state) => state?.users?.data);
+  const users = useSelector((state) => state.users?.data);
 
   const [rows, setRows] = React.useState(users);
   const [copyOfRows, setCopyOfRows] = React.useState([]);
@@ -60,12 +54,12 @@ export const UsersTable = ({ setAlertText, setAlertType, setOpen, user }) => {
   }, [users]);
 
   const columns = [
-    { id: "id", label: "Id", minWidth: 20 },
-    { id: "fullName", label: "Логин", minWidth: 100 },
-    { id: "email", label: "Email", minWidth: 100 },
-    { id: "created", label: "Дата создания", minWidth: 100 },
-    { id: "rank", label: "Права", minWidth: 100 },
-    { id: "buttons", label: "Управление", minWidth: 100 },
+    { id: 'id', label: 'Id', minWidth: 20 },
+    { id: 'fullName', label: 'Логин', minWidth: 100 },
+    { id: 'email', label: 'Email', minWidth: 100 },
+    { id: 'created', label: 'Дата создания', minWidth: 100 },
+    { id: 'rank', label: 'Права', minWidth: 100 },
+    { id: 'buttons', label: 'Управление', minWidth: 100 },
   ];
 
   const [page, setPage] = React.useState(0);
@@ -80,30 +74,26 @@ export const UsersTable = ({ setAlertText, setAlertType, setOpen, user }) => {
     setPage(0);
   };
 
-  // -- Получить данные редактируемого пользователя
-  const editUser = (id, login, email, rank) => {
+  const getEditableUserData = (id, login, email, rank) => {
     dispatch(fetchEditUserData({ id, login, email, rank }));
   };
 
-  // -- Обработка клика по кнопке "Удалить"
   const deleteUser = async (id) => {
     if (
       window.confirm(
-        "Вы действительно хотите удалить данного пользователя? Все его посты и комментарии будут также удалены навсегда!"
+        'Вы действительно хотите удалить данного пользователя? Все его посты и комментарии будут также удалены навсегда!'
       )
     ) {
       const data = await dispatch(fetchDeleteUser(id));
 
       if (data.payload.isError) {
-        setAlertText(
-          data.payload.message ? data.payload.message : data.payload[0].msg
+        setAlertOptions(
+          true,
+          'error',
+          data.payload?.message ? data.payload?.message : data.payload[0]?.msg
         );
-        setOpen(true);
-        setAlertType("error");
       } else {
-        setAlertText("Пользователь успешно удален");
-        setOpen(true);
-        setAlertType("success");
+        setAlertOptions(true, 'success', 'Пользователь успешно удален');
       }
     }
   };
@@ -113,7 +103,7 @@ export const UsersTable = ({ setAlertText, setAlertType, setOpen, user }) => {
 
       <Paper
         elevation={0}
-        sx={{ width: "100%", overflow: "hidden", marginTop: 1 }}
+        sx={{ width: '100%', overflow: 'hidden', marginTop: 1 }}
       >
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -140,7 +130,7 @@ export const UsersTable = ({ setAlertText, setAlertType, setOpen, user }) => {
                         const value = row[column.id];
                         return row.id !== user?._id ? (
                           <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === "number"
+                            {column.format && typeof value === 'number'
                               ? column.format(value)
                               : value}
 
@@ -148,11 +138,11 @@ export const UsersTable = ({ setAlertText, setAlertType, setOpen, user }) => {
                               <div>
                                 <Link
                                   to={`/admin-panel/edit-user/${row.id}`}
-                                  style={{ textDecoration: "none" }}
+                                  style={{ textDecoration: 'none' }}
                                 >
                                   <Button
                                     onClick={() =>
-                                      editUser(
+                                      getEditableUserData(
                                         row.id,
                                         row.fullName,
                                         row.email,
@@ -172,11 +162,11 @@ export const UsersTable = ({ setAlertText, setAlertType, setOpen, user }) => {
                                 </Button>
                               </div>
                             ) : (
-                              ""
+                              ''
                             )}
                           </TableCell>
                         ) : (
-                          ""
+                          ''
                         );
                       })}
                     </TableRow>
@@ -193,7 +183,7 @@ export const UsersTable = ({ setAlertText, setAlertType, setOpen, user }) => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage={"Кол-во видимых строк:"}
+          labelRowsPerPage={'Кол-во видимых строк:'}
           labelDisplayedRows={(from = page) =>
             `${from.from}-${from.to === -1 ? from.count : from.to} из ${
               from.count

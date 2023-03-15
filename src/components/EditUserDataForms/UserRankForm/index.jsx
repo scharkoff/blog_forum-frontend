@@ -1,26 +1,16 @@
-import React from "react";
+import React from 'react';
 
-// -- Material UI
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import { Select } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import { Select } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
 
-// -- React-redux
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { fetchUpdateUserRank } from "../../../redux/slices/auth";
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { fetchUpdateUserRank } from 'redux/slices/auth';
 
 export const UserRankForm = React.memo(
-  ({
-    id,
-    rank,
-    setRank,
-    editbleUserData,
-    setAlertText,
-    setAlertType,
-    setOpen,
-  }) => {
+  ({ id, rank, setRank, editbleUserData, setAlertOptions }) => {
     const dispatch = useDispatch();
 
     const handleChangeRank = (event) => {
@@ -30,22 +20,18 @@ export const UserRankForm = React.memo(
     const rankForm = useForm({
       defaultValues: {
         id,
-        rank: "",
+        rank: '',
       },
-      mode: "onChange",
+      mode: 'onChange',
     });
 
     const onSubmitRank = async (values) => {
       const data = await dispatch(fetchUpdateUserRank(values));
 
       if (data.payload.isError) {
-        setAlertText(data.payload[0].msg);
-        setOpen(true);
-        setAlertType("error");
+        setAlertOptions(true, 'error', data.payload[0]?.msg);
       } else {
-        setAlertText("Ранг пользователя успешно изменен");
-        setOpen(true);
-        setAlertType("success");
+        setAlertOptions(true, 'success', 'Ранг пользователя успешно изменен');
       }
     };
 
@@ -55,14 +41,14 @@ export const UserRankForm = React.memo(
           <Grid item>
             <Select
               value={rank}
-              {...rankForm.register("rank")}
+              {...rankForm.register('rank')}
               onChange={handleChangeRank}
               label="Ранг"
               style={{ minWidth: 182 }}
               placeholder="Выберите ранг"
             >
-              <MenuItem value={"user"}>Пользователь</MenuItem>
-              <MenuItem value={"admin"}>Администратор</MenuItem>
+              <MenuItem value={'user'}>Пользователь</MenuItem>
+              <MenuItem value={'admin'}>Администратор</MenuItem>
             </Select>
           </Grid>
           <Grid item>

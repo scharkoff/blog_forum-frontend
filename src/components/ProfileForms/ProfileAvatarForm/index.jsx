@@ -1,25 +1,25 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import axios from "../../../axios.js";
+import axios from 'configs/axios/axios';
 
-import { Avatar } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import { Avatar } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { fetchUpdateUserAvatar } from "../../../redux/slices/auth.js";
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { fetchUpdateUserAvatar } from 'redux/slices/auth';
 
 export const ProfileAvatarForm = React.memo(
-  ({ avatarUrl, setAlertText, setAlertType, setOpen }) => {
+  ({ avatarUrl, setAlertOptions }) => {
     const dispatch = useDispatch();
 
     const { id } = useParams();
 
-    const [newAvatarUrl, setNewAvatarUrl] = React.useState("");
+    const [newAvatarUrl, setNewAvatarUrl] = React.useState('');
 
     const inputFileRef = React.useRef(null);
     const submitButton = React.useRef(null);
@@ -28,13 +28,11 @@ export const ProfileAvatarForm = React.memo(
       try {
         const formData = new FormData();
         const file = event.target.files[0];
-        formData.append("image", file);
-        const { data } = await axios.post("/upload", formData);
+        formData.append('image', file);
+        const { data } = await axios.post('/upload', formData);
         setNewAvatarUrl(data.url);
       } catch (error) {
-        setAlertText("Не удалось загрузить изображение!");
-        setAlertType("error");
-        setOpen(true);
+        setAlertOptions(true, 'error', 'Не удалось загрузить изображение!');
       }
     };
 
@@ -42,22 +40,18 @@ export const ProfileAvatarForm = React.memo(
       const data = await dispatch(fetchUpdateUserAvatar(values));
 
       if (data.payload.isError) {
-        setAlertText(data.payload[0].msg);
-        setOpen(true);
-        setAlertType("error");
+        setAlertOptions(true, 'error', data?.payload[0]?.msg);
       } else {
-        setAlertText("Аватар успешно изменен");
-        setOpen(true);
-        setAlertType("success");
+        setAlertOptions(true, 'success', 'Аватар успешно изменен');
       }
     };
 
     const avatarForm = useForm({
       defaultValues: {
         id,
-        avatarUrl: "",
+        avatarUrl: '',
       },
-      mode: "onChange",
+      mode: 'onChange',
     });
 
     return (
@@ -70,10 +64,10 @@ export const ProfileAvatarForm = React.memo(
               src={
                 newAvatarUrl
                   ? `${
-                      process.env.REACT_APP_API_URL || "http://localhost:4444"
+                      process.env.REACT_APP_API_URL || 'http://localhost:4444'
                     }${newAvatarUrl}`
                   : `${
-                      process.env.REACT_APP_API_URL || "http://localhost:4444"
+                      process.env.REACT_APP_API_URL || 'http://localhost:4444'
                     }${avatarUrl}`
               }
             ></Avatar>
@@ -102,7 +96,7 @@ export const ProfileAvatarForm = React.memo(
               value={newAvatarUrl}
               variant="standard"
               sx={{ width: 0, height: 0 }}
-              {...avatarForm.register("avatarUrl", { required: true })}
+              {...avatarForm.register('avatarUrl', { required: true })}
             />
           </Grid>
 

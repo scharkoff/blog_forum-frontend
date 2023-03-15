@@ -1,30 +1,26 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-// -- clsx for css
-import clsx from "clsx";
+import clsx from 'clsx';
 
-// -- Styles
-import styles from "./Post.module.scss";
+import styles from './Post.module.scss';
 
-// -- Material UI
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Clear";
-import EditIcon from "@mui/icons-material/Edit";
-import EyeIcon from "@mui/icons-material/RemoveRedEyeOutlined";
-import CommentIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Clear';
+import EditIcon from '@mui/icons-material/Edit';
+import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 
 // React-redux
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-// -- Components
-import { UserInfo } from "../UserInfo";
-import { PostSkeleton } from "./Skeleton";
+import { UserInfo } from '../UserInfo';
+import { PostSkeleton } from './Skeleton';
 
-// -- Redux state
-import { fetchRemovePost } from "../../redux/slices/posts";
-import { fetchPostsLikeTag } from "../../redux/slices/tags";
+import { fetchPosts, fetchRemovePost } from 'redux/slices/posts';
+import { fetchPostsLikeTag } from 'redux/slices/tags';
+import axios from 'axios';
 
 export const Post = ({
   id,
@@ -39,40 +35,37 @@ export const Post = ({
   isFullPost,
   isLoading,
   isEditable,
-  setOpen,
-  setAlertText,
-  setAlertType,
 }) => {
-  // -- Redux dispatch
   const dispatch = useDispatch();
 
-  // -- Auth user data
-  const authUser = useSelector((state) => state.auth.data);
+  const authUser = useSelector((state) => state.auth?.data);
 
-  // -- Скелет при загрузке страницы
-  if (isLoading) {
-    return <PostSkeleton />;
-  }
+  const navigate = useNavigate();
 
-  // -- Обработка клика по кнопке "Удалить статью"
   const onClickRemove = () => {
-    if (window.confirm("Вы действительно хотите удалить статью?")) {
+    if (window.confirm('Вы действительно хотите удалить статью?')) {
       try {
         dispatch(fetchRemovePost(id));
-        setOpen(true);
-        setAlertText("Статья успешно удалена!");
-        setAlertType("success");
+        dispatch(fetchPosts());
+
+        if (isFullPost) {
+          return navigate('/');
+        }
       } catch (error) {
-        setOpen(true);
-        setAlertText("Ошибка при удалении статьи!");
-        setAlertType("error");
+        if (isFullPost) {
+          return navigate('/');
+        }
       }
     }
   };
 
+  if (isLoading) {
+    return <PostSkeleton />;
+  }
+
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
-      {isEditable || authUser?.rank === "admin" ? (
+      {isEditable || authUser?.rank === 'admin' ? (
         <div className={styles.editButtons}>
           <Link to={`/posts/${id}/edit`}>
             <IconButton color="primary">
@@ -84,13 +77,18 @@ export const Post = ({
           </IconButton>
         </div>
       ) : (
-        ""
+        ''
       )}
       {imageUrl && (
         <Link to={`/posts/${id}`}>
           <img
             className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
             src={imageUrl}
+            onError={(e) =>
+              (e.target.src = `${
+                process.env.REACT_APP_API_URL || 'http://localhost:4444'
+              }/uploads/no-post-photo.png`)
+            }
             alt={title}
           />
         </Link>

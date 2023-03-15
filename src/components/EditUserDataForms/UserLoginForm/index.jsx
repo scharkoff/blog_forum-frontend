@@ -1,58 +1,44 @@
-import React from "react";
+import React from 'react';
 
-// -- Material UI
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
-// -- React-redux
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { fetchUpdateUserLogin } from "../../../redux/slices/auth";
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { fetchUpdateUserLogin } from 'redux/slices/auth';
 
 export const UserLoginForm = React.memo(
-  ({
-    id,
-    login,
-    setLogin,
-    editbleUserData,
-    setAlertText,
-    setAlertType,
-    setOpen,
-  }) => {
+  ({ id, login, setLogin, editbleUserData, setAlertOptions }) => {
     const dispatch = useDispatch();
 
     const fullNameForm = useForm({
       defaultValues: {
         id,
-        fullName: "",
+        fullName: '',
       },
-      mode: "onChange",
+      mode: 'onChange',
     });
 
     const onSubmitLogin = async (values) => {
       const data = await dispatch(fetchUpdateUserLogin(values));
-
+      console.log('user login data', data);
       if (data.payload.isError) {
-        setAlertText(data.payload[0].msg);
-        setOpen(true);
-        setAlertType("error");
+        setAlertOptions(true, 'error', data.payload[0]?.msg);
       } else {
-        setAlertText("Логин пользователя успешно изменен");
-        setOpen(true);
-        setAlertType("success");
+        setAlertOptions(true, 'success', 'Логин пользователя успешно изменен');
       }
     };
     return (
       <form
         onSubmit={fullNameForm.handleSubmit(onSubmitLogin)}
-        style={{ textAlign: "left" }}
+        style={{ textAlign: 'left' }}
       >
         <Grid container spacing={1} alignItems="center" marginTop={2}>
           <Grid item>
             <TextField
-              {...fullNameForm.register("fullName", {
-                required: "Введите новый логин!",
+              {...fullNameForm.register('fullName', {
+                required: 'Введите новый логин!',
               })}
               variant="standard"
               placeholder="Введите новый логин..."
@@ -74,8 +60,8 @@ export const UserLoginForm = React.memo(
               onClick={() => {
                 const values = fullNameForm.getValues();
                 if (values.fullName.length < 3) {
-                  fullNameForm.setError("fullName", {
-                    message: "Минимальная длина имени 3 символа!",
+                  fullNameForm.setError('fullName', {
+                    message: 'Минимальная длина имени 3 символа!',
                   });
                 }
               }}

@@ -1,8 +1,9 @@
 export { Home } from "./Home";
-export { FullPost } from "./FullPost";
-export { AddPost } from "./AddPost";
-export { Registration } from "./Registration";
 export { Login } from "./Login";
+export { Registation } from "./Registation";
 export { Profile } from "./Profile";
-export { AdminPanel } from "./AdminPanel";
+export { FullPost } from "./FullPost";
 export { EditUserData } from "./EditUserData";
+export { AdminPanel } from "./AdminPanel";
+export { AddPost } from "./AddPost";
+
