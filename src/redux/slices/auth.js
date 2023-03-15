@@ -3,31 +3,46 @@ import axios from "configs/axios/axios";
 
 
 export const fetchAuth = createAsyncThunk("auth/fetchAuth", async (params) => {
-  const { data } = await axios.post("/auth/login", params);
-  return data;
+  try {
+    const { data } = await axios.post("/auth/login", params);
+    return data;
+  } catch (error) {
+    return { ...error.response?.data, isError: true };
+  }
 });
 
 
 export const fetchRegister = createAsyncThunk(
   "auth/fetchRegister",
   async (params) => {
-    const { data } = await axios.post("/auth/register", params);
-    return data;
+    try {
+      const { data } = await axios.post("/auth/register", params);
+      return data;
+    } catch (error) {
+      return { ...error.response?.data, isError: true };
+    }
   }
 );
 
 
 export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async () => {
-  const { data } = await axios.get("/auth/me");
-  return data;
+  try {
+    const { data } = await axios.get("/auth/me");
+    return data;
+  } catch (error) {
+    return { ...error.response?.data, isError: true };
+  }
 });
-
 
 export const fetchUpdateUserLogin = createAsyncThunk(
   "auth/updateUserLogin",
   async (params) => {
-    const { data } = await axios.patch("/auth/updateUserLogin", params);
-    return data;
+    try {
+      const { data } = await axios.patch("/auth/updateUserLogin", params);
+      return data;
+    } catch (error) {
+      return { ...error.response?.data, isError: true };
+    }
   }
 );
 
@@ -35,8 +50,12 @@ export const fetchUpdateUserLogin = createAsyncThunk(
 export const fetchUpdateUserRank = createAsyncThunk(
   "auth/fetchUpdateUserRank",
   async (params) => {
-    const { data } = await axios.patch("/auth/updateUserRank", params);
-    return data;
+    try {
+      const { data } = await axios.patch("/auth/updateUserRank", params);
+      return data;
+    } catch (error) {
+      return { ...error.response?.data, isError: true };
+    }
   }
 );
 
@@ -44,8 +63,12 @@ export const fetchUpdateUserRank = createAsyncThunk(
 export const fetchUpdateUserEmail = createAsyncThunk(
   "auth/updateUserEmail",
   async (params) => {
-    const { data } = await axios.patch("/auth/updateUserEmail", params);
-    return data;
+    try {
+      const { data } = await axios.patch("/auth/updateUserEmail", params);
+      return data;
+    } catch (error) {
+      return { ...error.response?.data, isError: true };
+    }
   }
 );
 
@@ -53,8 +76,12 @@ export const fetchUpdateUserEmail = createAsyncThunk(
 export const fetchUpdateUserPassword = createAsyncThunk(
   "auth/updateUserPassword",
   async (params) => {
-    const { data } = await axios.patch("/auth/updateUserPassword", params);
-    return data;
+    try {
+      const { data } = await axios.patch("/auth/updateUserPassword", params);
+      return data;
+    } catch (error) {
+      return { ...error.response?.data, isError: true };
+    }
   }
 );
 
@@ -62,10 +89,16 @@ export const fetchUpdateUserPassword = createAsyncThunk(
 export const fetchUpdateUserAvatar = createAsyncThunk(
   "auth/updateUserAvatar",
   async (params) => {
-    const { data } = await axios.patch("/auth/updateUserAvatar", params);
-    return data;
+    try {
+      const { data } = await axios.patch("/auth/updateUserAvatar", params);
+      return data;
+    } catch (error) {
+      return { ...error.response?.data, isError: true };
+    }
   }
 );
+
+
 
 const initialState = {
   data: null,
@@ -84,7 +117,7 @@ const authSlice = createSlice({
   },
   extraReducers: {
     [fetchAuth.pending]: (state) => {
-      state.data = null;
+
       state.status = "loading";
       state.authorization = false;
     },
@@ -94,12 +127,12 @@ const authSlice = createSlice({
       state.authorization = action.payload?.isError ? false : true;
     },
     [fetchAuth.rejected]: (state) => {
-      state.data = null;
+
       state.status = "error";
       state.authorization = false;
     },
     [fetchAuthMe.pending]: (state) => {
-      state.data = null;
+
       state.status = "loading";
       state.authorization = false;
     },
@@ -109,12 +142,12 @@ const authSlice = createSlice({
       state.authorization = action.payload?.isError ? false : true;
     },
     [fetchAuthMe.rejected]: (state) => {
-      state.data = null;
+
       state.status = "error";
       state.authorization = false;
     },
     [fetchRegister.pending]: (state) => {
-      state.data = null;
+
       state.status = "loading";
       state.authorization = false;
     },
@@ -128,6 +161,8 @@ const authSlice = createSlice({
       state.status = "error";
       state.authorization = false;
     },
+
+
   },
 });
 

@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { fetchUpdateUserAvatar } from 'redux/slices/auth.js';
+import { fetchUpdateUserAvatar } from 'redux/slices/auth';
 
 export const ProfileAvatarForm = React.memo(
   ({ avatarUrl, setAlertOptions }) => {
