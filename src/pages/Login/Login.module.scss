@@ -1,5 +1,5 @@
 .root {
-  max-width: 400px;
+  width: 400px;
   padding: 50px;
   border: 1px solid #dedede;
   margin: 50px auto;
@@ -14,5 +14,3 @@
   font-weight: bold !important;
   margin-bottom: 30px !important;
 }
-
-@import "./Login.media.module.scss";
