@@ -1,40 +1,46 @@
-import React from 'react';
+import React from "react";
 
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+// -- Material UI
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
-import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { fetchUpdateUserEmail } from 'redux/slices/auth';
+// -- React-redux
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { fetchUpdateUserEmail } from "../../../redux/slices/auth";
 
 export const UserEmailForm = React.memo(
-  ({ id, email, setEmail, editbleUserData, setAlertOptions }) => {
+  ({
+    id,
+    email,
+    setEmail,
+    editbleUserData,
+    setAlertText,
+    setAlertType,
+    setOpen,
+  }) => {
     const dispatch = useDispatch();
 
     const emailForm = useForm({
       defaultValues: {
         id,
-        email: '',
+        email: "",
       },
-      mode: 'onChange',
+      mode: "onChange",
     });
 
     const onSubmitEmail = async (values) => {
-      const request = await dispatch(fetchUpdateUserEmail(values));
+      const data = await dispatch(fetchUpdateUserEmail(values));
 
-      console.log('user email data', request);
-
-      if (request.payload?.isError) {
-        setAlertOptions(
-          true,
-          'error',
-          request.payload?.message
-            ? request.payload?.message
-            : request.payload[0]?.msg
-        );
+      if (data.payload.isError) {
+        setAlertText(data.payload[0].msg);
+        setOpen(true);
+        setAlertType("error");
       } else {
-        setAlertOptions(true, 'success', 'Почта пользователя успешно изменена');
+        setAlertText("Почта пользователя успешно изменена");
+        setOpen(true);
+        setAlertType("success");
       }
     };
 
@@ -53,8 +59,8 @@ export const UserEmailForm = React.memo(
         <Grid container spacing={1} marginTop={2} alignItems="center">
           <Grid item>
             <TextField
-              {...emailForm.register('email', {
-                required: 'Введите новую почту!',
+              {...emailForm.register("email", {
+                required: "Введите новую почту!",
               })}
               variant="standard"
               placeholder="Введите новую почту..."
@@ -77,8 +83,8 @@ export const UserEmailForm = React.memo(
               onClick={() => {
                 const values = emailForm.getValues();
                 if (validateEmail(values.email)) {
-                  emailForm.setError('email', {
-                    message: 'Неверный формат почты!',
+                  emailForm.setError("email", {
+                    message: "Неверный формат почты!",
                   });
                 }
               }}
