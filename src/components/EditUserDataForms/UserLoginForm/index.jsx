@@ -32,7 +32,7 @@ export const UserLoginForm = React.memo(
 
     const onSubmitLogin = async (values) => {
       const data = await dispatch(fetchUpdateUserLogin(values));
-
+      console.log('user login data', data);
       if (data.payload.isError) {
         setAlertText(data.payload[0].msg);
         setOpen(true);

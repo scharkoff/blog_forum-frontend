@@ -1,17 +1,17 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { fetchUpdateUserEmail } from "../../../redux/slices/auth";
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { fetchUpdateUserEmail } from 'redux/slices/auth';
 
 export const ProfileEmailForm = React.memo(
-  ({ user, email, setEmail, setAlertText, setAlertType, setOpen }) => {
+  ({ user, email, setEmail, setAlertOptions }) => {
     const dispatch = useDispatch();
 
     const { id } = useParams();
@@ -28,24 +28,20 @@ export const ProfileEmailForm = React.memo(
 
     const onSubmitEmail = async (values) => {
       const data = await dispatch(fetchUpdateUserEmail(values));
-
+      console.log('data', data);
       if (data.payload.isError) {
-        setAlertText(data.payload[0].msg);
-        setOpen(true);
-        setAlertType("error");
+        setAlertOptions(true, 'error', data?.payload[0]?.message);
       } else {
-        setAlertText("Почта успешно изменена");
-        setOpen(true);
-        setAlertType("success");
+        setAlertOptions(true, 'success', 'Почта успешно изменена');
       }
     };
 
     const emailForm = useForm({
       defaultValues: {
         id,
-        email: "",
+        email: '',
       },
-      mode: "onChange",
+      mode: 'onChange',
     });
 
     return (
@@ -59,8 +55,8 @@ export const ProfileEmailForm = React.memo(
         >
           <Grid item>
             <TextField
-              {...emailForm.register("email", {
-                required: "Введите новую почту!",
+              {...emailForm.register('email', {
+                required: 'Введите новую почту!',
               })}
               variant="standard"
               placeholder="Введите новую почту..."
@@ -81,8 +77,8 @@ export const ProfileEmailForm = React.memo(
               onClick={() => {
                 const values = emailForm.getValues();
                 if (validateEmail(values.email)) {
-                  emailForm.setError("email", {
-                    message: "Неверный формат почты!",
+                  emailForm.setError('email', {
+                    message: 'Неверный формат почты!',
                   });
                 }
               }}
