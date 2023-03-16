@@ -17,15 +17,15 @@ import { closeCommentEditMode } from 'redux/slices/posts';
 export const AddComment = () => {
   const dispatch = useDispatch();
 
-  const [user, setUser] = React.useState(null);
-  const [text, setText] = React.useState('');
+  const [user, setUser] = React.useState(null),
+    [text, setText] = React.useState('');
 
   const { id } = useParams();
 
   const { editMode } = useSelector((state) => state.posts.comments);
   let { editbleComment } = useSelector((state) => state.posts.comments);
 
-  const { isError } = useSelector((state) => state.auth.data);
+  const { data } = useSelector((state) => state.auth);
 
   React.useEffect(() => {
     axios.get('/auth/me').then((res) => {
@@ -91,7 +91,7 @@ export const AddComment = () => {
             maxRows={10}
             multiline
             fullWidth
-            disabled={isError}
+            disabled={data?._id ? false : true}
           />
           <Button
             onClick={onSubmit}
