@@ -15,6 +15,7 @@ import styles from './scss/Login.module.scss';
 
 import { AlertMessage } from 'components/AlertMessage';
 import { useAlertMessage } from 'hooks/useAlertMessage';
+import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
@@ -32,21 +33,13 @@ export const LoginForm = () => {
   });
 
   const onSubmitAuth = async (values) => {
-    const data = await dispatch(fetchAuth(values));
+    const response = await dispatch(fetchAuth(values));
 
-    if ('token' in data.payload) {
-      window.localStorage.setItem('token', data.payload?.token);
+    if (response.payload) {
+      window.localStorage.setItem('token', response.payload.token);
     }
 
-    if (data.payload.isError) {
-      setAlertOptions(
-        true,
-        'error',
-        data.payload?.message ? data.payload?.message : data.payload[0]?.msg
-      );
-    } else {
-      setAlertOptions(true, 'success', 'Вы успешно авторизовались!');
-    }
+    handlingInternalOrServerError(response, setAlertOptions);
   };
 
   if (isAuth) {

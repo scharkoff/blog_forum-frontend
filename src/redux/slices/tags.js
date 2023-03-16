@@ -4,11 +4,12 @@ import axios from "configs/axios/axios";
 export const fetchPostsLikeTag = createAsyncThunk(
   "posts/fetchPostsLikeTags",
   async (name) => {
-    const { data } = await axios.get("/posts");
+    const { data } = await axios.get("/posts"),
+      posts = data.details?.posts;
 
     if (!name) return data;
 
-    return data.filter((post) => post.tags?.includes(name)).reverse();
+    return posts.filter((post) => post.tags?.includes(name)).reverse();
   }
 );
 
@@ -16,23 +17,23 @@ export const fetchPostsLikeTag = createAsyncThunk(
 export const fetchSortedPostsLikeTag = createAsyncThunk(
   "posts/fetchSortedPostsLikeTag",
   async ({ value, tagName }) => {
-    console.log(value, tagName)
-    const { data } = await axios.get("/posts");
-    const tag = tagName.name;
+    const { data } = await axios.get("/posts"),
+      posts = data.details?.posts,
+      tag = tagName.name;
 
     if (value === 1) {
-      return data
+      return posts
         .filter((post) => post.tags.includes(tag))
         .sort((a, b) => b.viewsCount - a.viewsCount);
 
     }
 
-    return data.filter((post) => post.tags.includes(tag)).reverse();
+    return posts.filter((post) => post.tags.includes(tag)).reverse();
   }
 );
 
 
 export const fetchTags = createAsyncThunk("posts/fetchTags", async () => {
   const { data } = await axios.get("/tags");
-  return data;
+  return data.details?.fiveTags;
 });

@@ -16,21 +16,24 @@ import {
 
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  const { data } = await axios.get("/posts");
-  return data.reverse();
+  const { data } = await axios.get("/posts"),
+    posts = data.details?.posts;
+
+  return posts.reverse();
 });
 
 
 export const fetchSortedPosts = createAsyncThunk(
   "posts/fetchSortedPosts",
   async (value) => {
-    const { data } = await axios.get("/posts");
+    const { data } = await axios.get("/posts"),
+      posts = data.details?.posts;
 
     if (value === 1) {
-      return data.sort((a, b) => b.viewsCount - a.viewsCount);
+      return posts.sort((a, b) => b.viewsCount - a.viewsCount);
     }
 
-    return data.reverse();
+    return posts.reverse();
   }
 );
 

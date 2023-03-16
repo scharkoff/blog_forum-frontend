@@ -14,8 +14,8 @@ export const Posts = () => {
 
   const { posts } = state.posts;
 
-  const [postsArray, setPostsArray] = React.useState([]);
-  const [copyOfPosts, setCopyOfPosts] = React.useState([]);
+  const [postsArray, setPostsArray] = React.useState([]),
+    [copyOfPosts, setCopyOfPosts] = React.useState([]);
 
   const [alertVariables, setAlertOptions] = useAlertMessage();
 
@@ -30,7 +30,7 @@ export const Posts = () => {
     }
   }, [posts.items]);
 
-  const userData = useSelector((state) => state.auth?.data);
+  const userData = useSelector((state) => state.auth.data);
 
   const isPostsLoading = posts.status === 'loading';
 

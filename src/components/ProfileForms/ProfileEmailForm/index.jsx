@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { fetchUpdateUserEmail } from 'redux/slices/auth';
+import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const ProfileEmailForm = React.memo(
   ({ user, email, setEmail, setAlertOptions }) => {
@@ -27,13 +28,8 @@ export const ProfileEmailForm = React.memo(
     }
 
     const onSubmitEmail = async (values) => {
-      const data = await dispatch(fetchUpdateUserEmail(values));
-      console.log('data', data);
-      if (data.payload.isError) {
-        setAlertOptions(true, 'error', data?.payload[0]?.message);
-      } else {
-        setAlertOptions(true, 'success', 'Почта успешно изменена');
-      }
+      const response = await dispatch(fetchUpdateUserEmail(values));
+      handlingInternalOrServerError(response, setAlertOptions);
     };
 
     const emailForm = useForm({

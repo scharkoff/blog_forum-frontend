@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { fetchUpdateUserPassword } from 'redux/slices/auth';
+import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const ProfilePasswordForm = React.memo(
   ({ password, setPassword, setAlertOptions }) => {
@@ -17,13 +18,8 @@ export const ProfilePasswordForm = React.memo(
     const { id } = useParams();
 
     const onSubmitPassword = async (values) => {
-      const data = await dispatch(fetchUpdateUserPassword(values));
-
-      if (data.payload.isError) {
-        setAlertOptions(true, 'error', data?.payload[0]?.msg);
-      } else {
-        setAlertOptions(true, 'success', 'Пароль успешно изменен');
-      }
+      const response = await dispatch(fetchUpdateUserPassword(values));
+      handlingInternalOrServerError(response, setAlertOptions);
     };
 
     const passwordForm = useForm({

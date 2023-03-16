@@ -5,8 +5,10 @@ import axios from "configs/axios/axios";
 export const fetchComments = createAsyncThunk(
   "posts/fetchComments",
   async () => {
-    const { data } = await axios.get("/posts/comments");
-    return data;
+    const { data } = await axios.get("/posts/comments"),
+      comments = data.details?.comments;
+
+    return comments;
   }
 );
 
@@ -14,8 +16,10 @@ export const fetchComments = createAsyncThunk(
 export const fetchSortedComments = createAsyncThunk(
   "posts/fetchComments",
   async () => {
-    const { data } = await axios.get("/posts/comments");
-    return data.reverse()
+    const { data } = await axios.get("/posts/comments"),
+      comments = data.details?.comments;
+
+    return comments.reverse()
       .slice(0, 5)
       .map((item) => {
         return {

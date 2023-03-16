@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { fetchUpdateUserPassword } from 'redux/slices/auth';
+import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const UserPasswordForm = React.memo(
   ({ id, password, setPassword, setAlertOptions }) => {
@@ -21,13 +22,8 @@ export const UserPasswordForm = React.memo(
     });
 
     const onSubmitPassword = async (values) => {
-      const data = await dispatch(fetchUpdateUserPassword(values));
-
-      if (data.payload.isError) {
-        setAlertOptions(true, 'error', data.payload[0]?.msg);
-      } else {
-        setAlertOptions(true, 'success', 'Пароль пользователя успешно изменен');
-      }
+      const response = await dispatch(fetchUpdateUserPassword(values));
+      handlingInternalOrServerError(response, setAlertOptions);
     };
 
     return (

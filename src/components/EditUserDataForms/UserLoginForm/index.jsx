@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { fetchUpdateUserLogin } from 'redux/slices/auth';
+import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const UserLoginForm = React.memo(
   ({ id, login, setLogin, editbleUserData, setAlertOptions }) => {
@@ -21,13 +22,8 @@ export const UserLoginForm = React.memo(
     });
 
     const onSubmitLogin = async (values) => {
-      const data = await dispatch(fetchUpdateUserLogin(values));
-      console.log('user login data', data);
-      if (data.payload.isError) {
-        setAlertOptions(true, 'error', data.payload[0]?.msg);
-      } else {
-        setAlertOptions(true, 'success', 'Логин пользователя успешно изменен');
-      }
+      const response = await dispatch(fetchUpdateUserLogin(values));
+      handlingInternalOrServerError(response, setAlertOptions);
     };
     return (
       <form
@@ -43,7 +39,7 @@ export const UserLoginForm = React.memo(
               variant="standard"
               placeholder="Введите новый логин..."
               label="Логин"
-              value={login}
+              value={login || ''}
               onChange={(e) => setLogin(e.target.value)}
               helperText={fullNameForm.formState.errors.fullName?.message}
               error={Boolean(fullNameForm.formState.errors.fullName?.message)}
@@ -52,7 +48,9 @@ export const UserLoginForm = React.memo(
           <Grid item>
             <Button
               disabled={
-                login === editbleUserData?.login || !login.length ? true : false
+                login === editbleUserData?.login || !login?.length
+                  ? true
+                  : false
               }
               type="submit"
               size="small"

@@ -16,10 +16,12 @@ import { AlertMessage } from 'components/AlertMessage';
 import { useAlertMessage } from 'hooks/useAlertMessage';
 
 export const FullPostForm = () => {
-  const [data, setData] = React.useState();
-  const [isLoading, setLoading] = React.useState(true);
+  const [postData, setPostData] = React.useState(),
+    [isLoading, setLoading] = React.useState(true);
+
   const { id } = useParams();
-  const allComments = useSelector((state) => state.posts?.comments?.items);
+
+  const allComments = useSelector((state) => state.posts.comments?.items);
 
   const dispatch = useDispatch();
 
@@ -27,22 +29,30 @@ export const FullPostForm = () => {
 
   React.useEffect(() => {
     dispatch(fetchComments());
-  }, []);
-
-  React.useEffect(() => {
     axios
       .get(`/posts/${id}`)
       .then((res) => {
-        setData(res.data);
+        setPostData(res.data.details?.post);
         setLoading(false);
       })
-      .catch(() => {
-        setAlertOptions(true, 'error', 'Ошибка при получении статьи!');
+      .catch((error) => {
+        setAlertOptions(true, 'error', error.response.data?.message);
       });
   }, []);
 
+  React.useEffect(() => {
+    if (postData) {
+      document.title = postData.title;
+    }
+  }, [postData]);
+
   if (isLoading) {
-    return <Post isLoading={isLoading} />;
+    return (
+      <div>
+        <AlertMessage {...alertVariables} />
+        <Post isLoading={isLoading} />
+      </div>
+    );
   }
 
   return (
@@ -50,27 +60,27 @@ export const FullPostForm = () => {
       <AlertMessage {...alertVariables} />
 
       <Post
-        id={data._id}
-        title={data.title}
+        id={postData._id}
+        title={postData.title}
         imageUrl={
-          data.imageUrl
+          postData.imageUrl
             ? `${process.env.REACT_APP_API_URL || 'http://localhost:4444'}${
-                data.imageUrl
+                postData.imageUrl
               }`
             : ''
         }
-        user={data.user}
-        createdAt={data.createdAt.slice(0, 10)}
-        viewsCount={data.viewsCount}
+        user={postData.user}
+        createdAt={postData.createdAt.slice(0, 10)}
+        viewsCount={postData.viewsCount}
         commentsCount={
           allComments
             ? allComments.filter((item) => item.post?._id === id).length
             : 0
         }
-        tags={data.tags}
+        tags={postData.tags}
         isFullPost
       >
-        <ReactMarkdown children={data.text} />
+        <ReactMarkdown children={postData.text} />
       </Post>
       <CommentsBlock
         items={

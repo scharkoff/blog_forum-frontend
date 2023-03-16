@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { fetchUpdateUserLogin } from 'redux/slices/auth';
+import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const ProfileLoginForm = React.memo(
   ({ user, login, setLogin, setAlertOptions }) => {
@@ -18,13 +19,8 @@ export const ProfileLoginForm = React.memo(
     const { id } = useParams();
 
     const onSubmitLogin = async (values) => {
-      const data = await dispatch(fetchUpdateUserLogin(values));
-
-      if (data.payload.isError) {
-        setAlertOptions(true, 'error', data?.payload[0]?.msg);
-      } else {
-        setAlertOptions(true, 'success', 'Логин успешно изменен');
-      }
+      const response = await dispatch(fetchUpdateUserLogin(values));
+      handlingInternalOrServerError(response, setAlertOptions);
     };
 
     const fullNameForm = useForm({

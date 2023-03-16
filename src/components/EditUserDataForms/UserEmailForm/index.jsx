@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { fetchUpdateUserEmail } from 'redux/slices/auth';
+import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const UserEmailForm = React.memo(
   ({ id, email, setEmail, editbleUserData, setAlertOptions }) => {
@@ -21,21 +22,8 @@ export const UserEmailForm = React.memo(
     });
 
     const onSubmitEmail = async (values) => {
-      const request = await dispatch(fetchUpdateUserEmail(values));
-
-      console.log('user email data', request);
-
-      if (request.payload?.isError) {
-        setAlertOptions(
-          true,
-          'error',
-          request.payload?.message
-            ? request.payload?.message
-            : request.payload[0]?.msg
-        );
-      } else {
-        setAlertOptions(true, 'success', 'Почта пользователя успешно изменена');
-      }
+      const response = await dispatch(fetchUpdateUserEmail(values));
+      handlingInternalOrServerError(response, setAlertOptions);
     };
 
     function validateEmail(emailField) {
@@ -60,7 +48,7 @@ export const UserEmailForm = React.memo(
               placeholder="Введите новую почту..."
               label="Почта"
               fullWidth
-              value={email}
+              value={email || ''}
               onChange={(e) => setEmail(e.target.value)}
               helperText={emailForm.formState.errors.email?.message}
               error={Boolean(emailForm.formState.errors.email?.message)}
@@ -69,7 +57,9 @@ export const UserEmailForm = React.memo(
           <Grid item>
             <Button
               disabled={
-                email === editbleUserData?.email || !email.length ? true : false
+                email === editbleUserData?.email || !email?.length
+                  ? true
+                  : false
               }
               type="submit"
               size="small"

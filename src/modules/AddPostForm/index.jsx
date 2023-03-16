@@ -11,52 +11,53 @@ import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
 import styles from './scss/AddPost.module.scss';
 
-import { Navigate, useNavigate, useParams, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { selectIsAuth } from 'redux/slices/auth';
-
+import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import axios from 'configs/axios/axios';
 import { onSubmitPost } from './api/submitPost';
 import { handleChangeFile } from './api/handleChangeFile';
 import { useAlertMessage } from 'hooks/useAlertMessage';
 
-export const AddPostForm = () => {
-  const isAuth = useSelector(selectIsAuth);
+export const AddPostForm = ({ id }) => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
-  const { id } = useParams();
-
   const [alertVariables, setAlertOptions] = useAlertMessage();
 
-  const [text, setText] = React.useState('');
-  const [isLoading, setLoading] = React.useState(false);
-  const [imageUrl, setImageUrl] = React.useState('');
-  const [tags, setTags] = React.useState('');
-  const [title, setTitle] = React.useState('');
-  const [authorId, setAuthorId] = React.useState('');
-
-  const inputFileRef = React.useRef(null);
+  const [text, setText] = React.useState(''),
+    [imageUrl, setImageUrl] = React.useState(''),
+    [tags, setTags] = React.useState(''),
+    [title, setTitle] = React.useState(''),
+    [authorId, setAuthorId] = React.useState(''),
+    inputFileRef = React.useRef(null),
+    [isLoading, setIsLoading] = React.useState(true);
 
   const isEditing = Boolean(id);
 
   React.useEffect(() => {
-    document.title = 'Добавить пост';
+    if (isEditing) {
+      document.title = 'Редактировать запись';
+    } else {
+      document.title = 'Создать новую запись';
+    }
+
     if (id) {
       axios
         .get(`/posts/${id}`)
         .then(({ data }) => {
-          setTitle(data.title);
-          setText(data.text);
-          setImageUrl(data.imageUrl);
-          setTags(data.tags);
-          setAuthorId(data.user?._id);
+          setTitle(data.details?.post?.title);
+          setText(data.details?.post?.text);
+          setImageUrl(data.details?.post?.imageUrl);
+          setTags(data.details?.post?.tags);
+          setAuthorId(data.details?.post?.user?._id);
+          setIsLoading(false);
         })
-        .catch((err) => {
-          setAlertOptions(true, 'error', 'Ошибка при получении статьи!');
+        .catch((error) => {
+          setAlertOptions(true, 'error', error.response.data?.message);
         });
+    } else {
+      setIsLoading(false);
     }
   }, []);
 
@@ -90,7 +91,6 @@ export const AddPostForm = () => {
     tags,
     authorId,
     isEditing,
-    setLoading,
     setAlertOptions,
     navigate,
     id,
@@ -102,8 +102,12 @@ export const AddPostForm = () => {
     setAlertOptions,
   };
 
-  if (!window.localStorage.getItem('token') && !isAuth) {
-    return <Navigate to="/" />;
+  if (isLoading) {
+    return (
+      <div>
+        <AlertMessage {...alertVariables} />
+      </div>
+    );
   }
 
   return (

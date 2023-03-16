@@ -25,11 +25,11 @@ export const AddComment = () => {
   const { editMode } = useSelector((state) => state.posts.comments);
   let { editbleComment } = useSelector((state) => state.posts.comments);
 
-  const { data } = useSelector((state) => state.auth);
+  const { isError } = useSelector((state) => state.auth.data);
 
   React.useEffect(() => {
     axios.get('/auth/me').then((res) => {
-      setUser(res.data);
+      setUser(res.data?.details?.userData);
     });
   }, []);
 
@@ -91,7 +91,7 @@ export const AddComment = () => {
             maxRows={10}
             multiline
             fullWidth
-            disabled={!data ? true : false}
+            disabled={isError}
           />
           <Button
             onClick={onSubmit}

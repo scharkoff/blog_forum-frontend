@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { fetchUpdateUserAvatar } from 'redux/slices/auth';
+import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const ProfileAvatarForm = React.memo(
   ({ avatarUrl, setAlertOptions }) => {
@@ -37,13 +38,8 @@ export const ProfileAvatarForm = React.memo(
     };
 
     const onSubmitAvatar = async (values) => {
-      const data = await dispatch(fetchUpdateUserAvatar(values));
-
-      if (data.payload.isError) {
-        setAlertOptions(true, 'error', data?.payload[0]?.msg);
-      } else {
-        setAlertOptions(true, 'success', 'Аватар успешно изменен');
-      }
+      const response = await dispatch(fetchUpdateUserAvatar(values));
+      handlingInternalOrServerError(response, setAlertOptions);
     };
 
     const avatarForm = useForm({

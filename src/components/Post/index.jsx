@@ -20,7 +20,6 @@ import { PostSkeleton } from './Skeleton';
 
 import { fetchPosts, fetchRemovePost } from 'redux/slices/posts';
 import { fetchPostsLikeTag } from 'redux/slices/tags';
-import axios from 'axios';
 
 export const Post = ({
   id,
@@ -38,7 +37,7 @@ export const Post = ({
 }) => {
   const dispatch = useDispatch();
 
-  const authUser = useSelector((state) => state.auth?.data);
+  const authUser = useSelector((state) => state.auth.data);
 
   const navigate = useNavigate();
 

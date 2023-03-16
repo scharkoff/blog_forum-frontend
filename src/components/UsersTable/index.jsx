@@ -14,15 +14,16 @@ import TableRow from '@mui/material/TableRow';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchDeleteUser, fetchEditUserData } from 'redux/slices/users.js';
+import { fetchDeleteUser } from 'redux/slices/users.js';
 import { AdminSearchString } from '../AdminSearchString/index.jsx';
+import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError.js';
 
 export const UsersTable = ({ user, setAlertOptions }) => {
   const dispatch = useDispatch();
 
   const users = useSelector((state) => state.users?.data);
 
-  const [rows, setRows] = React.useState(users);
+  const [rows, setRows] = React.useState([]);
   const [copyOfRows, setCopyOfRows] = React.useState([]);
 
   React.useEffect(() => {
@@ -74,27 +75,14 @@ export const UsersTable = ({ user, setAlertOptions }) => {
     setPage(0);
   };
 
-  const getEditableUserData = (id, login, email, rank) => {
-    dispatch(fetchEditUserData({ id, login, email, rank }));
-  };
-
   const deleteUser = async (id) => {
     if (
       window.confirm(
         'Вы действительно хотите удалить данного пользователя? Все его посты и комментарии будут также удалены навсегда!'
       )
     ) {
-      const data = await dispatch(fetchDeleteUser(id));
-
-      if (data.payload.isError) {
-        setAlertOptions(
-          true,
-          'error',
-          data.payload?.message ? data.payload?.message : data.payload[0]?.msg
-        );
-      } else {
-        setAlertOptions(true, 'success', 'Пользователь успешно удален');
-      }
+      const response = await dispatch(fetchDeleteUser(id));
+      handlingInternalOrServerError(response, setAlertOptions);
     }
   };
   return (
@@ -140,19 +128,7 @@ export const UsersTable = ({ user, setAlertOptions }) => {
                                   to={`/admin-panel/edit-user/${row.id}`}
                                   style={{ textDecoration: 'none' }}
                                 >
-                                  <Button
-                                    onClick={() =>
-                                      getEditableUserData(
-                                        row.id,
-                                        row.fullName,
-                                        row.email,
-                                        row.rank
-                                      )
-                                    }
-                                    color="primary"
-                                  >
-                                    Изменить
-                                  </Button>
+                                  <Button color="primary">Изменить</Button>
                                 </Link>
                                 <Button
                                   onClick={() => deleteUser(row.id)}

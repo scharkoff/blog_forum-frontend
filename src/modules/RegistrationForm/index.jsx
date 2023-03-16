@@ -15,6 +15,7 @@ import { fetchRegister, selectIsAuth } from 'redux/slices/auth';
 import styles from './Registration.module.scss';
 import { AlertMessage } from 'components/AlertMessage';
 import { useAlertMessage } from 'hooks/useAlertMessage';
+import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const RegistrationForm = () => {
   const dispatch = useDispatch();
@@ -34,21 +35,13 @@ export const RegistrationForm = () => {
   });
 
   const onSubmitRegister = async (values) => {
-    const data = await dispatch(fetchRegister(values));
+    const response = await dispatch(fetchRegister(values));
 
-    if ('token' in data.payload) {
-      window.localStorage.setItem('token', data.payload?.token);
+    if (response.payload) {
+      window.localStorage.setItem('token', response.payload.token);
     }
 
-    if (data.payload?.isError) {
-      setAlertOptions(
-        true,
-        'error',
-        data.payload?.message ? data.payload?.message : data.payload[0]?.msg
-      );
-    } else {
-      setAlertOptions(true, 'success', 'Вы успешно зарегистрировались!');
-    }
+    handlingInternalOrServerError(response, setAlertOptions);
   };
 
   if (isAuth) {

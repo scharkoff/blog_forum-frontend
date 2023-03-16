@@ -2,9 +2,6 @@ import React from 'react';
 
 import { Typography } from '@mui/material';
 
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
 import { AlertMessage } from 'components/AlertMessage/index.jsx';
 import { UserLoginForm } from 'components/EditUserDataForms/UserLoginForm/index.jsx';
 import { UserEmailForm } from 'components/EditUserDataForms/UserEmailForm/index.jsx';
@@ -12,11 +9,7 @@ import { UserRankForm } from 'components/EditUserDataForms/UserRankForm/index.js
 import { UserPasswordForm } from 'components/EditUserDataForms/UserPasswordForm/index.jsx';
 import { useAlertMessage } from 'hooks/useAlertMessage';
 
-export const EditUserDataForm = () => {
-  const editbleUserData = useSelector((state) => state.users?.editbleUserData);
-
-  const { id } = useParams();
-
+export const EditUserDataForm = ({ editbleUserData, id }) => {
   const [login, setLogin] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [email, setEmail] = React.useState('');

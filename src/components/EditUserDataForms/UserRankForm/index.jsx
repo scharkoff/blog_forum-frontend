@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { fetchUpdateUserRank } from 'redux/slices/auth';
+import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const UserRankForm = React.memo(
   ({ id, rank, setRank, editbleUserData, setAlertOptions }) => {
@@ -26,13 +27,8 @@ export const UserRankForm = React.memo(
     });
 
     const onSubmitRank = async (values) => {
-      const data = await dispatch(fetchUpdateUserRank(values));
-
-      if (data.payload.isError) {
-        setAlertOptions(true, 'error', data.payload[0]?.msg);
-      } else {
-        setAlertOptions(true, 'success', 'Ранг пользователя успешно изменен');
-      }
+      const response = await dispatch(fetchUpdateUserRank(values));
+      handlingInternalOrServerError(response, setAlertOptions);
     };
 
     return (
@@ -40,7 +36,7 @@ export const UserRankForm = React.memo(
         <Grid container spacing={1} marginTop={2} alignItems="center">
           <Grid item>
             <Select
-              value={rank}
+              value={rank || 'user'}
               {...rankForm.register('rank')}
               onChange={handleChangeRank}
               label="Ранг"

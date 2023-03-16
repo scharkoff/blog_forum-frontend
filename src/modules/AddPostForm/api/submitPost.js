@@ -1,9 +1,7 @@
 import axios from "configs/axios/axios";
 
-export const onSubmitPost = async ({ title, text, imageUrl, tags, authorId, isEditing, setLoading, setAlertOptions, navigate, id }) => {
+export const onSubmitPost = async ({ title, text, imageUrl, tags, authorId, isEditing, setAlertOptions, navigate, id }) => {
     try {
-        setLoading(true);
-
         const fieldsCreate = {
             title,
             text,
@@ -23,7 +21,7 @@ export const onSubmitPost = async ({ title, text, imageUrl, tags, authorId, isEd
             ? await axios.patch(`/posts/${id}`, fieldsUpdate)
             : await axios.post("/posts/create", fieldsCreate);
 
-        const _id = isEditing ? id : data._id;
+        const _id = isEditing ? id : data.details?.post?._id;
 
         navigate(`/posts/${_id}`);
     } catch (error) {
