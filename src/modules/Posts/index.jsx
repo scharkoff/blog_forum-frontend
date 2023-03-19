@@ -5,9 +5,9 @@ import store from 'redux/store';
 import { Post } from 'components/Post';
 import { SearchString } from 'components/SearchString';
 
-import { useSelector } from 'react-redux';
 import { AlertMessage } from 'components/AlertMessage';
 import { useAlertMessage } from 'hooks/useAlertMessage';
+import { PostsPagination } from './PostsPagination';
 
 export const Posts = () => {
   const state = store.getState();
@@ -30,40 +30,23 @@ export const Posts = () => {
     }
   }, [posts.items]);
 
-  const userData = useSelector((state) => state.auth.data);
-
   const isPostsLoading = posts.status === 'loading';
+
+  if (isPostsLoading) {
+    return (
+      <div>
+        {[...Array(5)].map((_, index) => {
+          return <Post key={index} isLoading={true} />;
+        })}
+      </div>
+    );
+  }
 
   return (
     <div>
       <AlertMessage {...alertVariables} />
-
       <SearchString setPostsArray={setPostsArray} copyOfPosts={copyOfPosts} />
-
-      {(isPostsLoading ? [...Array(5)] : postsArray).map((obj, index) =>
-        isPostsLoading ? (
-          <Post key={index} isLoading={true} />
-        ) : (
-          <Post
-            key={index}
-            id={obj._id}
-            title={obj.title}
-            imageUrl={
-              obj.imageUrl
-                ? `${process.env.REACT_APP_API_URL || 'http://localhost:4444'}${
-                    obj.imageUrl
-                  }`
-                : ''
-            }
-            user={obj.user}
-            createdAt={obj.createdAt.slice(0, 10)}
-            viewsCount={obj.viewsCount}
-            commentsCount={obj.commentsCount}
-            tags={obj.tags}
-            isEditable={userData?._id === obj?.user?._id}
-          />
-        )
-      )}
+      <PostsPagination postsArray={postsArray} />
     </div>
   );
 };

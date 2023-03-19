@@ -6,7 +6,6 @@
 
 Хостинг `render.com` требует подписки для использования диска облачного хранения, вследствие чего картинки, загруженные вами ранее, удалятся через неопределенное время. Спасибо!
 
-
 `Аккаунт администратора:`
 
 ```
@@ -20,6 +19,7 @@ pas: 12345
 # Стек проекта
 
 `Frontend:`
+
 <ul>
   <li>React</li>
   <li>Redux (redux toolkit)</li>
@@ -27,10 +27,12 @@ pas: 12345
   <li>React Hook Form</li>
   <li>React Router v6</li>
   <li>React Markdown / Simple Editor</li>
+  <li>React paginate</li>
   <li>Axios</li>
 </ul>
 
 `Backend:`
+
 <ul>
   <li>NodeJS (ES6)</li>
   <li>Express / Validator</li>

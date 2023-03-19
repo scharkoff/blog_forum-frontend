@@ -7,7 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { fetchUpdateUserRank } from 'redux/slices/auth';
+import { fetchUpdateUserRank } from 'redux/slices/users';
 import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const UserRankForm = React.memo(

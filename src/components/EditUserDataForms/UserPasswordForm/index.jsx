@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { fetchUpdateUserPassword } from 'redux/slices/auth';
+import { fetchUpdateUserPassword } from 'redux/slices/users';
 import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const UserPasswordForm = React.memo(

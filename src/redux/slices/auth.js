@@ -9,7 +9,7 @@ export const fetchAuth = createAsyncThunk("auth/fetchAuth", async (params) => {
 
     return userData;
   } catch (error) {
-    return { ...error.response?.data, isError: true };
+    return { ...error.response.data, isError: true };
   }
 });
 
@@ -23,7 +23,7 @@ export const fetchRegister = createAsyncThunk(
 
       return userData;
     } catch (error) {
-      return { ...error.response?.data, isError: true };
+      return { ...error.response.data, isError: true };
     }
   }
 );
@@ -36,74 +36,9 @@ export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async () => {
 
     return user;
   } catch (error) {
-    return { ...error.response?.data, isError: true };
+    return { ...error.response.data, isError: true };
   }
 });
-
-export const fetchUpdateUserLogin = createAsyncThunk(
-  "auth/updateUserLogin",
-  async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserLogin", params);
-      return data;
-    } catch (error) {
-      return { ...error.response?.data, isError: true };
-    }
-  }
-);
-
-
-export const fetchUpdateUserRank = createAsyncThunk(
-  "auth/fetchUpdateUserRank",
-  async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserRank", params);
-      return data;
-    } catch (error) {
-      return { ...error.response?.data, isError: true };
-    }
-  }
-);
-
-
-export const fetchUpdateUserEmail = createAsyncThunk(
-  "auth/updateUserEmail",
-  async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserEmail", params);
-      return data;
-    } catch (error) {
-      return { ...error.response?.data, isError: true };
-    }
-  }
-);
-
-
-export const fetchUpdateUserPassword = createAsyncThunk(
-  "auth/updateUserPassword",
-  async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserPassword", params);
-      return data;
-    } catch (error) {
-      return { ...error.response?.data, isError: true };
-    }
-  }
-);
-
-
-export const fetchUpdateUserAvatar = createAsyncThunk(
-  "auth/updateUserAvatar",
-  async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserAvatar", params);
-      return data;
-    } catch (error) {
-      return { ...error.response?.data, isError: true };
-    }
-  }
-);
-
 
 
 const initialState = {
@@ -123,7 +58,6 @@ const authSlice = createSlice({
   },
   extraReducers: {
     [fetchAuth.pending]: (state) => {
-
       state.status = "loading";
       state.authorization = false;
     },
