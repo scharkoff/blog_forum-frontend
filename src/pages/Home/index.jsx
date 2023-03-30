@@ -12,10 +12,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import store from 'redux/store';
 import { fetchTags } from 'redux/slices/tags';
-import { fetchSortedComments } from 'redux/slices/comments';
 import { fetchAuthMe } from 'redux/slices/auth';
 
 import styles from './Home.module.scss';
+import { fetchComments, fetchLastsComments } from 'redux/slices/comments';
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -40,7 +40,8 @@ export const Home = () => {
   React.useEffect(() => {
     document.title = 'Главная страница';
     dispatch(fetchTags());
-    dispatch(fetchSortedComments());
+    dispatch(fetchLastsComments());
+    dispatch(fetchComments());
     dispatch(fetchAuthMe());
   }, []);
 

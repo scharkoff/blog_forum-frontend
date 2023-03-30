@@ -4,6 +4,7 @@ import axios from "configs/axios/axios";
 
 import {
   fetchComments,
+  fetchLastsComments,
   fetchRemoveComment,
 } from "./comments";
 
@@ -16,24 +17,22 @@ import {
 
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  const { data } = await axios.get("/posts"),
-    posts = data.details?.posts;
+  const { data } = await axios.get("/posts");
 
-  return posts.reverse();
+  return data.posts?.reverse();
 });
 
 
 export const fetchSortedPosts = createAsyncThunk(
   "posts/fetchSortedPosts",
   async (value) => {
-    const { data } = await axios.get("/posts"),
-      posts = data.details?.posts;
+    const { data } = await axios.get("/posts");
 
     if (value === 1) {
-      return posts.sort((a, b) => b.viewsCount - a.viewsCount);
+      return data.posts?.sort((a, b) => b.viewsCount - a.viewsCount);
     }
 
-    return posts.reverse();
+    return data.posts?.reverse();
   }
 );
 
@@ -56,6 +55,10 @@ const initialState = {
     status: "loading",
   },
   comments: {
+    items: [],
+    status: "loading",
+  },
+  lastComments: {
     items: [],
     status: "loading",
   },
@@ -172,6 +175,21 @@ const postsSlice = createSlice({
     [fetchComments.rejected]: (state, action) => {
       state.comments.status = "error";
       state.comments.editMode = false;
+    },
+
+    [fetchLastsComments.pending]: (state, action) => {
+      state.lastComments.items = action.payload;
+      state.lastComments.status = "loading";
+      state.lastComments.editMode = false;
+    },
+    [fetchLastsComments.fulfilled]: (state, action) => {
+      state.lastComments.items = action.payload;
+      state.lastComments.status = "loaded";
+      state.lastComments.editMode = false;
+    },
+    [fetchLastsComments.rejected]: (state, action) => {
+      state.lastComments.status = "error";
+      state.lastComments.editMode = false;
     },
 
     [fetchRemoveComment.pending]: (state, action) => {

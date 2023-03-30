@@ -46,11 +46,11 @@ export const AddPostForm = ({ id }) => {
       axios
         .get(`/posts/${id}`)
         .then(({ data }) => {
-          setTitle(data.details?.post?.title);
-          setText(data.details?.post?.text);
-          setImageUrl(data.details?.post?.imageUrl);
-          setTags(data.details?.post?.tags);
-          setAuthorId(data.details?.post?.user?._id);
+          setTitle(data.post?.title);
+          setText(data.post?.text);
+          setImageUrl(data.post?.imageUrl);
+          setTags(data.post?.tags);
+          setAuthorId(data.post?.user?._id);
           setIsLoading(false);
         })
         .catch((error) => {

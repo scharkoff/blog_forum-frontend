@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { fetchUpdateUserLogin } from 'redux/slices/users';
+import { fetchUpdateByCondition } from 'redux/slices/users';
 import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const UserLoginForm = React.memo(
@@ -22,7 +22,7 @@ export const UserLoginForm = React.memo(
     });
 
     const onSubmitLogin = async (values) => {
-      const response = await dispatch(fetchUpdateUserLogin(values));
+      const response = await dispatch(fetchUpdateByCondition(values));
       handlingInternalOrServerError(response, setAlertOptions);
     };
     return (

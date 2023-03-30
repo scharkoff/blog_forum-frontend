@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { fetchUpdateUserEmail } from 'redux/slices/users';
+import { fetchUpdateByCondition } from 'redux/slices/users';
 import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const ProfileEmailForm = React.memo(
@@ -28,7 +28,7 @@ export const ProfileEmailForm = React.memo(
     }
 
     const onSubmitEmail = async (values) => {
-      const response = await dispatch(fetchUpdateUserEmail(values));
+      const response = await dispatch(fetchUpdateByCondition(values));
       handlingInternalOrServerError(response, setAlertOptions);
     };
 

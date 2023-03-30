@@ -4,9 +4,9 @@ import axios from "configs/axios/axios";
 
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   try {
-    const { data } = await axios.get("/users"),
-      users = data.details?.users;
-    return users;
+    const { data } = await axios.get("/users");
+
+    return data.users;
   } catch (error) {
     return { ...error.response.data, isError: true };
   }
@@ -25,11 +25,12 @@ export const fetchDeleteUser = createAsyncThunk(
   }
 );
 
-export const fetchUpdateUserLogin = createAsyncThunk(
-  "auth/updateUserLogin",
+export const fetchUpdateByCondition = createAsyncThunk(
+  "auth/fetchUpdateByCondition",
   async (params) => {
+    console.log(params)
     try {
-      const { data } = await axios.patch("/auth/updateUserLogin", params);
+      const { data } = await axios.patch(`/users/${params.id}`, params);
       return data;
     } catch (error) {
       return { ...error.response.data, isError: true };
@@ -37,53 +38,7 @@ export const fetchUpdateUserLogin = createAsyncThunk(
   }
 );
 
-export const fetchUpdateUserRank = createAsyncThunk(
-  "auth/fetchUpdateUserRank",
-  async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserRank", params);
-      return data;
-    } catch (error) {
-      return { ...error.response.data, isError: true };
-    }
-  }
-);
 
-export const fetchUpdateUserEmail = createAsyncThunk(
-  "auth/updateUserEmail",
-  async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserEmail", params);
-      return data;
-    } catch (error) {
-      return { ...error.response.data, isError: true };
-    }
-  }
-);
-
-export const fetchUpdateUserPassword = createAsyncThunk(
-  "auth/updateUserPassword",
-  async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserPassword", params);
-      return data;
-    } catch (error) {
-      return { ...error.response.data, isError: true };
-    }
-  }
-);
-
-export const fetchUpdateUserAvatar = createAsyncThunk(
-  "auth/updateUserAvatar",
-  async (params) => {
-    try {
-      const { data } = await axios.patch("/auth/updateUserAvatar", params);
-      return data;
-    } catch (error) {
-      return { ...error.response.data, isError: true };
-    }
-  }
-);
 
 
 const initialState = {

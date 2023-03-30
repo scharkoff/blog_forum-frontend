@@ -32,7 +32,7 @@ export const FullPostForm = () => {
     axios
       .get(`/posts/${id}`)
       .then((res) => {
-        setPostData(res.data.details?.post);
+        setPostData(res.data.post);
         setLoading(false);
       })
       .catch((error) => {

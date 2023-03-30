@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { fetchUpdateUserAvatar } from 'redux/slices/users';
+import { fetchUpdateByCondition } from 'redux/slices/users';
 import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const ProfileAvatarForm = React.memo(
@@ -38,7 +38,7 @@ export const ProfileAvatarForm = React.memo(
     };
 
     const onSubmitAvatar = async (values) => {
-      const response = await dispatch(fetchUpdateUserAvatar(values));
+      const response = await dispatch(fetchUpdateByCondition(values));
       handlingInternalOrServerError(response, setAlertOptions);
     };
 

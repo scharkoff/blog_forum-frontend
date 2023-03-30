@@ -19,9 +19,9 @@ export const onSubmitPost = async ({ title, text, imageUrl, tags, authorId, isEd
 
         const { data } = isEditing
             ? await axios.patch(`/posts/${id}`, fieldsUpdate)
-            : await axios.post("/posts/create", fieldsCreate);
+            : await axios.post("/posts", fieldsCreate);
 
-        const _id = isEditing ? id : data.details?.post?._id;
+        const _id = isEditing ? id : data.post?._id;
 
         navigate(`/posts/${_id}`);
     } catch (error) {

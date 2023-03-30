@@ -29,7 +29,7 @@ export const AddComment = () => {
 
   React.useEffect(() => {
     axios.get('/auth/me').then((res) => {
-      setUser(res.data?.details?.userData);
+      setUser(res.data?.userData);
     });
   }, []);
 
@@ -53,8 +53,8 @@ export const AddComment = () => {
         post: id,
       };
       !editMode
-        ? await axios.post(`/posts/${id}/addComment`, fields)
-        : await axios.patch(`/posts/${id}/updateComment`, fields);
+        ? await axios.post(`/comments/${id}`, fields)
+        : await axios.patch(`/comments/${id}`, fields);
       dispatch(fetchComments());
       setText('');
     } catch (error) {

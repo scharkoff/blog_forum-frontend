@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-import { fetchUpdateUserLogin } from 'redux/slices/users';
+import { fetchUpdateByCondition } from 'redux/slices/users';
 import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const ProfileLoginForm = React.memo(
@@ -19,7 +19,7 @@ export const ProfileLoginForm = React.memo(
     const { id } = useParams();
 
     const onSubmitLogin = async (values) => {
-      const response = await dispatch(fetchUpdateUserLogin(values));
+      const response = await dispatch(fetchUpdateByCondition(values));
       handlingInternalOrServerError(response, setAlertOptions);
     };
 

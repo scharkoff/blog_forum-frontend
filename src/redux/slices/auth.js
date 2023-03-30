@@ -4,10 +4,9 @@ import axios from "configs/axios/axios";
 
 export const fetchAuth = createAsyncThunk("auth/fetchAuth", async (params) => {
   try {
-    const { data } = await axios.post("/auth/login", params),
-      userData = data.details;
+    const { data } = await axios.post("/auth/login", params);
 
-    return userData;
+    return data.userData;
   } catch (error) {
     return { ...error.response.data, isError: true };
   }
@@ -18,10 +17,9 @@ export const fetchRegister = createAsyncThunk(
   "auth/fetchRegister",
   async (params) => {
     try {
-      const { data } = await axios.post("/auth/register", params),
-        userData = data.details;
+      const { data } = await axios.post("/auth/register", params);
 
-      return userData;
+      return data.userData;
     } catch (error) {
       return { ...error.response.data, isError: true };
     }
@@ -31,10 +29,9 @@ export const fetchRegister = createAsyncThunk(
 
 export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async () => {
   try {
-    const { data } = await axios.get("/auth/me"),
-      user = data.details?.userData;
+    const { data } = await axios.get("/auth/me");
 
-    return user;
+    return data.userData;
   } catch (error) {
     return { ...error.response.data, isError: true };
   }
