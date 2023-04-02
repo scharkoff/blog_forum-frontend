@@ -1,34 +1,31 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import Grid from '@mui/material/Grid';
-
 import { SortTabs } from 'components';
-
 import { TagsBlock } from 'components/TagsBlock';
 import { CommentsBlock } from 'components/CommentsBlock';
 import { Posts } from 'modules/Posts';
-
 import { useDispatch, useSelector } from 'react-redux';
-
-import store from 'redux/store';
 import { fetchTags } from 'redux/slices/tags';
 import { fetchAuthMe } from 'redux/slices/auth';
-
-import styles from './Home.module.scss';
 import { fetchComments, fetchLastsComments } from 'redux/slices/comments';
+import styles from './Home.module.scss';
 
 export const Home = () => {
   const dispatch = useDispatch();
 
-  const state = store.getState();
+  const { comments, tags, status, isHomePage } = useSelector(
+    useMemo(
+      () => (state) => ({
+        comments: state.posts.comments,
+        tags: state.posts.tags,
+        status: state.posts.comments?.status,
+        isHomePage: state.posts.posts?.home,
+      }),
+      []
+    )
+  );
 
-  const { comments } = state.posts;
-
-  let { tags } = useSelector((state) => state.posts);
-
-  const isHomePage = useSelector((state) => state.posts?.posts?.home);
-
-  const { status } = useSelector((state) => state.posts?.comments);
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {

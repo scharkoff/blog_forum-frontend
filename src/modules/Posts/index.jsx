@@ -4,7 +4,6 @@ import store from 'redux/store';
 
 import { Post } from 'components/Post';
 import { SearchString } from 'components/SearchString';
-
 import { AlertMessage } from 'components/AlertMessage';
 import { useAlertMessage } from 'hooks/useAlertMessage';
 import { PostsPagination } from './PostsPagination';
@@ -14,8 +13,9 @@ export const Posts = () => {
 
   const { posts } = state.posts;
 
-  const [postsArray, setPostsArray] = React.useState([]),
-    [copyOfPosts, setCopyOfPosts] = React.useState([]);
+  const [postsArray, setPostsArray] = React.useState([]);
+  const [copyOfPosts, setCopyOfPosts] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const [alertVariables, setAlertOptions] = useAlertMessage();
 
@@ -23,6 +23,7 @@ export const Posts = () => {
     if (posts.items) {
       setPostsArray(posts.items);
       setCopyOfPosts(posts.items);
+      setIsLoading(false);
     }
 
     if (posts.status === 'removed') {
@@ -30,9 +31,7 @@ export const Posts = () => {
     }
   }, [posts.items]);
 
-  const isPostsLoading = posts.status === 'loading';
-
-  if (isPostsLoading) {
+  if (isLoading) {
     return (
       <div>
         {[...Array(5)].map((_, index) => {

@@ -28,7 +28,6 @@ export const fetchDeleteUser = createAsyncThunk(
 export const fetchUpdateByCondition = createAsyncThunk(
   "auth/fetchUpdateByCondition",
   async (params) => {
-    console.log(params)
     try {
       const { data } = await axios.patch(`/users/${params.id}`, params);
       return data;

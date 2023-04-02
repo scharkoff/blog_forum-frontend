@@ -6,10 +6,45 @@ import styles from './Posts.module.scss';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { Post } from 'components/Post';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'configs/axios/axios';
+import { fetchPosts } from 'redux/slices/posts';
 
-export const PostsPagination = ({ postsArray }) => {
+export const PostsPagination = () => {
+  const dipatch = useDispatch();
+
   const userData = useSelector((state) => state.auth.data);
+  const { postsCount } = useSelector((state) => state.posts.posts);
+  const { activeTabs } = useSelector((state) => state.utils);
+
+  const [data, setData] = React.useState([]);
+  const [activePage, setActivePage] = React.useState(0);
+
+  React.useEffect(() => {
+    console.log('Data', data);
+  }, [data]);
+
+  React.useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
+    dipatch(fetchPosts({ pageOptions: [activePage + 1, 5], activeTabs }));
+
+    axios
+      .get(
+        `/posts?page=${activePage + 1}&pageSize=5&sortType=${
+          activeTabs.activeType
+        }`,
+        {
+          signal,
+        }
+      )
+      .then(({ data }) => {
+        setData(data.posts);
+      });
+
+    return () => abortController.abort();
+  }, [activePage, activeTabs]);
 
   function Items({ currentItems }) {
     return (
@@ -32,7 +67,7 @@ export const PostsPagination = ({ postsArray }) => {
               viewsCount={post.viewsCount}
               commentsCount={post.commentsCount}
               tags={post.tags}
-              isEditable={userData?._id === post?.user?._id}
+              isEditable={userData?._id === post.user?._id}
             />
           ))}
       </>
@@ -40,15 +75,11 @@ export const PostsPagination = ({ postsArray }) => {
   }
 
   function PaginatedItems({ itemsPerPage }) {
-    const [itemOffset, setItemOffset] = React.useState(0);
-
-    const endOffset = itemOffset + itemsPerPage;
-    const currentItems = postsArray.slice(itemOffset, endOffset);
-    const pageCount = Math.ceil(postsArray.length / itemsPerPage);
+    const currentItems = data.slice(0, 5);
+    const pageCount = Math.ceil(postsCount / itemsPerPage) || 1;
 
     const handlePageClick = (event) => {
-      const newOffset = (event.selected * itemsPerPage) % postsArray.length;
-      setItemOffset(newOffset);
+      setActivePage(event.selected);
     };
 
     return (
@@ -58,7 +89,8 @@ export const PostsPagination = ({ postsArray }) => {
           breakLabel="..."
           nextLabel={<NavigateNextIcon />}
           onPageChange={handlePageClick}
-          pageRangeDisplayed={2}
+          forcePage={activePage}
+          pageRangeDisplayed={5}
           pageCount={pageCount}
           previousLabel={<NavigateBeforeIcon />}
           renderOnZeroPageCount={null}

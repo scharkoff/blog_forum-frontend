@@ -10,31 +10,26 @@ import {
 
 
 import {
-  fetchPostsLikeTag,
-  fetchSortedPostsLikeTag,
   fetchTags,
 } from "./tags";
 
 
-export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  const { data } = await axios.get("/posts");
+export const fetchPosts = createAsyncThunk("posts/fetchPosts", async ({ pageOptions, activeTabs }) => {
+  const { data } = await axios.get(`/posts?page=${pageOptions[0]}&pageSize=${pageOptions[1]}&sortType=${activeTabs.activeType}`);
+  console.log(data)
 
-  return data.posts?.reverse();
+  return { posts: data.posts, postsCount: data.postsCount };
 });
 
+export const fetchSortedPostsLikeTag = createAsyncThunk(
+  "posts/fetchSortedPostsLikeTag",
+  async ({ pageOptions, activeTabs, tagName }) => {
+    const { data } = await axios.get(`/posts/tag/${tagName.name}/?page=${pageOptions[0]}&pageSize=${pageOptions[1]}&sortType=${activeTabs.activeType}`);
 
-export const fetchSortedPosts = createAsyncThunk(
-  "posts/fetchSortedPosts",
-  async (value) => {
-    const { data } = await axios.get("/posts");
-
-    if (value === 1) {
-      return data.posts?.sort((a, b) => b.viewsCount - a.viewsCount);
-    }
-
-    return data.posts?.reverse();
+    return { posts: data.posts, postsCount: data.postsCount };
   }
 );
+
 
 export const fetchRemovePost = createAsyncThunk(
   "posts/fetchRemovePost",
@@ -94,7 +89,8 @@ const postsSlice = createSlice({
       state.posts.status = "loading";
     },
     [fetchPosts.fulfilled]: (state, action) => {
-      state.posts.items = action.payload;
+      state.posts.items = action.payload?.posts;
+      state.posts.postsCount = action.payload?.postsCount;
       state.posts.status = "loaded";
       state.posts.home = true;
     },
@@ -102,34 +98,12 @@ const postsSlice = createSlice({
       state.posts.status = "error";
     },
 
-    [fetchSortedPosts.pending]: (state, action) => {
-      state.posts.status = "loading";
-    },
-    [fetchSortedPosts.fulfilled]: (state, action) => {
-      state.posts.items = action.payload;
-      state.posts.status = "loaded";
-    },
-    [fetchSortedPosts.rejected]: (state, action) => {
-      state.posts.status = "error";
-    },
-
-    [fetchPostsLikeTag.pending]: (state, action) => {
-      state.posts.status = "loading";
-    },
-    [fetchPostsLikeTag.fulfilled]: (state, action) => {
-      state.posts.items = action.payload;
-      state.posts.status = "loaded";
-      state.posts.home = false;
-    },
-    [fetchPostsLikeTag.rejected]: (state, action) => {
-      state.posts.status = "error";
-    },
-
     [fetchSortedPostsLikeTag.pending]: (state, action) => {
       state.posts.status = "loading";
     },
     [fetchSortedPostsLikeTag.fulfilled]: (state, action) => {
-      state.posts.items = action.payload
+      state.posts.items = action.payload?.posts;
+      state.posts.postsCount = action.payload?.postsCount;
       state.posts.status = "loaded";
       state.posts.home = false;
     },

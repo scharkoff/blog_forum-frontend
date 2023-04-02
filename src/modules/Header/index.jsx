@@ -20,8 +20,8 @@ export const Header = () => {
   const dispatch = useDispatch();
 
   const isAuth = useSelector(selectIsAuth);
-
   const user = useSelector((state) => state.auth?.data);
+  const { activeTabs } = useSelector((state) => state.utils);
 
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти из акккаунта?')) {
@@ -38,9 +38,9 @@ export const Header = () => {
         <div className={styles.inner}>
           <Link
             onClick={() => {
-              dispatch(fetchPosts());
+              dispatch(fetchPosts({ pageOptions: [1, 5], activeTabs }));
               dispatch(setActiveTag(null));
-              dispatch(setActiveTab(0));
+              dispatch(setActiveTab({ activeId: 0, activeType: 'new' }));
               dispatch(resetSearchString(new Date().valueOf()));
             }}
             className={styles.logo}

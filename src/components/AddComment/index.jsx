@@ -28,9 +28,14 @@ export const AddComment = () => {
   const { data } = useSelector((state) => state.auth);
 
   React.useEffect(() => {
-    axios.get('/auth/me').then((res) => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
+    axios.get('/auth/me', { signal }).then((res) => {
       setUser(res.data?.userData);
     });
+
+    return () => abortController.abort();
   }, []);
 
   React.useEffect(() => {

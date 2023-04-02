@@ -5,55 +5,39 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
 import { resetSearchString, setActiveTab } from 'redux/slices/utils';
-import { fetchSortedPostsLikeTag } from 'redux/slices/tags';
-import { fetchPosts, fetchSortedPosts } from 'redux/slices/posts';
-import { useParams } from 'react-router-dom';
+import {} from 'redux/slices/tags';
 
 export const SortTabs = () => {
   const dispatch = useDispatch();
 
-  const tagName = useParams();
+  const { activeTabs } = useSelector((state) => state.utils);
 
-  const { activeId } = useSelector((state) => state.utils?.activeTabs);
-
-  const onSortPosts = (value) => {
-    if (value === 1) {
-      dispatch(setActiveTab(1));
-    } else {
-      dispatch(setActiveTab(0));
+  function onSortPosts(type) {
+    if (type === 'new') {
+      dispatch(setActiveTab({ activeId: 0, activeType: 'new' }));
     }
 
-    if (Object.entries(tagName).length) {
-      dispatch(fetchSortedPostsLikeTag({ value, tagName }));
-    } else {
-      dispatch(fetchSortedPosts(value));
+    if (type === 'popular') {
+      dispatch(setActiveTab({ activeId: 1, activeType: 'popular' }));
     }
-  };
-
-  React.useEffect(() => {
-    if (Object.entries(tagName).length) {
-      dispatch(fetchSortedPostsLikeTag({ activeId, tagName }));
-    } else {
-      dispatch(fetchPosts());
-    }
-  }, []);
-
-  React.useEffect(() => {
-    setActiveTab(activeId);
-  }, [activeId]);
+  }
 
   return (
-    <Tabs value={activeId} aria-label="Sort tabs" style={{ marginBottom: 15 }}>
+    <Tabs
+      value={activeTabs.activeId}
+      aria-label="Sort tabs"
+      style={{ marginBottom: 15 }}
+    >
       <Tab
         onClick={() => {
-          onSortPosts(0);
+          onSortPosts('new');
           dispatch(resetSearchString(new Date().valueOf()));
         }}
         label="Новые"
       />
       <Tab
         onClick={() => {
-          onSortPosts(1);
+          onSortPosts('popular');
           dispatch(resetSearchString(new Date().valueOf()));
         }}
         label="Популярные"

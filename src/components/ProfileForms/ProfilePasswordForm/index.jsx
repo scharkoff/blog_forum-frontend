@@ -29,6 +29,7 @@ export const ProfilePasswordForm = React.memo(
       },
       mode: 'onChange',
     });
+
     return (
       <form onSubmit={passwordForm.handleSubmit(onSubmitPassword)}>
         <Grid

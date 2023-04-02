@@ -10,7 +10,8 @@ const initialState = {
     },
 
     activeTabs: {
-        activeId: 0
+        activeId: 0,
+        activeType: 'new'
     }
 };
 
@@ -27,7 +28,8 @@ const utilsSlice = createSlice({
         },
 
         setActiveTab(state, action) {
-            state.activeTabs.activeId = action.payload;
+            state.activeTabs.activeId = action.payload?.activeId;
+            state.activeTabs.activeType = action.payload?.activeType;
         }
 
     }

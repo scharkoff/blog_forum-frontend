@@ -14,10 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { SideBlock } from '../SideBlock';
-
-import { fetchPostsLikeTag } from 'redux/slices/tags';
 import { resetSearchString } from 'redux/slices/utils';
-import { setActiveTag } from 'redux/slices/posts';
+import { fetchSortedPostsLikeTag, setActiveTag } from 'redux/slices/posts';
 
 export const TagsBlock = React.memo(({ tags, isLoading = true }) => {
   const dispatch = useDispatch();
@@ -35,7 +33,7 @@ export const TagsBlock = React.memo(({ tags, isLoading = true }) => {
 
   const onGetPosts = (name) => {
     dispatch(setActiveTag(name));
-    dispatch(fetchPostsLikeTag(name));
+    dispatch(fetchSortedPostsLikeTag(name));
     setActiveTagName(name);
   };
 
