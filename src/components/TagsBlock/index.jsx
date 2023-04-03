@@ -14,13 +14,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { SideBlock } from '../SideBlock';
-import { resetSearchString } from 'redux/slices/utils';
-import { fetchSortedPostsLikeTag, setActiveTag } from 'redux/slices/posts';
+import { resetSearchString, setActivePage } from 'redux/slices/utils';
+import { fetchPosts, setActiveTag } from 'redux/slices/posts';
 
 export const TagsBlock = React.memo(({ tags, isLoading = true }) => {
   const dispatch = useDispatch();
+
   const { activeTag } = useSelector((state) => state.posts?.tags);
+  const { activeTabs } = useSelector((state) => state.utils);
+
   const [activeTagName, setActiveTagName] = React.useState(null);
+
   const { name } = useParams();
 
   React.useEffect(() => {
@@ -33,7 +37,13 @@ export const TagsBlock = React.memo(({ tags, isLoading = true }) => {
 
   const onGetPosts = (name) => {
     dispatch(setActiveTag(name));
-    dispatch(fetchSortedPostsLikeTag(name));
+    dispatch(
+      fetchPosts({
+        pageOptions: [1, 5],
+        activeTabs,
+        tagName: name,
+      })
+    );
     setActiveTagName(name);
   };
 
@@ -56,6 +66,7 @@ export const TagsBlock = React.memo(({ tags, isLoading = true }) => {
               }}
               key={i}
               onClick={() => {
+                dispatch(setActivePage(0));
                 onGetPosts(tagName);
                 dispatch(resetSearchString(new Date().valueOf()));
               }}

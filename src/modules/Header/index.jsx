@@ -13,7 +13,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchPosts, setActiveTag } from 'redux/slices/posts';
 import { logout, selectIsAuth } from 'redux/slices/auth';
-import { setActiveTab, resetSearchString } from 'redux/slices/utils';
+import {
+  setActiveTab,
+  resetSearchString,
+  setActivePage,
+} from 'redux/slices/utils';
 import { Avatar } from '@mui/material';
 
 export const Header = () => {
@@ -38,10 +42,11 @@ export const Header = () => {
         <div className={styles.inner}>
           <Link
             onClick={() => {
-              dispatch(fetchPosts({ pageOptions: [1, 5], activeTabs }));
+              dispatch(fetchPosts({ activeTabs }));
               dispatch(setActiveTag(null));
               dispatch(setActiveTab({ activeId: 0, activeType: 'new' }));
               dispatch(resetSearchString(new Date().valueOf()));
+              dispatch(setActivePage(0));
             }}
             className={styles.logo}
             to="/"

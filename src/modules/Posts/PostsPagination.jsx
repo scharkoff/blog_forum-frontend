@@ -7,44 +7,28 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { Post } from 'components/Post';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'configs/axios/axios';
 import { fetchPosts } from 'redux/slices/posts';
+import { setActivePage } from 'redux/slices/utils';
 
 export const PostsPagination = () => {
-  const dipatch = useDispatch();
+  const dispatch = useDispatch();
 
   const userData = useSelector((state) => state.auth.data);
   const { postsCount } = useSelector((state) => state.posts.posts);
   const { activeTabs } = useSelector((state) => state.utils);
-
-  const [data, setData] = React.useState([]);
-  const [activePage, setActivePage] = React.useState(0);
-
-  React.useEffect(() => {
-    console.log('Data', data);
-  }, [data]);
+  const { activeTag } = useSelector((state) => state.posts.tags);
+  const { activePage } = useSelector((state) => state.utils);
+  const posts = useSelector((state) => state.posts.posts.items);
 
   React.useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-
-    dipatch(fetchPosts({ pageOptions: [activePage + 1, 5], activeTabs }));
-
-    axios
-      .get(
-        `/posts?page=${activePage + 1}&pageSize=5&sortType=${
-          activeTabs.activeType
-        }`,
-        {
-          signal,
-        }
-      )
-      .then(({ data }) => {
-        setData(data.posts);
-      });
-
-    return () => abortController.abort();
-  }, [activePage, activeTabs]);
+    dispatch(
+      fetchPosts({
+        pageOptions: [activePage + 1, 5],
+        activeTabs,
+        tagName: activeTag,
+      })
+    );
+  }, [activePage, activeTabs, activeTag]);
 
   function Items({ currentItems }) {
     return (
@@ -75,11 +59,11 @@ export const PostsPagination = () => {
   }
 
   function PaginatedItems({ itemsPerPage }) {
-    const currentItems = data.slice(0, 5);
+    const currentItems = posts.slice(0, 5);
     const pageCount = Math.ceil(postsCount / itemsPerPage) || 1;
 
     const handlePageClick = (event) => {
-      setActivePage(event.selected);
+      dispatch(setActivePage(event.selected));
     };
 
     return (

@@ -12,7 +12,9 @@ const initialState = {
     activeTabs: {
         activeId: 0,
         activeType: 'new'
-    }
+    },
+
+    activePage: 0,
 };
 
 const utilsSlice = createSlice({
@@ -30,11 +32,15 @@ const utilsSlice = createSlice({
         setActiveTab(state, action) {
             state.activeTabs.activeId = action.payload?.activeId;
             state.activeTabs.activeType = action.payload?.activeType;
+        },
+
+        setActivePage(state, action) {
+            state.activePage = action.payload;
         }
 
     }
 })
 
-export const { resetSearchString, setIsMobile, setActiveTab } = utilsSlice.actions;
+export const { resetSearchString, setIsMobile, setActiveTab, setActivePage } = utilsSlice.actions;
 export const utilsReducer = utilsSlice.reducer;
 

@@ -18,11 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
 
-import {
-  fetchPosts,
-  fetchRemovePost,
-  fetchSortedPostsLikeTag,
-} from 'redux/slices/posts';
+import { fetchPosts, fetchRemovePost } from 'redux/slices/posts';
 
 export const Post = ({
   id,
@@ -49,7 +45,7 @@ export const Post = ({
     if (window.confirm('Вы действительно хотите удалить статью?')) {
       try {
         dispatch(fetchRemovePost(id));
-        dispatch(fetchPosts({ pageOptions: [1, 5], activeTabs }));
+        dispatch(fetchPosts({ activeTabs }));
 
         if (isFullPost) {
           return navigate('/');
@@ -108,7 +104,15 @@ export const Post = ({
             {tags.map((name) => (
               <li
                 key={name}
-                onClick={() => dispatch(fetchSortedPostsLikeTag(name))}
+                onClick={() =>
+                  dispatch(
+                    fetchPosts({
+                      pageOptions: [1, 5],
+                      activeTabs,
+                      tagName: name,
+                    })
+                  )
+                }
               >
                 <Link to={`/tags/${name}`}>#{name}</Link>
               </li>

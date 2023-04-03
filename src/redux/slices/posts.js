@@ -14,21 +14,12 @@ import {
 } from "./tags";
 
 
-export const fetchPosts = createAsyncThunk("posts/fetchPosts", async ({ pageOptions, activeTabs }) => {
-  const { data } = await axios.get(`/posts?page=${pageOptions[0]}&pageSize=${pageOptions[1]}&sortType=${activeTabs.activeType}`);
+export const fetchPosts = createAsyncThunk("posts/fetchPosts", async ({ pageOptions = [1, 5], activeTabs, tagName = null }) => {
+  const { data } = await axios.get(`/posts?tag=${tagName}&page=${pageOptions[0]}&pageSize=${pageOptions[1]}&sortType=${activeTabs.activeType}`);
   console.log(data)
 
   return { posts: data.posts, postsCount: data.postsCount };
 });
-
-export const fetchSortedPostsLikeTag = createAsyncThunk(
-  "posts/fetchSortedPostsLikeTag",
-  async ({ pageOptions, activeTabs, tagName }) => {
-    const { data } = await axios.get(`/posts/tag/${tagName.name}/?page=${pageOptions[0]}&pageSize=${pageOptions[1]}&sortType=${activeTabs.activeType}`);
-
-    return { posts: data.posts, postsCount: data.postsCount };
-  }
-);
 
 
 export const fetchRemovePost = createAsyncThunk(
@@ -48,6 +39,7 @@ const initialState = {
   tags: {
     items: [],
     status: "loading",
+    activeTag: null
   },
   comments: {
     items: [],
@@ -95,19 +87,6 @@ const postsSlice = createSlice({
       state.posts.home = true;
     },
     [fetchPosts.rejected]: (state, action) => {
-      state.posts.status = "error";
-    },
-
-    [fetchSortedPostsLikeTag.pending]: (state, action) => {
-      state.posts.status = "loading";
-    },
-    [fetchSortedPostsLikeTag.fulfilled]: (state, action) => {
-      state.posts.items = action.payload?.posts;
-      state.posts.postsCount = action.payload?.postsCount;
-      state.posts.status = "loaded";
-      state.posts.home = false;
-    },
-    [fetchSortedPostsLikeTag.rejected]: (state, action) => {
       state.posts.status = "error";
     },
 

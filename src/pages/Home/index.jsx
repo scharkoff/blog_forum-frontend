@@ -10,9 +10,13 @@ import { fetchTags } from 'redux/slices/tags';
 import { fetchAuthMe } from 'redux/slices/auth';
 import { fetchComments, fetchLastsComments } from 'redux/slices/comments';
 import styles from './Home.module.scss';
+import { setActiveTag } from 'redux/slices/posts';
+import { useParams } from 'react-router-dom';
 
 export const Home = () => {
   const dispatch = useDispatch();
+
+  const tag = useParams();
 
   const { comments, tags, status, isHomePage } = useSelector(
     useMemo(
@@ -40,6 +44,7 @@ export const Home = () => {
     dispatch(fetchLastsComments());
     dispatch(fetchComments());
     dispatch(fetchAuthMe());
+    dispatch(setActiveTag(tag.name));
   }, []);
 
   return (
