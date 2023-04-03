@@ -26,16 +26,6 @@ export const UserEmailForm = React.memo(
       handlingInternalOrServerError(response, setAlertOptions);
     };
 
-    function validateEmail(emailField) {
-      var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-
-      if (reg.test(emailField.value) === false) {
-        return false;
-      }
-
-      return true;
-    }
-
     return (
       <form onSubmit={emailForm.handleSubmit(onSubmitEmail)}>
         <Grid container spacing={1} marginTop={2} alignItems="center">
@@ -64,14 +54,6 @@ export const UserEmailForm = React.memo(
               type="submit"
               size="small"
               variant="text"
-              onClick={() => {
-                const values = emailForm.getValues();
-                if (validateEmail(values.email)) {
-                  emailForm.setError('email', {
-                    message: 'Неверный формат почты!',
-                  });
-                }
-              }}
             >
               Сохранить изменения
             </Button>
@@ -79,5 +61,5 @@ export const UserEmailForm = React.memo(
         </Grid>
       </form>
     );
-  }
+  },
 );

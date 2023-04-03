@@ -12,7 +12,6 @@ import Skeleton from '@mui/material/Skeleton';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-
 import { SideBlock } from '../SideBlock';
 import { resetSearchString, setActivePage } from 'redux/slices/utils';
 import { fetchPosts, setActiveTag } from 'redux/slices/posts';
@@ -42,7 +41,7 @@ export const TagsBlock = React.memo(({ tags, isLoading = true }) => {
         pageOptions: [1, 5],
         activeTabs,
         tagName: name,
-      })
+      }),
     );
     setActiveTagName(name);
   };
@@ -75,7 +74,9 @@ export const TagsBlock = React.memo(({ tags, isLoading = true }) => {
               <ListItemButton>
                 <ListItemIcon>
                   <TagIcon
-                    style={{ color: activeTagName === tagName ? 'white' : '' }}
+                    style={{
+                      color: activeTagName === tagName ? 'white' : '',
+                    }}
                   />
                 </ListItemIcon>
                 {isLoading ? (

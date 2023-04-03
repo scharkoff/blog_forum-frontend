@@ -11,9 +11,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 
-// React-redux
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Img } from 'react-image';
 
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
@@ -80,8 +80,10 @@ export const Post = ({
       )}
       {imageUrl && (
         <Link to={`/posts/${id}`}>
-          <img
-            className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
+          <Img
+            className={clsx(styles.image, {
+              [styles.imageFull]: isFullPost,
+            })}
             src={imageUrl}
             onError={(e) =>
               (e.target.src = `${
@@ -96,7 +98,9 @@ export const Post = ({
         <UserInfo {...user} additionalText={createdAt} />
         <div className={styles.indention}>
           <h2
-            className={clsx(styles.title, { [styles.titleFull]: isFullPost })}
+            className={clsx(styles.title, {
+              [styles.titleFull]: isFullPost,
+            })}
           >
             {isFullPost ? title : <Link to={`/posts/${id}`}>{title}</Link>}
           </h2>
@@ -110,7 +114,7 @@ export const Post = ({
                       pageOptions: [1, 5],
                       activeTabs,
                       tagName: name,
-                    })
+                    }),
                   )
                 }
               >

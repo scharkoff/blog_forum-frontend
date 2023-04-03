@@ -24,9 +24,8 @@ export const RegistrationForm = () => {
 
   const [alertVariables, setAlertOptions] = useAlertMessage();
 
-  const { register, handleSubmit, setError, formState, getValues } = useForm({
+  const { register, handleSubmit, formState } = useForm({
     defaultValues: {
-      rank: 'user',
       fullName: '',
       email: '',
       password: '',
@@ -81,7 +80,9 @@ export const RegistrationForm = () => {
             className={styles.field}
             label="Пароль"
             fullWidth
-            {...register('password', { required: 'Введите пароль' })}
+            {...register('password', {
+              required: 'Введите пароль',
+            })}
             helperText={formState.errors.password?.message}
             error={Boolean(formState.errors.password?.message)}
           />

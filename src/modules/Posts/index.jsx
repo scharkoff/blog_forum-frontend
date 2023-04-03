@@ -14,7 +14,6 @@ export const Posts = () => {
   const { posts } = state.posts;
 
   const [postsArray, setPostsArray] = React.useState([]);
-  const [copyOfPosts, setCopyOfPosts] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [alertVariables, setAlertOptions] = useAlertMessage();
@@ -22,7 +21,6 @@ export const Posts = () => {
   React.useEffect(() => {
     if (posts.items) {
       setPostsArray(posts.items);
-      setCopyOfPosts(posts.items);
       setIsLoading(false);
     }
 
@@ -44,7 +42,7 @@ export const Posts = () => {
   return (
     <div>
       <AlertMessage {...alertVariables} />
-      <SearchString setPostsArray={setPostsArray} copyOfPosts={copyOfPosts} />
+      <SearchString />
       <PostsPagination postsArray={postsArray} />
     </div>
   );

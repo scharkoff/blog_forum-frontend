@@ -18,8 +18,8 @@ export const AdminSearchString = ({ setRows, copyOfRows }) => {
         (row) =>
           row.fullName.toLowerCase().includes(words.toLowerCase()) ||
           row.email.toLowerCase().includes(words.toLowerCase()) ||
-          row.rank.toLowerCase().includes(words.toLowerCase())
-      )
+          row.rank.toLowerCase().includes(words.toLowerCase()),
+      ),
     );
   };
   return (

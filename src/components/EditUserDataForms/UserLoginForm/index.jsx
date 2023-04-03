@@ -70,5 +70,5 @@ export const UserLoginForm = React.memo(
         </Grid>
       </form>
     );
-  }
+  },
 );

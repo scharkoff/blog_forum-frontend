@@ -65,5 +65,5 @@ export const UserPasswordForm = React.memo(
         </Grid>
       </form>
     );
-  }
+  },
 );

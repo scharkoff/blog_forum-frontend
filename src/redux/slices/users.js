@@ -1,10 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "configs/axios/axios";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'configs/axios/axios';
 
-
-export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
+export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   try {
-    const { data } = await axios.get("/users");
+    const { data } = await axios.get('/users');
 
     return data.users;
   } catch (error) {
@@ -13,7 +12,7 @@ export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
 });
 
 export const fetchDeleteUser = createAsyncThunk(
-  "users/fetchDeleteUser",
+  'users/fetchDeleteUser',
   async (id) => {
     try {
       const { data } = await axios.delete(`/users/delete/${id}`);
@@ -21,12 +20,11 @@ export const fetchDeleteUser = createAsyncThunk(
     } catch (error) {
       return { ...error.response.data, isError: true };
     }
-
-  }
+  },
 );
 
 export const fetchUpdateByCondition = createAsyncThunk(
-  "auth/fetchUpdateByCondition",
+  'auth/fetchUpdateByCondition',
   async (params) => {
     try {
       const { data } = await axios.patch(`/users/${params.id}`, params);
@@ -34,27 +32,23 @@ export const fetchUpdateByCondition = createAsyncThunk(
     } catch (error) {
       return { ...error.response.data, isError: true };
     }
-  }
+  },
 );
-
-
-
 
 const initialState = {
   data: [],
-  status: "loading",
+  status: 'loading',
 };
 
 const usersSlice = createSlice({
-  name: "users",
+  name: 'users',
   initialState,
   reducers: {},
   extraReducers: {
-
     [fetchUsers.fulfilled]: (state, action) => {
       if (!action.payload.isError) {
         state.data = action.payload;
-        state.status = "loaded";
+        state.status = 'loaded';
       }
     },
 

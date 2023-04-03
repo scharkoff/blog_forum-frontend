@@ -1,36 +1,33 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
 import styles from './SearchString.module.scss';
-
-import store from 'redux/store';
-
 import TextField from '@mui/material/TextField';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPosts } from 'redux/slices/posts';
+import { setActivePage } from 'redux/slices/utils';
+import { useParams } from 'react-router-dom';
 
-export const SearchString = ({ setPostsArray, copyOfPosts }) => {
-  const state = store.getState();
+export const SearchString = () => {
+  const dispatch = useDispatch();
 
-  const isResetSearchStringValue = state.utils?.search?.resetSearchString;
+  const tag = useParams();
+
+  const { resetSearchString } = useSelector((state) => state.utils.search);
+  const { activeTabs } = useSelector((state) => state.utils);
+
   const [searchText, setSearchText] = React.useState('');
 
   React.useEffect(() => {
-    if (isResetSearchStringValue) {
-      setSearchText('');
-    }
-  }, [isResetSearchStringValue]);
+    setSearchText('');
+  }, [resetSearchString]);
 
   const getPostsLikeSearchText = (e) => {
-    const words = e.target.value;
-    setSearchText(words);
-    setPostsArray(
-      copyOfPosts.filter((post) =>
-        post.title.toLowerCase().includes(words.toLowerCase())
-      )
-    );
+    e.preventDefault();
+    dispatch(setActivePage(0));
+    dispatch(fetchPosts({ activeTabs, searchText, tagName: tag.name }));
   };
 
   return (
-    <>
+    <form onSubmit={(e) => getPostsLikeSearchText(e)}>
       <TextField
         style={{ marginBottom: 15 }}
         variant="filled"
@@ -38,13 +35,9 @@ export const SearchString = ({ setPostsArray, copyOfPosts }) => {
         id="search"
         label="Поиск статьи..."
         value={searchText}
-        onChange={(e) => getPostsLikeSearchText(e)}
+        onChange={(e) => setSearchText(e.target.value)}
+        onSubmit={(e) => getPostsLikeSearchText(e)}
       />
-    </>
+    </form>
   );
-};
-
-SearchString.propTypes = {
-  setPostsArray: PropTypes.func.isRequired,
-  copyOfPosts: PropTypes.array.isRequired,
 };

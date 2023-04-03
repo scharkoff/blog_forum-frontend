@@ -33,11 +33,11 @@ export const CommentsBlock = React.memo(
     const id = useParams();
 
     const userId = useSelector((state) =>
-      state.auth.data ? state.auth.data._id : null
+      state.auth.data ? state.auth.data._id : null,
     );
 
     const userRank = useSelector((state) =>
-      state.auth.data ? state.auth.data.rank : null
+      state.auth.data ? state.auth.data.rank : null,
     );
 
     function onRemoveComment(commentId) {
@@ -69,7 +69,12 @@ export const CommentsBlock = React.memo(
                   )}
                 </ListItemAvatar>
                 {isLoading ? (
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Skeleton variant="text" height={25} width={120} />
                     <Skeleton variant="text" height={18} width={230} />
                   </div>
@@ -79,7 +84,9 @@ export const CommentsBlock = React.memo(
                       primary={
                         <React.Fragment>
                           <Typography
-                            sx={{ display: 'inline' }}
+                            sx={{
+                              display: 'inline',
+                            }}
                             component="span"
                             variant="body2"
                             color="text.primary"
@@ -126,7 +133,7 @@ export const CommentsBlock = React.memo(
         {children}
       </SideBlock>
     );
-  }
+  },
 );
 
 CommentsBlock.propTypes = {

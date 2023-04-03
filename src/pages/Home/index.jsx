@@ -18,16 +18,15 @@ export const Home = () => {
 
   const tag = useParams();
 
-  const { comments, tags, status, isHomePage } = useSelector(
+  const { comments, tags, status } = useSelector(
     useMemo(
       () => (state) => ({
         comments: state.posts.comments,
         tags: state.posts.tags,
         status: state.posts.comments?.status,
-        isHomePage: state.posts.posts?.home,
       }),
-      []
-    )
+      [],
+    ),
   );
 
   const [isLoading, setIsLoading] = React.useState(true);
@@ -58,7 +57,6 @@ export const Home = () => {
 
         <Grid xs={4} item className={styles.tags}>
           <TagsBlock
-            isHomePage={isHomePage}
             tags={tags.items ? tags.items : []}
             isLoading={isLoading}
           />

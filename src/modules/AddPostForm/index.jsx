@@ -1,4 +1,5 @@
 import React from 'react';
+import { Img } from 'react-image';
 
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
@@ -81,7 +82,7 @@ export const AddPostForm = ({ id }) => {
         delay: 1000,
       },
     }),
-    []
+    [],
   );
 
   const submitPostDTO = {
@@ -139,7 +140,7 @@ export const AddPostForm = ({ id }) => {
             >
               Удалить
             </Button>
-            <img
+            <Img
               className={styles.image}
               src={`${
                 process.env.REACT_APP_API_URL || 'http://localhost:4444'

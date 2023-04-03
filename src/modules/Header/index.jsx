@@ -44,7 +44,12 @@ export const Header = () => {
             onClick={() => {
               dispatch(fetchPosts({ activeTabs }));
               dispatch(setActiveTag(null));
-              dispatch(setActiveTab({ activeId: 0, activeType: 'new' }));
+              dispatch(
+                setActiveTab({
+                  activeId: 0,
+                  activeType: 'new',
+                }),
+              );
               dispatch(resetSearchString(new Date().valueOf()));
               dispatch(setActivePage(0));
             }}

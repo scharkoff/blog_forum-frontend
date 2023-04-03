@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
-import { resetSearchString, setActiveTab } from 'redux/slices/utils';
+import {
+  resetSearchString,
+  setActivePage,
+  setActiveTab,
+} from 'redux/slices/utils';
 import {} from 'redux/slices/tags';
 
 export const SortTabs = () => {
@@ -13,6 +17,8 @@ export const SortTabs = () => {
   const { activeTabs } = useSelector((state) => state.utils);
 
   function onSortPosts(type) {
+    dispatch(setActivePage(0));
+
     if (type === 'new') {
       dispatch(setActiveTab({ activeId: 0, activeType: 'new' }));
     }

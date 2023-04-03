@@ -75,7 +75,7 @@ export const ProfilePasswordForm = React.memo(
         </Grid>
       </form>
     );
-  }
+  },
 );
 
 PropTypes.ProfilePasswordForm = {

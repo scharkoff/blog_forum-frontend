@@ -60,5 +60,5 @@ export const UserRankForm = React.memo(
         </Grid>
       </form>
     );
-  }
+  },
 );

@@ -1,17 +1,16 @@
-import React from "react";
+import React from 'react';
 
-import Container from "@mui/material/Container";
+import Container from '@mui/material/Container';
 
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 
-import { fetchAuthMe } from "redux/slices/auth";
-import { setIsMobile } from "redux/slices/utils";
-import { AllRoutes } from "./routes";
-import { Header } from "modules/Header";
-import { Loader } from "components";
+import { fetchAuthMe } from 'redux/slices/auth';
+import { setIsMobile } from 'redux/slices/utils';
+import { AllRoutes } from './routes';
+import { Header } from 'modules/Header';
+import { Loader } from 'components';
 
 function App() {
-
   const dispatch = useDispatch();
 
   const [width, setWidth] = React.useState(window.innerWidth),
@@ -20,26 +19,27 @@ function App() {
   React.useEffect(() => {
     (async () => {
       const response = await dispatch(fetchAuthMe());
-      if (response) setTimeout(() => { setOpenLoader(false) }, 1000);
+      if (response)
+        setTimeout(() => {
+          setOpenLoader(false);
+        }, 1000);
     })();
   }, []);
-
 
   function handleWindowSizeChange() {
     setWidth(window.innerWidth);
   }
 
   React.useEffect(() => {
-    window.addEventListener("resize", handleWindowSizeChange);
+    window.addEventListener('resize', handleWindowSizeChange);
     return () => {
-      window.removeEventListener("resize", handleWindowSizeChange);
+      window.removeEventListener('resize', handleWindowSizeChange);
     };
   }, []);
 
   React.useEffect(() => {
     width <= 768 ? dispatch(setIsMobile(true)) : dispatch(setIsMobile(false));
-  }, [width])
-
+  }, [width]);
 
   return (
     <>

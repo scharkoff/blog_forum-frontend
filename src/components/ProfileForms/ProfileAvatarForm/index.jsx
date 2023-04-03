@@ -92,7 +92,9 @@ export const ProfileAvatarForm = React.memo(
               value={newAvatarUrl}
               variant="standard"
               sx={{ width: 0, height: 0 }}
-              {...avatarForm.register('avatarUrl', { required: true })}
+              {...avatarForm.register('avatarUrl', {
+                required: true,
+              })}
             />
           </Grid>
 
@@ -109,7 +111,7 @@ export const ProfileAvatarForm = React.memo(
         </Grid>
       </form>
     );
-  }
+  },
 );
 
 PropTypes.ProfileAvatarForm = {

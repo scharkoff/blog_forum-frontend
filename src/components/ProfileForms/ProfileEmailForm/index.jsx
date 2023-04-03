@@ -17,16 +17,6 @@ export const ProfileEmailForm = React.memo(
 
     const { id } = useParams();
 
-    function validateEmail(emailField) {
-      var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-
-      if (reg.test(emailField.value) === false) {
-        return false;
-      }
-
-      return true;
-    }
-
     const onSubmitEmail = async (values) => {
       const response = await dispatch(fetchUpdateByCondition(values));
       handlingInternalOrServerError(response, setAlertOptions);
@@ -60,8 +50,6 @@ export const ProfileEmailForm = React.memo(
               fullWidth
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              helperText={emailForm.formState.errors.email?.message}
-              error={Boolean(emailForm.formState.errors.email?.message)}
             />
           </Grid>
           <Grid item>
@@ -70,14 +58,6 @@ export const ProfileEmailForm = React.memo(
               type="submit"
               size="small"
               variant="text"
-              onClick={() => {
-                const values = emailForm.getValues();
-                if (validateEmail(values.email)) {
-                  emailForm.setError('email', {
-                    message: 'Неверный формат почты!',
-                  });
-                }
-              }}
             >
               Сохранить изменения
             </Button>
@@ -85,7 +65,7 @@ export const ProfileEmailForm = React.memo(
         </Grid>
       </form>
     );
-  }
+  },
 );
 
 PropTypes.ProfileEmailForm = {

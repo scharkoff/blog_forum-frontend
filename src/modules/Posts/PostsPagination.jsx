@@ -26,7 +26,7 @@ export const PostsPagination = () => {
         pageOptions: [activePage + 1, 5],
         activeTabs,
         tagName: activeTag,
-      })
+      }),
     );
   }, [activePage, activeTabs, activeTag]);
 
