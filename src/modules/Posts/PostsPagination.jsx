@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactPaginate from 'react-paginate';
-
 import styles from './Posts.module.scss';
-
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { Post } from 'components/Post';
@@ -10,15 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts } from 'redux/slices/posts';
 import { setActivePage } from 'redux/slices/utils';
 
-export const PostsPagination = () => {
+export const PostsPagination = ({ posts }) => {
   const dispatch = useDispatch();
 
-  const userData = useSelector((state) => state.auth.data);
+  const { userData } = useSelector((state) => state.auth.data);
   const { postsCount } = useSelector((state) => state.posts.posts);
-  const { activeTabs } = useSelector((state) => state.utils);
+  const { activeTabs, activePage } = useSelector((state) => state.utils);
   const { activeTag } = useSelector((state) => state.posts.tags);
-  const { activePage } = useSelector((state) => state.utils);
-  const posts = useSelector((state) => state.posts.posts.items);
 
   React.useEffect(() => {
     dispatch(

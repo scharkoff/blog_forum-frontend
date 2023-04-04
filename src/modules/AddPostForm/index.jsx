@@ -1,17 +1,12 @@
 import React from 'react';
 import { Img } from 'react-image';
-
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-
 import { AlertMessage } from 'components/AlertMessage';
-
 import SimpleMDE from 'react-simplemde-editor';
-
 import 'easymde/dist/easymde.min.css';
 import styles from './scss/AddPost.module.scss';
-
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axios from 'configs/axios/axios';
@@ -26,13 +21,16 @@ export const AddPostForm = ({ id }) => {
 
   const [alertVariables, setAlertOptions] = useAlertMessage();
 
-  const [text, setText] = React.useState(''),
-    [imageUrl, setImageUrl] = React.useState(''),
-    [tags, setTags] = React.useState(''),
-    [title, setTitle] = React.useState(''),
-    [authorId, setAuthorId] = React.useState(''),
-    inputFileRef = React.useRef(null),
-    [isLoading, setIsLoading] = React.useState(true);
+  const inputFileRef = React.useRef(null);
+
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [createPostFields, setCreatePostFields] = React.useState({
+    text: '',
+    title: '',
+    imageUrl: '',
+    tags: '',
+    authorId: '',
+  });
 
   const isEditing = Boolean(id);
 
@@ -47,11 +45,14 @@ export const AddPostForm = ({ id }) => {
       axios
         .get(`/posts/${id}`)
         .then(({ data }) => {
-          setTitle(data.post?.title);
-          setText(data.post?.text);
-          setImageUrl(data.post?.imageUrl);
-          setTags(data.post?.tags);
-          setAuthorId(data.post?.user?._id);
+          setCreatePostFields({
+            ...createPostFields,
+            title: data.post?.title,
+            text: data.post?.text,
+            imageUrl: data.post?.imageUrl,
+            tags: data.post?.tags,
+            authorId: data.post?.user?._id,
+          });
           setIsLoading(false);
         })
         .catch((error) => {
@@ -63,11 +64,17 @@ export const AddPostForm = ({ id }) => {
   }, []);
 
   const onClickRemoveImage = () => {
-    setImageUrl('');
+    setCreatePostFields({
+      ...createPostFields,
+      imageUrl: '',
+    });
   };
 
   const onChange = React.useCallback((value) => {
-    setText(value);
+    setCreatePostFields({
+      ...createPostFields,
+      text: value,
+    });
   }, []);
 
   const options = React.useMemo(
@@ -85,12 +92,8 @@ export const AddPostForm = ({ id }) => {
     [],
   );
 
-  const submitPostDTO = {
-    title,
-    text,
-    imageUrl,
-    tags,
-    authorId,
+  const submitPostProps = {
+    ...createPostFields,
     isEditing,
     setAlertOptions,
     navigate,
@@ -98,8 +101,9 @@ export const AddPostForm = ({ id }) => {
     dispatch,
   };
 
-  const handleChangeFileDTO = {
-    setImageUrl,
+  const handleChangeFileProps = {
+    createPostFields,
+    setCreatePostFields,
     setAlertOptions,
   };
 
@@ -128,10 +132,10 @@ export const AddPostForm = ({ id }) => {
           ref={inputFileRef}
           type="file"
           name="image"
-          onChange={(e) => handleChangeFile(e, handleChangeFileDTO)}
+          onChange={(e) => handleChangeFile(e, handleChangeFileProps)}
           hidden
         />
-        {imageUrl && (
+        {createPostFields.imageUrl && (
           <>
             <Button
               variant="contained"
@@ -144,7 +148,7 @@ export const AddPostForm = ({ id }) => {
               className={styles.image}
               src={`${
                 process.env.REACT_APP_API_URL || 'http://localhost:4444'
-              }${imageUrl}`}
+              }${createPostFields.imageUrl}`}
               alt="Uploaded"
             />
           </>
@@ -155,27 +159,31 @@ export const AddPostForm = ({ id }) => {
           classes={{ root: styles.title }}
           variant="standard"
           placeholder="Заголовок статьи..."
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={createPostFields.title}
+          onChange={(e) =>
+            setCreatePostFields({ ...createPostFields, title: e.target.value })
+          }
           fullWidth
         />
         <TextField
           classes={{ root: styles.tags }}
           variant="standard"
           placeholder="Тэги через запятую, например: лето, зима, весна"
-          value={tags}
-          onChange={(e) => setTags(e.target.value)}
+          value={createPostFields.tags}
+          onChange={(e) =>
+            setCreatePostFields({ ...createPostFields, tags: e.target.value })
+          }
           fullWidth
         />
         <SimpleMDE
           className={styles.editor}
-          value={text}
+          value={createPostFields.text}
           onChange={onChange}
           options={options}
         />
         <div className={styles.buttons}>
           <Button
-            onClick={() => onSubmitPost(submitPostDTO)}
+            onClick={() => onSubmitPost(submitPostProps)}
             size="large"
             variant="contained"
           >

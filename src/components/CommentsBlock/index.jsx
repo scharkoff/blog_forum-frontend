@@ -32,13 +32,8 @@ export const CommentsBlock = React.memo(
 
     const id = useParams();
 
-    const userId = useSelector((state) =>
-      state.auth.data ? state.auth.data._id : null,
-    );
-
-    const userRank = useSelector((state) =>
-      state.auth.data ? state.auth.data.rank : null,
-    );
+    const userId = useSelector((state) => state.auth.data.userData?._id);
+    const userRank = useSelector((state) => state.auth.data.userData?.rank);
 
     function onRemoveComment(commentId) {
       if (window.confirm('Вы действительно хотите удалить комментарий?')) {

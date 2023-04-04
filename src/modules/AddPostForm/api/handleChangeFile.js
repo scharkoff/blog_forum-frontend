@@ -2,15 +2,15 @@ import axios from 'configs/axios/axios';
 
 export const handleChangeFile = async (
   event,
-  { setImageUrl, setAlertOptions },
+  { createPostFields, setCreatePostFields, setAlertOptions },
 ) => {
   try {
     const formData = new FormData();
     const file = event.target.files[0];
     formData.append('image', file);
     const { data } = await axios.post('/upload', formData);
-    setImageUrl(data.url);
+    setCreatePostFields({ ...createPostFields, imageUrl: data.url });
   } catch (error) {
-    setAlertOptions(true, 'error', 'Не удалось загрузить изображение!');
+    setAlertOptions(true, 'error', 'Не удалось загрузить изображение');
   }
 };

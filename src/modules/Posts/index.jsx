@@ -1,26 +1,20 @@
 import React from 'react';
-
-import store from 'redux/store';
-
 import { Post } from 'components/Post';
 import { SearchString } from 'components/SearchString';
 import { AlertMessage } from 'components/AlertMessage';
 import { useAlertMessage } from 'hooks/useAlertMessage';
 import { PostsPagination } from './PostsPagination';
+import { useSelector } from 'react-redux';
 
 export const Posts = () => {
-  const state = store.getState();
-
-  const { posts } = state.posts;
-
-  const [postsArray, setPostsArray] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [alertVariables, setAlertOptions] = useAlertMessage();
 
+  const { posts } = useSelector((state) => state.posts);
+
   React.useEffect(() => {
     if (posts.items) {
-      setPostsArray(posts.items);
       setIsLoading(false);
     }
 
@@ -43,7 +37,7 @@ export const Posts = () => {
     <div>
       <AlertMessage {...alertVariables} />
       <SearchString />
-      <PostsPagination postsArray={postsArray} />
+      <PostsPagination posts={posts.items} />
     </div>
   );
 };

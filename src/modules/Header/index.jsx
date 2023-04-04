@@ -24,7 +24,7 @@ export const Header = () => {
   const dispatch = useDispatch();
 
   const isAuth = useSelector(selectIsAuth);
-  const user = useSelector((state) => state.auth?.data);
+  const { userData } = useSelector((state) => state.auth.data);
   const { activeTabs } = useSelector((state) => state.utils);
 
   const onClickLogout = () => {
@@ -61,12 +61,15 @@ export const Header = () => {
           <div className={styles.buttons}>
             {isAuth ? (
               <>
-                <Link to={`/profile/${user?._id}`} style={{ marginLeft: 10 }}>
-                  {user ? (
+                <Link
+                  to={`/profile/${userData?._id}`}
+                  style={{ marginLeft: 10 }}
+                >
+                  {userData ? (
                     <Avatar
                       src={`${
                         process.env.REACT_APP_API_URL || 'http://localhost:4444'
-                      }${user.avatarUrl}`}
+                      }${userData.avatarUrl}`}
                       variant="rounded"
                       sx={
                         !isMobile
@@ -78,7 +81,7 @@ export const Header = () => {
                     ''
                   )}
                 </Link>
-                {user.rank === 'admin' ? (
+                {userData.rank === 'admin' ? (
                   <Link to="/admin-panel" style={{ marginLeft: 10 }}>
                     <Button variant="contained" color="secondary">
                       <AdminPanelSettingsIcon

@@ -12,26 +12,13 @@ import { closeCommentEditMode } from 'redux/slices/posts';
 export const AddComment = () => {
   const dispatch = useDispatch();
 
-  const [user, setUser] = React.useState(null),
-    [text, setText] = React.useState('');
+  const [text, setText] = React.useState('');
 
   const { id } = useParams();
 
   const { editMode } = useSelector((state) => state.posts.comments);
-  let { editbleComment } = useSelector((state) => state.posts.comments);
-
-  const { data } = useSelector((state) => state.auth);
-
-  React.useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-
-    axios.get('/auth/me', { signal }).then((res) => {
-      setUser(res.data?.userData);
-    });
-
-    return () => abortController.abort();
-  }, []);
+  const { editbleComment } = useSelector((state) => state.posts.comments);
+  const { userData } = useSelector((state) => state.auth.data);
 
   React.useEffect(() => {
     if (editbleComment) {
@@ -47,9 +34,9 @@ export const AddComment = () => {
     try {
       const fields = {
         commentId: editMode ? editbleComment.commentId : null,
-        fullName: user.fullName,
+        fullName: userData.fullName,
         text,
-        avatarUrl: user.avatarUrl,
+        avatarUrl: userData.avatarUrl,
         post: id,
       };
       !editMode
@@ -73,9 +60,9 @@ export const AddComment = () => {
         <Avatar
           classes={{ root: styles.avatar }}
           src={
-            user
+            userData
               ? `${process.env.REACT_APP_API_URL || 'http://localhost:4444'}${
-                  user.avatarUrl
+                  userData.avatarUrl
                 }`
               : ''
           }
@@ -91,7 +78,7 @@ export const AddComment = () => {
             maxRows={10}
             multiline
             fullWidth
-            disabled={data?._id ? false : true}
+            disabled={userData?._id ? false : true}
           />
           <Button
             onClick={onSubmit}

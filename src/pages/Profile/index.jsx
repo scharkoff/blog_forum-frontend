@@ -3,7 +3,7 @@ import { ProfileForm } from 'modules';
 import { useSelector } from 'react-redux';
 
 export const Profile = () => {
-  const user = useSelector((state) => state.auth.data);
+  const user = useSelector((state) => state.auth.data.userData);
 
   React.useEffect(() => {
     if (user) {

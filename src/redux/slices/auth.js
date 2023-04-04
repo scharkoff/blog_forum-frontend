@@ -5,7 +5,7 @@ export const fetchAuth = createAsyncThunk('auth/fetchAuth', async (params) => {
   try {
     const { data } = await axios.post('/auth/login', params);
 
-    return data.userData;
+    return { userData: data.userData, token: data.token };
   } catch (error) {
     return { ...error.response.data, isError: true };
   }
@@ -17,7 +17,7 @@ export const fetchRegister = createAsyncThunk(
     try {
       const { data } = await axios.post('/auth/register', params);
 
-      return data.userData;
+      return { userData: data.userData, token: data.token };
     } catch (error) {
       return { ...error.response.data, isError: true };
     }
@@ -28,14 +28,17 @@ export const fetchAuthMe = createAsyncThunk('auth/fetchAuthMe', async () => {
   try {
     const { data } = await axios.get('/auth/me');
 
-    return data.userData;
+    return { userData: data.userData, token: data.token };
   } catch (error) {
     return { ...error.response.data, isError: true };
   }
 });
 
 const initialState = {
-  data: null,
+  data: {
+    userData: {},
+    token: null,
+  },
   status: 'loading',
   authorization: false,
 };
@@ -45,7 +48,10 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      state.data = null;
+      state.data = {
+        userData: {},
+        token: null,
+      };
       state.authorization = false;
     },
   },

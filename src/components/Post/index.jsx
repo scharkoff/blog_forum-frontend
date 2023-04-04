@@ -36,7 +36,7 @@ export const Post = ({
 }) => {
   const dispatch = useDispatch();
 
-  const authUser = useSelector((state) => state.auth.data);
+  const authUser = useSelector((state) => state.auth.data.userData);
   const { activeTabs } = useSelector((state) => state.utils);
 
   const navigate = useNavigate();

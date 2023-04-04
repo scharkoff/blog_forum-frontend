@@ -21,6 +21,9 @@
   "rules": {
     "semi": ["error", "always"],
     "quotes": ["error", "single"],
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "react/display-name": "off",
+    "react/prop-types": "off",
+    "no-unused-vars": 0
   }
 }
