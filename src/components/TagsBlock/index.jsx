@@ -16,10 +16,9 @@ import { SideBlock } from '../SideBlock';
 import { resetSearchString, setActivePage } from 'redux/slices/utils';
 import { fetchPosts, setActiveTag } from 'redux/slices/posts';
 
-export const TagsBlock = React.memo(({ tags, isLoading = true }) => {
+export const TagsBlock = React.memo(({ tags = [], isLoading = true }) => {
   const dispatch = useDispatch();
 
-  const { activeTag } = useSelector((state) => state.posts?.tags);
   const { activeTabs } = useSelector((state) => state.utils);
 
   const [activeTagName, setActiveTagName] = React.useState(null);
@@ -27,12 +26,12 @@ export const TagsBlock = React.memo(({ tags, isLoading = true }) => {
   const { name } = useParams();
 
   React.useEffect(() => {
-    setActiveTagName(name);
-  }, []);
-
-  React.useEffect(() => {
-    if (!name) setActiveTagName(null);
-  }, [activeTag]);
+    if (!name) {
+      setActiveTagName(null);
+    } else {
+      setActiveTagName(name);
+    }
+  }, [name]);
 
   const onGetPosts = (name) => {
     dispatch(setActiveTag(name));
@@ -94,6 +93,6 @@ export const TagsBlock = React.memo(({ tags, isLoading = true }) => {
 });
 
 TagsBlock.propTypes = {
-  tags: PropTypes.array.isRequired,
+  tags: PropTypes.array,
   isLoading: PropTypes.bool,
 };

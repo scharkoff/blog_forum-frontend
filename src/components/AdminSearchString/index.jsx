@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import styles from './AdminSearchString.module.scss';
-
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
 

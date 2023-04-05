@@ -1,17 +1,13 @@
 import React from 'react';
-
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import AddIcon from '@mui/icons-material/Add';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-
 import styles from './Header.module.scss';
-
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-
-import { fetchPosts, setActiveTag } from 'redux/slices/posts';
+import { setActiveTag } from 'redux/slices/posts';
 import { logout, selectIsAuth } from 'redux/slices/auth';
 import {
   setActiveTab,
@@ -25,7 +21,6 @@ export const Header = () => {
 
   const isAuth = useSelector(selectIsAuth);
   const { userData } = useSelector((state) => state.auth.data);
-  const { activeTabs } = useSelector((state) => state.utils);
 
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти из акккаунта?')) {
@@ -34,7 +29,7 @@ export const Header = () => {
     }
   };
 
-  const isMobile = useSelector((state) => state.utils?.isMobile?.value);
+  const isMobile = useSelector((state) => state.utils.isMobile.value);
 
   return (
     <div className={styles.root}>
@@ -42,7 +37,6 @@ export const Header = () => {
         <div className={styles.inner}>
           <Link
             onClick={() => {
-              dispatch(fetchPosts({ activeTabs }));
               dispatch(setActiveTag(null));
               dispatch(
                 setActiveTab({

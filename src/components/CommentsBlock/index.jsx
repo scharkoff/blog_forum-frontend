@@ -25,8 +25,10 @@ import { fetchRemoveComment } from 'redux/slices/comments';
 import { setEditCommentValues } from 'redux/slices/posts';
 
 export const CommentsBlock = React.memo(
-  ({ items, children, isLoading = true, isEditble }) => {
+  ({ comments = [], children, isLoading = true, isEditble }) => {
     const dispatch = useDispatch();
+
+    console.log(comments);
 
     const isAuth = useSelector(selectIsAuth);
 
@@ -48,82 +50,89 @@ export const CommentsBlock = React.memo(
     return (
       <SideBlock title="Комментарии">
         <List>
-          {(isLoading && items ? [...Array(5)] : items).map((obj, index) => (
-            <React.Fragment key={index}>
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
+          {(isLoading && !comments ? [...Array(5)] : comments).map(
+            (comment, index) => (
+              <React.Fragment key={index}>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    {isLoading ? (
+                      <Skeleton variant="circular" width={40} height={40} />
+                    ) : (
+                      <Avatar
+                        alt={comment.user?.fullName}
+                        src={`${
+                          process.env.REACT_APP_API_URL ||
+                          'http://localhost:4444'
+                        }${comment.user.avatarUrl}`}
+                      />
+                    )}
+                  </ListItemAvatar>
                   {isLoading ? (
-                    <Skeleton variant="circular" width={40} height={40} />
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      <Skeleton variant="text" height={25} width={120} />
+                      <Skeleton variant="text" height={18} width={230} />
+                    </div>
                   ) : (
-                    <Avatar
-                      alt={obj.user?.fullName}
-                      src={`${
-                        process.env.REACT_APP_API_URL || 'http://localhost:4444'
-                      }${obj.user.avatarUrl}`}
-                    />
-                  )}
-                </ListItemAvatar>
-                {isLoading ? (
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                    }}
-                  >
-                    <Skeleton variant="text" height={25} width={120} />
-                    <Skeleton variant="text" height={18} width={230} />
-                  </div>
-                ) : (
-                  <>
-                    <ListItemText
-                      primary={
-                        <React.Fragment>
-                          <Typography
-                            sx={{
-                              display: 'inline',
-                            }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
+                    <>
+                      <ListItemText
+                        primary={
+                          <React.Fragment>
+                            <Typography
+                              sx={{
+                                display: 'inline',
+                              }}
+                              component="span"
+                              variant="body2"
+                              color="text.primary"
+                            >
+                              {comment.user?.fullName}
+                            </Typography>
+                            <span
+                              className={
+                                comment.user?.rank === 'user'
+                                  ? styles.rank
+                                  : styles.admin
+                              }
+                            >
+                              {' ' + comment.user?.rank}
+                            </span>
+                          </React.Fragment>
+                        }
+                        secondary={comment.text}
+                      />
+                      {(isAuth &&
+                        isEditble &&
+                        userId === comment.user?.userId) ||
+                      (userRank === 'admin' && isAuth && isEditble) ? (
+                        <>
+                          <IconButton
+                            onClick={() => onRemoveComment(comment.commentId)}
+                            color="secondary"
                           >
-                            {obj.user?.fullName}
-                          </Typography>
-                          <span
-                            className={
-                              obj.user?.rank === 'user'
-                                ? styles.rank
-                                : styles.admin
+                            <DeleteIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() =>
+                              onEditComment(comment.commentId, comment.text)
                             }
+                            color="primary"
                           >
-                            {' ' + obj.user?.rank}
-                          </span>
-                        </React.Fragment>
-                      }
-                      secondary={obj.text}
-                    />
-                    {(isAuth && isEditble && userId === obj.user?.userId) ||
-                    (userRank === 'admin' && isAuth && isEditble) ? (
-                      <>
-                        <IconButton
-                          onClick={() => onRemoveComment(obj.commentId)}
-                          color="secondary"
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => onEditComment(obj.commentId, obj.text)}
-                          color="primary"
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </>
-                    ) : null}
-                  </>
-                )}
-              </ListItem>
-              <Divider variant="inset" component="li" />
-            </React.Fragment>
-          ))}
+                            <EditIcon />
+                          </IconButton>
+                        </>
+                      ) : null}
+                    </>
+                  )}
+                </ListItem>
+                <Divider variant="inset" component="li" />
+              </React.Fragment>
+            ),
+          )}
         </List>
         {children}
       </SideBlock>
@@ -132,7 +141,7 @@ export const CommentsBlock = React.memo(
 );
 
 CommentsBlock.propTypes = {
-  items: PropTypes.array.isRequired,
+  comments: PropTypes.array,
   children: PropTypes.node,
   isLoading: PropTypes.bool,
   isEditble: PropTypes.bool,

@@ -7,7 +7,6 @@ import { CommentsBlock } from 'components/CommentsBlock';
 import { Posts } from 'modules/Posts';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTags } from 'redux/slices/tags';
-import { fetchAuthMe } from 'redux/slices/auth';
 import { fetchComments, fetchLastsComments } from 'redux/slices/comments';
 import styles from './Home.module.scss';
 import { setActiveTag } from 'redux/slices/posts';
@@ -18,18 +17,18 @@ export const Home = () => {
 
   const tag = useParams();
 
-  const { comments, tags, status } = useSelector(
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  const { lastCommets, tags, status } = useSelector(
     useMemo(
       () => (state) => ({
-        comments: state.posts.comments,
+        lastCommets: state.posts.lastComments,
         tags: state.posts.tags,
-        status: state.posts.comments?.status,
+        status: state.posts.posts.status,
       }),
       [],
     ),
   );
-
-  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
     if (status === 'loaded') {
@@ -41,8 +40,6 @@ export const Home = () => {
     document.title = 'Главная страница';
     dispatch(fetchTags());
     dispatch(fetchLastsComments());
-    dispatch(fetchComments());
-    dispatch(fetchAuthMe());
     dispatch(setActiveTag(tag.name));
   }, []);
 
@@ -56,13 +53,10 @@ export const Home = () => {
         </Grid>
 
         <Grid xs={4} item className={styles.tags}>
-          <TagsBlock
-            tags={tags.items ? tags.items : []}
-            isLoading={isLoading}
-          />
+          <TagsBlock tags={tags.items} isLoading={isLoading} />
           <CommentsBlock
             className={styles.comments}
-            items={comments.items ? comments.items : []}
+            comments={lastCommets.items}
             isLoading={isLoading}
             isEditable={false}
           />
