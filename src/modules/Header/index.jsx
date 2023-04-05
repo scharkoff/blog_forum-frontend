@@ -20,6 +20,7 @@ export const Header = () => {
   const dispatch = useDispatch();
 
   const isAuth = useSelector(selectIsAuth);
+  const isMobile = useSelector((state) => state.utils.isMobile.value);
   const { userData } = useSelector((state) => state.auth.data);
 
   const onClickLogout = () => {
@@ -28,8 +29,6 @@ export const Header = () => {
       window.localStorage.removeItem('token');
     }
   };
-
-  const isMobile = useSelector((state) => state.utils.isMobile.value);
 
   return (
     <div className={styles.root}>

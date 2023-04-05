@@ -5,18 +5,10 @@ import { SortTabs } from 'components';
 import { TagsBlock } from 'components/TagsBlock';
 import { CommentsBlock } from 'components/CommentsBlock';
 import { Posts } from 'modules/Posts';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchTags } from 'redux/slices/tags';
-import { fetchComments, fetchLastsComments } from 'redux/slices/comments';
+import { useSelector } from 'react-redux';
 import styles from './Home.module.scss';
-import { setActiveTag } from 'redux/slices/posts';
-import { useParams } from 'react-router-dom';
 
 export const Home = () => {
-  const dispatch = useDispatch();
-
-  const tag = useParams();
-
   const [isLoading, setIsLoading] = React.useState(true);
 
   const { lastCommets, tags, status } = useSelector(
@@ -38,9 +30,6 @@ export const Home = () => {
 
   React.useEffect(() => {
     document.title = 'Главная страница';
-    dispatch(fetchTags());
-    dispatch(fetchLastsComments());
-    dispatch(setActiveTag(tag.name));
   }, []);
 
   return (

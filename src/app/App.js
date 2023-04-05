@@ -9,6 +9,9 @@ import { setIsMobile } from 'redux/slices/utils';
 import { AllRoutes } from './routes';
 import { Header } from 'modules/Header';
 import { Loader } from 'components';
+import { fetchTags } from 'redux/slices/tags';
+import { fetchLastsComments } from 'redux/slices/comments';
+import { setActiveTag } from 'redux/slices/posts';
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +35,10 @@ function App() {
 
   React.useEffect(() => {
     window.addEventListener('resize', handleWindowSizeChange);
+
+    dispatch(fetchTags());
+    dispatch(fetchLastsComments());
+
     return () => {
       window.removeEventListener('resize', handleWindowSizeChange);
     };
