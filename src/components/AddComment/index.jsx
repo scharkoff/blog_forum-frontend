@@ -1,37 +1,23 @@
 import React from 'react';
-
 import styles from './AddComment.module.scss';
-
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { fetchComments } from 'redux/slices/comments';
-
 import axios from 'configs/axios/axios';
-import { closeCommentEditMode } from 'redux/slices/posts';
+import { setCommentEditMode } from 'redux/slices/posts';
 
-export const AddComment = () => {
+export const AddComment = ({ comments, setComments }) => {
   const dispatch = useDispatch();
 
-  const [user, setUser] = React.useState(null),
-    [text, setText] = React.useState('');
+  const [text, setText] = React.useState('');
 
   const { id } = useParams();
 
   const { editMode } = useSelector((state) => state.posts.comments);
-  let { editbleComment } = useSelector((state) => state.posts.comments);
-
-  const { data } = useSelector((state) => state.auth);
-
-  React.useEffect(() => {
-    axios.get('/auth/me').then((res) => {
-      setUser(res.data?.details?.userData);
-    });
-  }, []);
+  const { editbleComment } = useSelector((state) => state.posts.comments);
+  const { userData } = useSelector((state) => state.auth.data);
 
   React.useEffect(() => {
     if (editbleComment) {
@@ -43,19 +29,33 @@ export const AddComment = () => {
     setText('');
   }, [id]);
 
-  const onSubmit = async () => {
+  const onSubmitComment = async () => {
     try {
       const fields = {
         commentId: editMode ? editbleComment.commentId : null,
-        fullName: user.fullName,
+        fullName: userData.fullName,
         text,
-        avatarUrl: user.avatarUrl,
+        avatarUrl: userData.avatarUrl,
         post: id,
       };
-      !editMode
-        ? await axios.post(`/posts/${id}/addComment`, fields)
-        : await axios.patch(`/posts/${id}/updateComment`, fields);
-      dispatch(fetchComments());
+
+      if (!editMode) {
+        const { data } = await axios.post(`/comments/${id}`, fields);
+        setComments([...comments, data.comment]);
+      } else {
+        const { data } = await axios.patch(`/comments/${id}`, fields);
+        setComments(
+          comments.map((comment) => {
+            if (comment._id === fields.commentId) {
+              return data.comment;
+            } else {
+              return comment;
+            }
+          }),
+        );
+        dispatch(setCommentEditMode(false));
+      }
+
       setText('');
     } catch (error) {
       alert('Ошибка при создании комментария!');
@@ -63,7 +63,7 @@ export const AddComment = () => {
   };
 
   const onCancel = async () => {
-    dispatch(closeCommentEditMode());
+    dispatch(setCommentEditMode());
     setText('');
   };
 
@@ -73,9 +73,9 @@ export const AddComment = () => {
         <Avatar
           classes={{ root: styles.avatar }}
           src={
-            user
+            userData
               ? `${process.env.REACT_APP_API_URL || 'http://localhost:4444'}${
-                  user.avatarUrl
+                  userData.avatarUrl
                 }`
               : ''
           }
@@ -91,10 +91,10 @@ export const AddComment = () => {
             maxRows={10}
             multiline
             fullWidth
-            disabled={data?._id ? false : true}
+            disabled={userData?._id ? false : true}
           />
           <Button
-            onClick={onSubmit}
+            onClick={onSubmitComment}
             variant="contained"
             disabled={!text ? true : false}
             color={editMode ? 'secondary' : 'primary'}

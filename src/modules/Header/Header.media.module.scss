@@ -1,14 +1,14 @@
-@media screen and (max-width: 420px), screen and (max-height: 390px)  {
+@media screen and (max-width: 420px), screen and (max-height: 390px) {
   .logo {
-  font-size: 10px;
-  line-height: 1.5;
+    font-size: 10px;
+    line-height: 1.5;
   }
 
-    
   .buttons {
     box-sizing: border-box;
     display: flex;
-    button, span{ 
+    button,
+    span {
       min-width: 32px;
       padding-left: 5px;
       padding-right: 5px;
@@ -17,6 +17,4 @@
       line-height: 1.5;
     }
   }
-
-
 }

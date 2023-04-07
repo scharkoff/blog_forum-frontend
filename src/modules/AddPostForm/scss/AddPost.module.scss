@@ -27,7 +27,7 @@
   :global {
     .cm-s-easymde {
       border: 0;
-      font-size: 22px;
+      font-size: 18px;
     }
     .editor-toolbar {
       border: 0;
@@ -44,5 +44,4 @@
   }
 }
 
-
-@import "./AddPost.media.module.scss";
+@import './AddPost.media.module.scss';

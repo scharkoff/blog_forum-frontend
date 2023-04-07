@@ -1,23 +1,38 @@
 import React from 'react';
 import ReactPaginate from 'react-paginate';
-
 import styles from './Posts.module.scss';
-
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { Post } from 'components/Post';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPosts } from 'redux/slices/posts';
+import { setActivePage } from 'redux/slices/utils';
 
-export const PostsPagination = ({ postsArray }) => {
-  const userData = useSelector((state) => state.auth.data);
+export const PostsPagination = ({ posts }) => {
+  const dispatch = useDispatch();
+
+  const { userData } = useSelector((state) => state.auth.data);
+  const { postsCount } = useSelector((state) => state.posts.posts);
+  const { activeTabs, activePage } = useSelector((state) => state.utils);
+  const { activeTag } = useSelector((state) => state.posts.tags);
+
+  React.useEffect(() => {
+    dispatch(
+      fetchPosts({
+        pageOptions: [activePage + 1, 5],
+        activeTabs,
+        tagName: activeTag,
+      }),
+    );
+  }, [activePage, activeTabs, activeTag]);
 
   function Items({ currentItems }) {
     return (
       <>
         {currentItems &&
-          currentItems.map((post, index) => (
+          currentItems.map((post) => (
             <Post
-              key={index}
+              key={post._id}
               id={post._id}
               title={post.title}
               imageUrl={
@@ -32,7 +47,7 @@ export const PostsPagination = ({ postsArray }) => {
               viewsCount={post.viewsCount}
               commentsCount={post.commentsCount}
               tags={post.tags}
-              isEditable={userData?._id === post?.user?._id}
+              isEditable={userData?._id === post.user?._id}
             />
           ))}
       </>
@@ -40,15 +55,11 @@ export const PostsPagination = ({ postsArray }) => {
   }
 
   function PaginatedItems({ itemsPerPage }) {
-    const [itemOffset, setItemOffset] = React.useState(0);
-
-    const endOffset = itemOffset + itemsPerPage;
-    const currentItems = postsArray.slice(itemOffset, endOffset);
-    const pageCount = Math.ceil(postsArray.length / itemsPerPage);
+    const currentItems = posts.slice(0, 5);
+    const pageCount = Math.ceil(postsCount / itemsPerPage) || 1;
 
     const handlePageClick = (event) => {
-      const newOffset = (event.selected * itemsPerPage) % postsArray.length;
-      setItemOffset(newOffset);
+      dispatch(setActivePage(event.selected));
     };
 
     return (
@@ -58,6 +69,7 @@ export const PostsPagination = ({ postsArray }) => {
           breakLabel="..."
           nextLabel={<NavigateNextIcon />}
           onPageChange={handlePageClick}
+          forcePage={activePage}
           pageRangeDisplayed={2}
           pageCount={pageCount}
           previousLabel={<NavigateBeforeIcon />}

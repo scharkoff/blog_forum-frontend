@@ -14,12 +14,12 @@
     "axios": "^0.27.2",
     "clsx": "^1.1.1",
     "easymde": "^2.16.1",
-    "prettier": "^2.6.2",
     "prop-types": "^15.8.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.32.0",
+    "react-image": "^4.1.0",
     "react-markdown": "^8.0.3",
     "react-paginate": "^8.1.4",
     "react-redux": "^8.0.2",
@@ -52,5 +52,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^8.37.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "prettier": "^2.8.7"
   }
 }

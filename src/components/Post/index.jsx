@@ -11,15 +11,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 
-// React-redux
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Img } from 'react-image';
 
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
 
 import { fetchPosts, fetchRemovePost } from 'redux/slices/posts';
-import { fetchPostsLikeTag } from 'redux/slices/tags';
 
 export const Post = ({
   id,
@@ -37,7 +36,7 @@ export const Post = ({
 }) => {
   const dispatch = useDispatch();
 
-  const authUser = useSelector((state) => state.auth.data);
+  const authUser = useSelector((state) => state.auth.data.userData);
 
   const navigate = useNavigate();
 
@@ -45,7 +44,6 @@ export const Post = ({
     if (window.confirm('Вы действительно хотите удалить статью?')) {
       try {
         dispatch(fetchRemovePost(id));
-        dispatch(fetchPosts());
 
         if (isFullPost) {
           return navigate('/');
@@ -64,7 +62,7 @@ export const Post = ({
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
-      {isEditable || authUser?.rank === 'admin' ? (
+      {isEditable || authUser?.rank === 'admin' || user._id === authUser._id ? (
         <div className={styles.editButtons}>
           <Link to={`/posts/${id}/edit`}>
             <IconButton color="primary">
@@ -80,8 +78,10 @@ export const Post = ({
       )}
       {imageUrl && (
         <Link to={`/posts/${id}`}>
-          <img
-            className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
+          <Img
+            className={clsx(styles.image, {
+              [styles.imageFull]: isFullPost,
+            })}
             src={imageUrl}
             onError={(e) =>
               (e.target.src = `${
@@ -96,13 +96,15 @@ export const Post = ({
         <UserInfo {...user} additionalText={createdAt} />
         <div className={styles.indention}>
           <h2
-            className={clsx(styles.title, { [styles.titleFull]: isFullPost })}
+            className={clsx(styles.title, {
+              [styles.titleFull]: isFullPost,
+            })}
           >
             {isFullPost ? title : <Link to={`/posts/${id}`}>{title}</Link>}
           </h2>
           <ul className={styles.tags}>
             {tags.map((name) => (
-              <li key={name} onClick={() => dispatch(fetchPostsLikeTag(name))}>
+              <li key={name}>
                 <Link to={`/tags/${name}`}>#{name}</Link>
               </li>
             ))}

@@ -12,53 +12,45 @@ import Skeleton from '@mui/material/Skeleton';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-
 import { SideBlock } from '../SideBlock';
-
-import { fetchPostsLikeTag } from 'redux/slices/tags';
-import { resetSearchString } from 'redux/slices/utils';
+import { resetSearchString, setActivePage } from 'redux/slices/utils';
 import { setActiveTag } from 'redux/slices/posts';
 
-export const TagsBlock = React.memo(({ tags, isLoading = true }) => {
+export const TagsBlock = React.memo(({ tags = [], isLoading = true }) => {
   const dispatch = useDispatch();
-  const { activeTag } = useSelector((state) => state.posts?.tags);
-  const [activeTagName, setActiveTagName] = React.useState(null);
+
+  const { activeTag } = useSelector((state) => state.posts.tags);
+
   const { name } = useParams();
 
   React.useEffect(() => {
-    setActiveTagName(name);
-  }, []);
-
-  React.useEffect(() => {
-    if (!name) setActiveTagName(null);
-  }, [activeTag]);
-
-  const onGetPosts = (name) => {
-    dispatch(setActiveTag(name));
-    dispatch(fetchPostsLikeTag(name));
-    setActiveTagName(name);
-  };
+    if (!name) {
+      dispatch(setActiveTag(null));
+    } else {
+      dispatch(setActiveTag(name));
+    }
+  }, [name]);
 
   return (
     <SideBlock title="Тэги">
       <List>
-        {(isLoading ? [...Array(5)] : tags).map((tagName, i) => (
+        {(isLoading && !tags ? [...Array(5)] : tags).map((tag) => (
           <Link
-            key={i}
+            key={tag}
             style={{
               textDecoration: 'none',
-              color: activeTagName === tagName ? 'white' : 'black',
+              color: activeTag === tag ? 'white' : 'black',
             }}
-            to={`/tags/${tagName}`}
+            to={`/tags/${tag}`}
           >
             <ListItem
               style={{
-                backgroundColor:
-                  activeTagName === tagName ? '#4361ee' : 'white',
+                backgroundColor: activeTag === tag ? '#4361ee' : 'white',
               }}
-              key={i}
+              key={tag}
               onClick={() => {
-                onGetPosts(tagName);
+                dispatch(setActivePage(0));
+                dispatch(setActiveTag(tag));
                 dispatch(resetSearchString(new Date().valueOf()));
               }}
               disablePadding
@@ -66,13 +58,15 @@ export const TagsBlock = React.memo(({ tags, isLoading = true }) => {
               <ListItemButton>
                 <ListItemIcon>
                   <TagIcon
-                    style={{ color: activeTagName === tagName ? 'white' : '' }}
+                    style={{
+                      color: activeTag === tag ? 'white' : '',
+                    }}
                   />
                 </ListItemIcon>
                 {isLoading ? (
                   <Skeleton variant="text" width={274} height={24} />
                 ) : (
-                  <ListItemText primary={tagName} />
+                  <ListItemText primary={tag} />
                 )}
               </ListItemButton>
             </ListItem>
@@ -84,6 +78,6 @@ export const TagsBlock = React.memo(({ tags, isLoading = true }) => {
 });
 
 TagsBlock.propTypes = {
-  tags: PropTypes.array.isRequired,
+  tags: PropTypes.array,
   isLoading: PropTypes.bool,
 };

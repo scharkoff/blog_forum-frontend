@@ -1,49 +1,27 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "configs/axios/axios";
-
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'configs/axios/axios';
 
 export const fetchComments = createAsyncThunk(
-  "posts/fetchComments",
+  'posts/fetchComments',
   async () => {
-    const { data } = await axios.get("/posts/comments"),
-      comments = data.details?.comments;
+    const { data } = await axios.get('/comments');
 
-    return comments;
-  }
+    return data.comments;
+  },
 );
 
-
-export const fetchSortedComments = createAsyncThunk(
-  "posts/fetchComments",
+export const fetchLastsComments = createAsyncThunk(
+  'posts/fetchLastsComments',
   async () => {
-    const { data } = await axios.get("/posts/comments"),
-      comments = data.details?.comments;
+    const { data } = await axios.get('/comments/lasts');
 
-    return comments.reverse()
-      .slice(0, 5)
-      .map((item) => {
-        return {
-          user: {
-            fullName: item.user?.fullName,
-            avatarUrl: item.user?.avatarUrl,
-            rank: item.user?.rank,
-          },
-          text: item.text,
-          commentId: item._id,
-        };
-      });
-  }
+    return data.comments;
+  },
 );
-
 
 export const fetchRemoveComment = createAsyncThunk(
-  "posts/fetchRemoveComment",
+  'posts/fetchRemoveComment',
   async (data) => {
-    const fields = {
-      commentId: data.commentId,
-      postId: data.id.id,
-    };
-    axios.post(`/posts/${data.id}/removeComment`, fields);
-  }
+    axios.delete(`/comments/${data.commentId}`);
+  },
 );
-

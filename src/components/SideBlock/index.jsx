@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import styles from './SideBlock.module.scss';
-
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 

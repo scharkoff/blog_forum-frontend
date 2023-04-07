@@ -1,26 +1,24 @@
-@media screen and (max-width: 420px), screen and (max-height: 390px)  {
-    .title {
-        input {
-          font-size: 20px;
-          font-weight: 900;
-        }
-      }
-  
-    .tags {
-     input {
-        font-size: 14px;
-     }
+@media screen and (max-width: 420px), screen and (max-height: 390px) {
+  .title {
+    input {
+      font-size: 20px;
+      font-weight: 900;
     }
+  }
 
+  .tags {
+    input {
+      font-size: 14px;
+    }
+  }
 
-        
-    .editor {
-        margin: 30px -30px;
-    
-        :global {
-        .cm-s-easymde {
-            font-size: 14px;
-        }
+  .editor {
+    margin: 30px -30px;
+
+    :global {
+      .cm-s-easymde {
+        font-size: 14px;
+      }
     }
   }
 

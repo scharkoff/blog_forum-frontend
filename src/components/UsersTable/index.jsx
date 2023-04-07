@@ -37,7 +37,7 @@ export const UsersTable = ({ user, setAlertOptions }) => {
             rank: user.rank,
             created: user.createdAt.slice(0, 10),
           };
-        })
+        }),
       );
 
       setCopyOfRows(
@@ -49,7 +49,7 @@ export const UsersTable = ({ user, setAlertOptions }) => {
             rank: user.rank,
             created: user.createdAt.slice(0, 10),
           };
-        })
+        }),
       );
     }
   }, [users]);
@@ -78,7 +78,7 @@ export const UsersTable = ({ user, setAlertOptions }) => {
   const deleteUser = async (id) => {
     if (
       window.confirm(
-        'Вы действительно хотите удалить данного пользователя? Все его посты и комментарии будут также удалены навсегда!'
+        'Вы действительно хотите удалить данного пользователя? Все его посты и комментарии будут также удалены навсегда!',
       )
     ) {
       const response = await dispatch(fetchDeleteUser(id));
@@ -126,7 +126,9 @@ export const UsersTable = ({ user, setAlertOptions }) => {
                               <div>
                                 <Link
                                   to={`/admin-panel/edit-user/${row.id}`}
-                                  style={{ textDecoration: 'none' }}
+                                  style={{
+                                    textDecoration: 'none',
+                                  }}
                                 >
                                   <Button color="primary">Изменить</Button>
                                 </Link>

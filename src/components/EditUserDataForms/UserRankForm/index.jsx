@@ -7,7 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { fetchUpdateUserRank } from 'redux/slices/users';
+import { fetchUpdateByCondition } from 'redux/slices/users';
 import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const UserRankForm = React.memo(
@@ -27,7 +27,7 @@ export const UserRankForm = React.memo(
     });
 
     const onSubmitRank = async (values) => {
-      const response = await dispatch(fetchUpdateUserRank(values));
+      const response = await dispatch(fetchUpdateByCondition(values));
       handlingInternalOrServerError(response, setAlertOptions);
     };
 
@@ -60,5 +60,5 @@ export const UserRankForm = React.memo(
         </Grid>
       </form>
     );
-  }
+  },
 );

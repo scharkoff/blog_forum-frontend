@@ -8,7 +8,7 @@ import { Navigate } from 'react-router-dom';
 export const AdminPanel = () => {
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.auth.data),
+  const user = useSelector((state) => state.auth.data.userData),
     isAuth = useSelector(selectIsAuth);
 
   const [response, setResponse] = React.useState({});

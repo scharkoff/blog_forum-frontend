@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { fetchUpdateUserEmail } from 'redux/slices/users';
+import { fetchUpdateByCondition } from 'redux/slices/users';
 import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const UserEmailForm = React.memo(
@@ -22,19 +22,9 @@ export const UserEmailForm = React.memo(
     });
 
     const onSubmitEmail = async (values) => {
-      const response = await dispatch(fetchUpdateUserEmail(values));
+      const response = await dispatch(fetchUpdateByCondition(values));
       handlingInternalOrServerError(response, setAlertOptions);
     };
-
-    function validateEmail(emailField) {
-      var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-
-      if (reg.test(emailField.value) === false) {
-        return false;
-      }
-
-      return true;
-    }
 
     return (
       <form onSubmit={emailForm.handleSubmit(onSubmitEmail)}>
@@ -64,14 +54,6 @@ export const UserEmailForm = React.memo(
               type="submit"
               size="small"
               variant="text"
-              onClick={() => {
-                const values = emailForm.getValues();
-                if (validateEmail(values.email)) {
-                  emailForm.setError('email', {
-                    message: 'Неверный формат почты!',
-                  });
-                }
-              }}
             >
               Сохранить изменения
             </Button>
@@ -79,5 +61,5 @@ export const UserEmailForm = React.memo(
         </Grid>
       </form>
     );
-  }
+  },
 );

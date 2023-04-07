@@ -1,27 +1,27 @@
 import React from 'react';
-
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import AddIcon from '@mui/icons-material/Add';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-
 import styles from './Header.module.scss';
-
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-
 import { fetchPosts, setActiveTag } from 'redux/slices/posts';
 import { logout, selectIsAuth } from 'redux/slices/auth';
-import { setActiveTab, resetSearchString } from 'redux/slices/utils';
+import {
+  setActiveTab,
+  resetSearchString,
+  setActivePage,
+} from 'redux/slices/utils';
 import { Avatar } from '@mui/material';
 
 export const Header = () => {
   const dispatch = useDispatch();
 
   const isAuth = useSelector(selectIsAuth);
-
-  const user = useSelector((state) => state.auth?.data);
+  const isMobile = useSelector((state) => state.utils.isMobile.value);
+  const { userData } = useSelector((state) => state.auth.data);
 
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти из акккаунта?')) {
@@ -30,18 +30,22 @@ export const Header = () => {
     }
   };
 
-  const isMobile = useSelector((state) => state.utils?.isMobile?.value);
-
   return (
     <div className={styles.root}>
       <Container maxWidth="lg">
         <div className={styles.inner}>
           <Link
             onClick={() => {
-              dispatch(fetchPosts());
               dispatch(setActiveTag(null));
-              dispatch(setActiveTab(0));
+              dispatch(
+                setActiveTab({
+                  activeId: 0,
+                  activeType: 'new',
+                }),
+              );
               dispatch(resetSearchString(new Date().valueOf()));
+              dispatch(setActivePage(0));
+              dispatch(fetchPosts());
             }}
             className={styles.logo}
             to="/"
@@ -51,12 +55,15 @@ export const Header = () => {
           <div className={styles.buttons}>
             {isAuth ? (
               <>
-                <Link to={`/profile/${user?._id}`} style={{ marginLeft: 10 }}>
-                  {user ? (
+                <Link
+                  to={`/profile/${userData?._id}`}
+                  style={{ marginLeft: 10 }}
+                >
+                  {userData ? (
                     <Avatar
                       src={`${
                         process.env.REACT_APP_API_URL || 'http://localhost:4444'
-                      }${user.avatarUrl}`}
+                      }${userData.avatarUrl}`}
                       variant="rounded"
                       sx={
                         !isMobile
@@ -68,7 +75,7 @@ export const Header = () => {
                     ''
                   )}
                 </Link>
-                {user.rank === 'admin' ? (
+                {userData.rank === 'admin' ? (
                   <Link to="/admin-panel" style={{ marginLeft: 10 }}>
                     <Button variant="contained" color="secondary">
                       <AdminPanelSettingsIcon

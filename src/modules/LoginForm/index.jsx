@@ -69,7 +69,9 @@ export const LoginForm = () => {
             label="Пароль"
             error={Boolean(formState.errors.password?.message)}
             fullWidth
-            {...register('password', { required: 'Введите пароль' })}
+            {...register('password', {
+              required: 'Введите пароль',
+            })}
             helperText={formState.errors.password?.message}
           />
           <Button

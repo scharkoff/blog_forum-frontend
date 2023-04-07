@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import styles from './AdminSearchString.module.scss';
-
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
 
@@ -18,8 +16,8 @@ export const AdminSearchString = ({ setRows, copyOfRows }) => {
         (row) =>
           row.fullName.toLowerCase().includes(words.toLowerCase()) ||
           row.email.toLowerCase().includes(words.toLowerCase()) ||
-          row.rank.toLowerCase().includes(words.toLowerCase())
-      )
+          row.rank.toLowerCase().includes(words.toLowerCase()),
+      ),
     );
   };
   return (
