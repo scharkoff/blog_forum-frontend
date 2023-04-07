@@ -43,12 +43,3 @@
   <li>Postman</li>
   <li>React/Redux devtools</li>
 </ul>
-
-`Tools:`
-
-<ul>
-  <li>ESlint</li>
-  <li>Prettier</li>
-  <li>Postman</li>
-  <li>React/Redux devtools</li>
-</ul>
