@@ -1,11 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'configs/axios/axios';
 
-import {
-  fetchComments,
-  fetchLastsComments,
-  fetchRemoveComment,
-} from './comments';
+import { fetchComments, fetchLastsComments } from './comments';
 
 import { fetchTags } from './tags';
 

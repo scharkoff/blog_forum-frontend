@@ -15,7 +15,7 @@ export const fetchDeleteUser = createAsyncThunk(
   'users/fetchDeleteUser',
   async (id) => {
     try {
-      const { data } = await axios.delete(`/users/delete/${id}`);
+      const { data } = await axios.delete(`/users/${id}`);
       return data;
     } catch (error) {
       return { ...error.response.data, isError: true };
