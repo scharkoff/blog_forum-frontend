@@ -17,7 +17,6 @@ export const PostsPagination = ({ posts }) => {
   const { activeTag } = useSelector((state) => state.posts.tags);
 
   React.useEffect(() => {
-    console.log('PostsPagination useEffect updated');
     dispatch(
       fetchPosts({
         pageOptions: [activePage + 1, 5],

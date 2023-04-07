@@ -16,7 +16,7 @@ export const fetchPosts = createAsyncThunk(
     activeTabs = { activeId: 0, activeType: 'new' },
     tagName = null,
     searchText = null,
-  }) => {
+  } = {}) => {
     const { data } = await axios.get(
       `/posts?tag=${tagName}&page=${pageOptions[0]}&pageSize=${pageOptions[1]}&sortType=${activeTabs.activeType}&searchText=${searchText}`,
     );

@@ -37,7 +37,6 @@ export const Post = ({
   const dispatch = useDispatch();
 
   const authUser = useSelector((state) => state.auth.data.userData);
-  const { activeTabs } = useSelector((state) => state.utils);
 
   const navigate = useNavigate();
 
@@ -45,7 +44,6 @@ export const Post = ({
     if (window.confirm('Вы действительно хотите удалить статью?')) {
       try {
         dispatch(fetchRemovePost(id));
-        dispatch(fetchPosts());
 
         if (isFullPost) {
           return navigate('/');
@@ -64,7 +62,7 @@ export const Post = ({
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
-      {isEditable || authUser?.rank === 'admin' ? (
+      {isEditable || authUser?.rank === 'admin' || user._id === authUser._id ? (
         <div className={styles.editButtons}>
           <Link to={`/posts/${id}/edit`}>
             <IconButton color="primary">

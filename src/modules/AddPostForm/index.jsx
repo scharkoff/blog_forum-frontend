@@ -81,12 +81,16 @@ export const AddPostForm = ({ id }) => {
     () => ({
       spellChecker: false,
       maxHeight: '400px',
-      autofocus: true,
+      autofocus: false,
       placeholder: 'Введите текст...',
       status: false,
+      showIcons: ['code', 'heading-1', 'heading-2', 'heading-3'],
+      hideIcons: ['fullscreen', 'side-by-side', 'guide', 'preview', 'heading'],
+      previewImagesInEditor: true,
       autosave: {
         enabled: true,
         delay: 1000,
+        uniqueId: 'sharkoff_mde',
       },
     }),
     [],

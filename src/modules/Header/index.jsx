@@ -7,7 +7,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import styles from './Header.module.scss';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { setActiveTag } from 'redux/slices/posts';
+import { fetchPosts, setActiveTag } from 'redux/slices/posts';
 import { logout, selectIsAuth } from 'redux/slices/auth';
 import {
   setActiveTab,
@@ -45,6 +45,7 @@ export const Header = () => {
               );
               dispatch(resetSearchString(new Date().valueOf()));
               dispatch(setActivePage(0));
+              dispatch(fetchPosts());
             }}
             className={styles.logo}
             to="/"
