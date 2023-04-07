@@ -17,6 +17,8 @@ import { useAlertMessage } from 'hooks/useAlertMessage';
 export const AddPostForm = ({ id }) => {
   const dispatch = useDispatch();
 
+  const isEditing = Boolean(id);
+
   const navigate = useNavigate();
 
   const [alertVariables, setAlertOptions] = useAlertMessage();
@@ -31,8 +33,6 @@ export const AddPostForm = ({ id }) => {
     tags: '',
     authorId: '',
   });
-
-  const isEditing = Boolean(id);
 
   React.useEffect(() => {
     if (isEditing) {
@@ -70,12 +70,12 @@ export const AddPostForm = ({ id }) => {
     });
   };
 
-  const onChange = React.useCallback((value) => {
+  const onChange = (value) => {
     setCreatePostFields({
       ...createPostFields,
       text: value,
     });
-  }, []);
+  };
 
   const options = React.useMemo(
     () => ({

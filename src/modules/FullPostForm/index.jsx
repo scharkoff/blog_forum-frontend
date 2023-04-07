@@ -17,11 +17,10 @@ import { useAlertMessage } from 'hooks/useAlertMessage';
 
 export const FullPostForm = () => {
   const [postData, setPostData] = React.useState(),
-    [isLoading, setLoading] = React.useState(true);
+    [isLoading, setLoading] = React.useState(true),
+    [comments, setComments] = React.useState([]);
 
   const { id } = useParams();
-
-  const allComments = useSelector((state) => state.posts.comments?.items);
 
   const dispatch = useDispatch();
 
@@ -33,6 +32,7 @@ export const FullPostForm = () => {
       .get(`/posts/${id}`)
       .then((res) => {
         setPostData(res.data.post);
+        setComments(res.data.comments);
         setLoading(false);
       })
       .catch((error) => {
@@ -73,38 +73,22 @@ export const FullPostForm = () => {
         createdAt={postData.createdAt.slice(0, 10)}
         viewsCount={postData.viewsCount}
         commentsCount={
-          allComments
-            ? allComments.filter((item) => item.post?._id === id).length
+          comments
+            ? comments.filter((comment) => comment.post?._id === id).length
             : 0
         }
         tags={postData.tags}
         isFullPost
       >
-        <ReactMarkdown children={postData.text} />
+        <ReactMarkdown>{postData.text}</ReactMarkdown>
       </Post>
       <CommentsBlock
-        items={
-          allComments
-            ? allComments
-                .filter((item) => item.post?._id === id)
-                .map((item) => {
-                  return {
-                    user: {
-                      userId: item.user?._id,
-                      fullName: item.user?.fullName,
-                      avatarUrl: item.user?.avatarUrl,
-                      rank: item.user?.rank,
-                    },
-                    text: item.text,
-                    commentId: item._id,
-                  };
-                })
-            : []
-        }
+        setComments={setComments}
+        comments={comments}
         isLoading={false}
         isEditble={true}
       >
-        <AddComment />
+        <AddComment comments={comments} setComments={setComments} />
       </CommentsBlock>
     </>
   );

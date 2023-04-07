@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { SideBlock } from '../SideBlock';
-
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
@@ -14,21 +12,16 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
-
 import styles from '../UserInfo/UserInfo.module.scss';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-
 import { selectIsAuth } from 'redux/slices/auth.js';
 import { fetchRemoveComment } from 'redux/slices/comments';
 import { setEditCommentValues } from 'redux/slices/posts';
 
 export const CommentsBlock = React.memo(
-  ({ comments = [], children, isLoading = true, isEditble }) => {
+  ({ comments = [], setComments, children, isLoading = true, isEditble }) => {
     const dispatch = useDispatch();
-
-    console.log(comments);
 
     const isAuth = useSelector(selectIsAuth);
 
@@ -39,7 +32,8 @@ export const CommentsBlock = React.memo(
 
     function onRemoveComment(commentId) {
       if (window.confirm('Вы действительно хотите удалить комментарий?')) {
-        dispatch(fetchRemoveComment({ commentId, id }));
+        dispatch(fetchRemoveComment({ commentId }));
+        setComments(comments.filter((comment) => comment._id !== commentId));
       }
     }
 
@@ -51,8 +45,8 @@ export const CommentsBlock = React.memo(
       <SideBlock title="Комментарии">
         <List>
           {(isLoading && !comments ? [...Array(5)] : comments).map(
-            (comment, index) => (
-              <React.Fragment key={index}>
+            (comment) => (
+              <React.Fragment key={comment._id}>
                 <ListItem alignItems="flex-start">
                   <ListItemAvatar>
                     {isLoading ? (
@@ -105,20 +99,18 @@ export const CommentsBlock = React.memo(
                         }
                         secondary={comment.text}
                       />
-                      {(isAuth &&
-                        isEditble &&
-                        userId === comment.user?.userId) ||
+                      {(isAuth && isEditble && userId === comment.user?._id) ||
                       (userRank === 'admin' && isAuth && isEditble) ? (
                         <>
                           <IconButton
-                            onClick={() => onRemoveComment(comment.commentId)}
+                            onClick={() => onRemoveComment(comment._id)}
                             color="secondary"
                           >
                             <DeleteIcon />
                           </IconButton>
                           <IconButton
                             onClick={() =>
-                              onEditComment(comment.commentId, comment.text)
+                              onEditComment(comment._id, comment.text)
                             }
                             color="primary"
                           >

@@ -17,6 +17,7 @@ export const PostsPagination = ({ posts }) => {
   const { activeTag } = useSelector((state) => state.posts.tags);
 
   React.useEffect(() => {
+    console.log('PostsPagination useEffect updated');
     dispatch(
       fetchPosts({
         pageOptions: [activePage + 1, 5],
@@ -30,9 +31,9 @@ export const PostsPagination = ({ posts }) => {
     return (
       <>
         {currentItems &&
-          currentItems.map((post, index) => (
+          currentItems.map((post) => (
             <Post
-              key={index}
+              key={post._id}
               id={post._id}
               title={post.title}
               imageUrl={
@@ -70,7 +71,7 @@ export const PostsPagination = ({ posts }) => {
           nextLabel={<NavigateNextIcon />}
           onPageChange={handlePageClick}
           forcePage={activePage}
-          pageRangeDisplayed={5}
+          pageRangeDisplayed={2}
           pageCount={pageCount}
           previousLabel={<NavigateBeforeIcon />}
           renderOnZeroPageCount={null}

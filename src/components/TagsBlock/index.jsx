@@ -14,58 +14,43 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { SideBlock } from '../SideBlock';
 import { resetSearchString, setActivePage } from 'redux/slices/utils';
-import { fetchPosts, setActiveTag } from 'redux/slices/posts';
+import { setActiveTag } from 'redux/slices/posts';
 
 export const TagsBlock = React.memo(({ tags = [], isLoading = true }) => {
   const dispatch = useDispatch();
 
-  const { activeTabs } = useSelector((state) => state.utils);
-
-  const [activeTagName, setActiveTagName] = React.useState(null);
+  const { activeTag } = useSelector((state) => state.posts.tags);
 
   const { name } = useParams();
 
   React.useEffect(() => {
     if (!name) {
-      setActiveTagName(null);
+      dispatch(setActiveTag(null));
     } else {
-      setActiveTagName(name);
+      dispatch(setActiveTag(name));
     }
   }, [name]);
-
-  const onGetPosts = (name) => {
-    dispatch(setActiveTag(name));
-    dispatch(
-      fetchPosts({
-        pageOptions: [1, 5],
-        activeTabs,
-        tagName: name,
-      }),
-    );
-    setActiveTagName(name);
-  };
 
   return (
     <SideBlock title="Тэги">
       <List>
-        {(isLoading ? [...Array(5)] : tags).map((tagName, i) => (
+        {(isLoading && !tags ? [...Array(5)] : tags).map((tag) => (
           <Link
-            key={i}
+            key={tag}
             style={{
               textDecoration: 'none',
-              color: activeTagName === tagName ? 'white' : 'black',
+              color: activeTag === tag ? 'white' : 'black',
             }}
-            to={`/tags/${tagName}`}
+            to={`/tags/${tag}`}
           >
             <ListItem
               style={{
-                backgroundColor:
-                  activeTagName === tagName ? '#4361ee' : 'white',
+                backgroundColor: activeTag === tag ? '#4361ee' : 'white',
               }}
-              key={i}
+              key={tag}
               onClick={() => {
                 dispatch(setActivePage(0));
-                onGetPosts(tagName);
+                dispatch(setActiveTag(tag));
                 dispatch(resetSearchString(new Date().valueOf()));
               }}
               disablePadding
@@ -74,14 +59,14 @@ export const TagsBlock = React.memo(({ tags = [], isLoading = true }) => {
                 <ListItemIcon>
                   <TagIcon
                     style={{
-                      color: activeTagName === tagName ? 'white' : '',
+                      color: activeTag === tag ? 'white' : '',
                     }}
                   />
                 </ListItemIcon>
                 {isLoading ? (
                   <Skeleton variant="text" width={274} height={24} />
                 ) : (
-                  <ListItemText primary={tagName} />
+                  <ListItemText primary={tag} />
                 )}
               </ListItemButton>
             </ListItem>

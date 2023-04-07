@@ -11,7 +11,6 @@ import { Header } from 'modules/Header';
 import { Loader } from 'components';
 import { fetchTags } from 'redux/slices/tags';
 import { fetchLastsComments } from 'redux/slices/comments';
-import { setActiveTag } from 'redux/slices/posts';
 
 function App() {
   const dispatch = useDispatch();

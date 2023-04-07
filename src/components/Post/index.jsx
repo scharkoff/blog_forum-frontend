@@ -45,7 +45,7 @@ export const Post = ({
     if (window.confirm('Вы действительно хотите удалить статью?')) {
       try {
         dispatch(fetchRemovePost(id));
-        dispatch(fetchPosts({ activeTabs }));
+        dispatch(fetchPosts());
 
         if (isFullPost) {
           return navigate('/');
@@ -106,18 +106,7 @@ export const Post = ({
           </h2>
           <ul className={styles.tags}>
             {tags.map((name) => (
-              <li
-                key={name}
-                onClick={() =>
-                  dispatch(
-                    fetchPosts({
-                      pageOptions: [1, 5],
-                      activeTabs,
-                      tagName: name,
-                    }),
-                  )
-                }
-              >
+              <li key={name}>
                 <Link to={`/tags/${name}`}>#{name}</Link>
               </li>
             ))}

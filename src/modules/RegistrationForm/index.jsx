@@ -61,7 +61,7 @@ export const RegistrationForm = () => {
         <form onSubmit={handleSubmit(onSubmitRegister)}>
           <TextField
             className={styles.field}
-            label="Полное имя"
+            label="Логин"
             fullWidth
             {...register('fullName', { required: 'Введите имя' })}
             helperText={formState.errors.fullName?.message}

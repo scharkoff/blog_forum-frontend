@@ -5,11 +5,10 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchComments } from 'redux/slices/comments';
 import axios from 'configs/axios/axios';
-import { closeCommentEditMode } from 'redux/slices/posts';
+import { setCommentEditMode } from 'redux/slices/posts';
 
-export const AddComment = () => {
+export const AddComment = ({ comments, setComments }) => {
   const dispatch = useDispatch();
 
   const [text, setText] = React.useState('');
@@ -30,7 +29,7 @@ export const AddComment = () => {
     setText('');
   }, [id]);
 
-  const onSubmit = async () => {
+  const onSubmitComment = async () => {
     try {
       const fields = {
         commentId: editMode ? editbleComment.commentId : null,
@@ -39,10 +38,24 @@ export const AddComment = () => {
         avatarUrl: userData.avatarUrl,
         post: id,
       };
-      !editMode
-        ? await axios.post(`/comments/${id}`, fields)
-        : await axios.patch(`/comments/${id}`, fields);
-      dispatch(fetchComments());
+
+      if (!editMode) {
+        const { data } = await axios.post(`/comments/${id}`, fields);
+        setComments([...comments, data.comment]);
+      } else {
+        const { data } = await axios.patch(`/comments/${id}`, fields);
+        setComments(
+          comments.map((comment) => {
+            if (comment._id === fields.commentId) {
+              return data.comment;
+            } else {
+              return comment;
+            }
+          }),
+        );
+        dispatch(setCommentEditMode(false));
+      }
+
       setText('');
     } catch (error) {
       alert('Ошибка при создании комментария!');
@@ -50,7 +63,7 @@ export const AddComment = () => {
   };
 
   const onCancel = async () => {
-    dispatch(closeCommentEditMode());
+    dispatch(setCommentEditMode());
     setText('');
   };
 
@@ -81,7 +94,7 @@ export const AddComment = () => {
             disabled={userData?._id ? false : true}
           />
           <Button
-            onClick={onSubmit}
+            onClick={onSubmitComment}
             variant="contained"
             disabled={!text ? true : false}
             color={editMode ? 'secondary' : 'primary'}

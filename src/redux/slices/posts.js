@@ -13,7 +13,7 @@ export const fetchPosts = createAsyncThunk(
   'posts/fetchPosts',
   async ({
     pageOptions = [1, 5],
-    activeTabs,
+    activeTabs = { activeId: 0, activeType: 'new' },
     tagName = null,
     searchText = null,
   }) => {
@@ -46,6 +46,7 @@ const initialState = {
   comments: {
     items: [],
     status: 'loading',
+    editMode: false,
   },
   lastComments: {
     items: [],
@@ -57,7 +58,7 @@ const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    closeCommentEditMode: (state) => {
+    setCommentEditMode: (state) => {
       state.comments.editMode = false;
     },
 
@@ -117,47 +118,29 @@ const postsSlice = createSlice({
     [fetchComments.pending]: (state, action) => {
       state.comments.items = action.payload;
       state.comments.status = 'loading';
-      state.comments.editMode = false;
     },
     [fetchComments.fulfilled]: (state, action) => {
       state.comments.items = action.payload;
       state.comments.status = 'loaded';
-      state.comments.editMode = false;
     },
     [fetchComments.rejected]: (state, action) => {
       state.comments.status = 'error';
-      state.comments.editMode = false;
     },
 
     [fetchLastsComments.pending]: (state, action) => {
       state.lastComments.items = action.payload;
       state.lastComments.status = 'loading';
-      state.lastComments.editMode = false;
     },
     [fetchLastsComments.fulfilled]: (state, action) => {
       state.lastComments.items = action.payload;
       state.lastComments.status = 'loaded';
-      state.lastComments.editMode = false;
     },
     [fetchLastsComments.rejected]: (state, action) => {
       state.lastComments.status = 'error';
-      state.lastComments.editMode = false;
-    },
-
-    [fetchRemoveComment.pending]: (state, action) => {
-      state.comments.items = state.comments.items.filter(
-        (obj) => obj._id !== action.meta.arg.commentId,
-      );
-      state.posts.status = 'loading';
-      state.comments.editMode = false;
-    },
-    [fetchRemoveComment.rejected]: (state) => {
-      state.comments.status = 'error';
-      state.comments.editMode = false;
     },
   },
 });
 
 export const postsReducer = postsSlice.reducer;
-export const { closeCommentEditMode, setActiveTag, setEditCommentValues } =
+export const { setCommentEditMode, setActiveTag, setEditCommentValues } =
   postsSlice.actions;
