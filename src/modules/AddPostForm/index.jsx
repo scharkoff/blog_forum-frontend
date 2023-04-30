@@ -1,18 +1,18 @@
 import React from 'react';
-import { Img } from 'react-image';
+import axios from 'configs/axios/axios';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import { AlertMessage } from 'components/AlertMessage';
 import SimpleMDE from 'react-simplemde-editor';
-import 'easymde/dist/easymde.min.css';
 import styles from './scss/AddPost.module.scss';
+import useAlertMessage from 'hooks/useAlertMessage';
+import 'easymde/dist/easymde.min.css';
+import { Img } from 'react-image';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import axios from 'configs/axios/axios';
 import { onSubmitPost } from './api/submitPost';
 import { handleChangeFile } from './api/handleChangeFile';
-import { useAlertMessage } from 'hooks/useAlertMessage';
+import { AlertMessage } from 'components';
 
 export const AddPostForm = ({ id }) => {
   const dispatch = useDispatch();
@@ -150,9 +150,7 @@ export const AddPostForm = ({ id }) => {
             </Button>
             <Img
               className={styles.image}
-              src={`${
-                process.env.REACT_APP_API_URL || 'http://localhost:4444'
-              }${createPostFields.imageUrl}`}
+              src={`${process.env.REACT_APP_API_URL}${createPostFields.imageUrl}`}
               alt="Uploaded"
             />
           </>

@@ -1,21 +1,18 @@
 import React from 'react';
-
+import styles from './Registration.module.scss';
+import Cookies from 'js-cookie';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
-
+import useAlertMessage from 'hooks/useAlertMessage';
+import handlingInternalOrServerError from 'utils/functions/errors/handlingInternalOrServerError';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-
 import { fetchRegister, selectIsAuth } from 'redux/slices/auth';
-
-import styles from './Registration.module.scss';
-import { AlertMessage } from 'components/AlertMessage';
-import { useAlertMessage } from 'hooks/useAlertMessage';
-import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
+import { AlertMessage } from 'components';
 
 export const RegistrationForm = () => {
   const dispatch = useDispatch();
@@ -37,7 +34,7 @@ export const RegistrationForm = () => {
     const response = await dispatch(fetchRegister(values));
 
     if (response.payload) {
-      window.localStorage.setItem('token', response.payload.token);
+      Cookies.set('token', response.data.token);
     }
 
     handlingInternalOrServerError(response, setAlertOptions);

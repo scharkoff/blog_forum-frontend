@@ -14,6 +14,7 @@
     "axios": "^0.27.2",
     "clsx": "^1.1.1",
     "easymde": "^2.16.1",
+    "js-cookie": "^3.0.5",
     "prop-types": "^15.8.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
@@ -33,7 +34,8 @@
     "start": "set PORT=3001 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prettier": "prettier --write \"**/*.{js,jsx}\""
   },
   "eslintConfig": {
     "extends": [

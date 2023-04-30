@@ -1,7 +1,5 @@
 import React from 'react';
-
 import Button from '@mui/material/Button';
-
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,13 +8,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-
+import handlingInternalOrServerError from 'utils/functions/errors/handlingInternalOrServerError.js';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { fetchDeleteUser } from 'redux/slices/users.js';
-import { AdminSearchString } from '../AdminSearchString/index.jsx';
-import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError.js';
+import { AdminSearchString } from 'components';
 
 export const UsersTable = ({ user, setAlertOptions }) => {
   const dispatch = useDispatch();

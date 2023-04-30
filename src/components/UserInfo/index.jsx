@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Avatar from '@mui/material/Avatar';
-
 import styles from './UserInfo.module.scss';
 
 export const UserInfo = ({ avatarUrl, fullName, additionalText, rank }) => {
@@ -13,9 +11,7 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText, rank }) => {
         alt={fullName}
         src={
           avatarUrl
-            ? `${
-                process.env.REACT_APP_API_URL || 'http://localhost:4444'
-              }${avatarUrl}`
+            ? `${process.env.REACT_APP_API_URL}${avatarUrl}`
             : './images/noavatar.png'
         }
       />

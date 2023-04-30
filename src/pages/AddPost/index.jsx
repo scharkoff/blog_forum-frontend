@@ -9,7 +9,7 @@ export const AddPost = () => {
 
   const { id } = useParams();
 
-  if (!window.localStorage.getItem('token') && !isAuth) {
+  if (!isAuth) {
     return <Navigate to="/" />;
   }
 

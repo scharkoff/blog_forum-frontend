@@ -15,6 +15,7 @@ export const theme = createTheme({
   },
   typography: {
     button: {
+      boxShadow: 'none',
       textTransform: 'none',
       fontWeight: 400,
     },
@@ -25,6 +26,9 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           boxShadow: 'none',
+          '&:hover': {
+            boxShadow: 'none',
+          },
         },
       },
     },

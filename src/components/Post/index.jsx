@@ -86,9 +86,7 @@ export const Post = ({
             })}
             src={imageUrl}
             onError={(e) =>
-              (e.target.src = `${
-                process.env.REACT_APP_API_URL || 'http://localhost:4444'
-              }/uploads/no-post-photo.png`)
+              (e.target.src = `${process.env.REACT_APP_API_URL}/uploads/no-post-photo.png`)
             }
             alt={title}
           />

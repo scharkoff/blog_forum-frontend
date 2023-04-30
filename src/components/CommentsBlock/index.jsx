@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SideBlock } from '../SideBlock';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
@@ -13,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
 import styles from '../UserInfo/UserInfo.module.scss';
+import { SideBlock } from '../SideBlock';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { selectIsAuth } from 'redux/slices/auth.js';
@@ -54,10 +54,7 @@ export const CommentsBlock = React.memo(
                     ) : (
                       <Avatar
                         alt={comment.user?.fullName}
-                        src={`${
-                          process.env.REACT_APP_API_URL ||
-                          'http://localhost:4444'
-                        }${comment.user.avatarUrl}`}
+                        src={`${process.env.REACT_APP_API_URL}${comment.user.avatarUrl}`}
                       />
                     )}
                   </ListItemAvatar>

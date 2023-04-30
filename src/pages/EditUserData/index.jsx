@@ -1,11 +1,18 @@
 import React from 'react';
 import { EditUserDataForm } from 'modules';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { fetchUsers } from 'redux/slices/users';
+import { selectIsAuth } from 'redux/slices/auth';
 
 export const EditUserData = () => {
   const dispatch = useDispatch();
+
+  const isAuth = useSelector(selectIsAuth);
+
+  if (!isAuth) {
+    return <Navigate to="/" />;
+  }
 
   const { id } = useParams();
 

@@ -1,13 +1,13 @@
 import React from 'react';
-
+import useAlertMessage from 'hooks/useAlertMessage';
 import { Typography } from '@mui/material';
-
-import { AlertMessage } from 'components/AlertMessage/index.jsx';
-import { UserLoginForm } from 'components/EditUserDataForms/UserLoginForm/index.jsx';
-import { UserEmailForm } from 'components/EditUserDataForms/UserEmailForm/index.jsx';
-import { UserRankForm } from 'components/EditUserDataForms/UserRankForm/index.jsx';
-import { UserPasswordForm } from 'components/EditUserDataForms/UserPasswordForm/index.jsx';
-import { useAlertMessage } from 'hooks/useAlertMessage';
+import {
+  AlertMessage,
+  UserEmailForm,
+  UserLoginForm,
+  UserPasswordForm,
+  UserRankForm,
+} from 'components';
 
 export const EditUserDataForm = ({ editbleUserData, id }) => {
   const [login, setLogin] = React.useState('');

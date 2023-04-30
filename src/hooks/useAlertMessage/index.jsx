@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const useAlertMessage = () => {
+const useAlertMessage = () => {
   const [open, setOpen] = React.useState(false),
     [alertText, setAlertText] = React.useState(''),
     [alertType, setAlertType] = React.useState('info');
@@ -13,3 +13,5 @@ export const useAlertMessage = () => {
 
   return [{ open, alertText, alertType, setOpen }, setAlertOptions];
 };
+
+export default useAlertMessage;

@@ -37,9 +37,7 @@ export const PostsPagination = ({ posts }) => {
               title={post.title}
               imageUrl={
                 post.imageUrl
-                  ? `${
-                      process.env.REACT_APP_API_URL || 'http://localhost:4444'
-                    }${post.imageUrl}`
+                  ? `${process.env.REACT_APP_API_URL}${post.imageUrl}`
                   : ''
               }
               user={post.user}

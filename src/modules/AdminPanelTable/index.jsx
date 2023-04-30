@@ -1,19 +1,24 @@
 import React from 'react';
-
+import useAlertMessage from 'hooks/useAlertMessage';
 import { Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { fetchUsers } from 'redux/slices/users';
+import { AlertMessage, UsersTable } from 'components';
 
-import { UsersTable } from 'components/UsersTable/index.jsx';
-import { AlertMessage } from 'components/AlertMessage/index.jsx';
-import { useAlertMessage } from 'hooks/useAlertMessage';
+export const AdminPanelTable = ({ user }) => {
+  const dispatch = useDispatch();
 
-export const AdminPanelTable = ({ user, response }) => {
   const [alertVariables, setAlertOptions] = useAlertMessage();
 
   React.useEffect(() => {
-    if (response.isError) {
-      setAlertOptions(true, 'error', response.message);
-    }
-  }, [response]);
+    (async () => {
+      const response = await dispatch(fetchUsers());
+
+      if (response.payload?.isError) {
+        setAlertOptions(true, 'error', response.payload?.message);
+      }
+    })();
+  }, []);
 
   return (
     <div>
