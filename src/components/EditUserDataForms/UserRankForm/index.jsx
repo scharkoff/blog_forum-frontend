@@ -1,14 +1,12 @@
 import React from 'react';
-
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import { Select } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
-
+import handlingInternalOrServerError from 'utils/functions/errors/handlingInternalOrServerError';
+import { Select } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { fetchUpdateByCondition } from 'redux/slices/users';
-import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const UserRankForm = React.memo(
   ({ id, rank, setRank, editbleUserData, setAlertOptions }) => {

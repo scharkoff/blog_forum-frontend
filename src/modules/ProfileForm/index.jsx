@@ -1,11 +1,12 @@
 import React from 'react';
-
-import { AlertMessage } from 'components/AlertMessage/index.jsx';
-import { ProfileAvatarForm } from 'components/ProfileForms/ProfileAvatarForm/index.jsx';
-import { ProfileLoginForm } from 'components/ProfileForms/ProfileLoginForm/index.jsx';
-import { ProfileEmailForm } from 'components/ProfileForms/ProfileEmailForm/index.jsx';
-import { ProfilePasswordForm } from 'components/ProfileForms/ProfilePasswordForm/index.jsx';
-import { useAlertMessage } from 'hooks/useAlertMessage';
+import useAlertMessage from 'hooks/useAlertMessage';
+import {
+  AlertMessage,
+  ProfileAvatarForm,
+  ProfileEmailForm,
+  ProfileLoginForm,
+  ProfilePasswordForm,
+} from 'components';
 
 export const ProfileForm = ({ user }) => {
   const [login, setLogin] = React.useState('');

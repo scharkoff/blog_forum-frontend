@@ -1,18 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import axios from 'configs/axios/axios';
-
-import { Avatar } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-
+import handlingInternalOrServerError from 'utils/functions/errors/handlingInternalOrServerError';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { Avatar } from '@mui/material';
 import { fetchUpdateByCondition } from 'redux/slices/users';
-import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const ProfileAvatarForm = React.memo(
   ({ avatarUrl, setAlertOptions }) => {
@@ -59,12 +56,8 @@ export const ProfileAvatarForm = React.memo(
               sx={{ width: 200, height: 200 }}
               src={
                 newAvatarUrl
-                  ? `${
-                      process.env.REACT_APP_API_URL || 'http://localhost:4444'
-                    }${newAvatarUrl}`
-                  : `${
-                      process.env.REACT_APP_API_URL || 'http://localhost:4444'
-                    }${avatarUrl}`
+                  ? `${process.env.REACT_APP_API_URL}${newAvatarUrl}`
+                  : `${process.env.REACT_APP_API_URL}${avatarUrl}`
               }
             ></Avatar>
           </Grid>

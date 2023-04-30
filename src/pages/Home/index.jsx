@@ -1,18 +1,15 @@
-import React, { useMemo } from 'react';
-
-import Grid from '@mui/material/Grid';
-import { SortTabs } from 'components';
-import { TagsBlock } from 'components/TagsBlock';
-import { CommentsBlock } from 'components/CommentsBlock';
-import { Posts } from 'modules/Posts';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import styles from './Home.module.scss';
+import Grid from '@mui/material/Grid';
+import { useSelector } from 'react-redux';
+import { Posts } from 'modules';
+import { CommentsBlock, SortTabs, TagsBlock } from 'components';
 
 export const Home = () => {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const { lastCommets, tags, status } = useSelector(
-    useMemo(
+    React.useMemo(
       () => (state) => ({
         lastCommets: state.posts.lastComments,
         tags: state.posts.tags,

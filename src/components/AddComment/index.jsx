@@ -74,9 +74,7 @@ export const AddComment = ({ comments, setComments }) => {
           classes={{ root: styles.avatar }}
           src={
             userData
-              ? `${process.env.REACT_APP_API_URL || 'http://localhost:4444'}${
-                  userData.avatarUrl
-                }`
+              ? `${process.env.REACT_APP_API_URL}${userData.avatarUrl}`
               : ''
           }
         />

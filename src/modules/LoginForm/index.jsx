@@ -1,21 +1,17 @@
 import React from 'react';
-
+import Cookies from 'js-cookie';
+import styles from './scss/Login.module.scss';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-
+import useAlertMessage from 'hooks/useAlertMessage';
+import handlingInternalOrServerError from 'utils/functions/errors/handlingInternalOrServerError';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-
 import { fetchAuth, selectIsAuth } from 'redux/slices/auth';
-
-import styles from './scss/Login.module.scss';
-
-import { AlertMessage } from 'components/AlertMessage';
-import { useAlertMessage } from 'hooks/useAlertMessage';
-import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
+import { AlertMessage } from 'components';
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
@@ -36,7 +32,7 @@ export const LoginForm = () => {
     const response = await dispatch(fetchAuth(values));
 
     if (response.payload) {
-      window.localStorage.setItem('token', response.payload.token);
+      Cookies.set('token', response.payload.token);
     }
 
     handlingInternalOrServerError(response, setAlertOptions);

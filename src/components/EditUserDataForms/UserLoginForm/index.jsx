@@ -1,13 +1,11 @@
 import React from 'react';
-
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-
+import handlingInternalOrServerError from 'utils/functions/errors/handlingInternalOrServerError';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { fetchUpdateByCondition } from 'redux/slices/users';
-import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const UserLoginForm = React.memo(
   ({ id, login, setLogin, editbleUserData, setAlertOptions }) => {

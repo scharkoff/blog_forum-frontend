@@ -1,19 +1,11 @@
 import React from 'react';
-
-import { Post } from 'components/Post';
-import { AddComment } from 'components/AddComment';
-import { CommentsBlock } from 'components/CommentsBlock';
-
-import ReactMarkdown from 'react-markdown';
-
-import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-
 import axios from 'configs/axios/axios';
-
+import ReactMarkdown from 'react-markdown';
+import useAlertMessage from 'hooks/useAlertMessage';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { fetchComments } from 'redux/slices/comments';
-import { AlertMessage } from 'components/AlertMessage';
-import { useAlertMessage } from 'hooks/useAlertMessage';
+import { AddComment, AlertMessage, CommentsBlock, Post } from 'components';
 
 export const FullPostForm = () => {
   const [postData, setPostData] = React.useState(),
@@ -64,9 +56,7 @@ export const FullPostForm = () => {
         title={postData.title}
         imageUrl={
           postData.imageUrl
-            ? `${process.env.REACT_APP_API_URL || 'http://localhost:4444'}${
-                postData.imageUrl
-              }`
+            ? `${process.env.REACT_APP_API_URL}${postData.imageUrl}`
             : ''
         }
         user={postData.user}

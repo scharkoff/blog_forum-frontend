@@ -1,4 +1,4 @@
-export const handlingInternalOrServerError = (response, setAlertOptions) => {
+const handlingInternalOrServerError = (response, setAlertOptions) => {
   if (response.payload?.isError) {
     setAlertOptions(
       true,
@@ -11,3 +11,5 @@ export const handlingInternalOrServerError = (response, setAlertOptions) => {
     setAlertOptions(true, 'success', response.payload?.message);
   }
 };
+
+export default handlingInternalOrServerError;

@@ -1,10 +1,8 @@
 import React from 'react';
-import { Post } from 'components/Post';
-import { SearchString } from 'components/SearchString';
-import { AlertMessage } from 'components/AlertMessage';
-import { useAlertMessage } from 'hooks/useAlertMessage';
+import useAlertMessage from 'hooks/useAlertMessage';
 import { PostsPagination } from './PostsPagination';
 import { useSelector } from 'react-redux';
+import { AlertMessage, Post, SearchString } from 'components';
 
 export const Posts = () => {
   const [isLoading, setIsLoading] = React.useState(true);

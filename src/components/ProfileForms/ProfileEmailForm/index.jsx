@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-
+import handlingInternalOrServerError from 'utils/functions/errors/handlingInternalOrServerError';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { fetchUpdateByCondition } from 'redux/slices/users';
-import { handlingInternalOrServerError } from 'utils/functions/errors/handlingInternalOrServerError';
 
 export const ProfileEmailForm = React.memo(
   ({ user, email, setEmail, setAlertOptions }) => {
