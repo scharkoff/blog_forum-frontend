@@ -32,7 +32,10 @@ export const LoginForm = () => {
     const response = await dispatch(fetchAuth(values));
 
     if (response.payload) {
-      Cookies.set('token', response.payload.token);
+      Cookies.set('token', response.payload.token, {
+        domain: 'sharkov-blog.onrender.com',
+        secure: true,
+      });
     }
 
     handlingInternalOrServerError(response, setAlertOptions);

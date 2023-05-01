@@ -28,7 +28,10 @@ instance.interceptors.response.use(
           },
         );
 
-        Cookies.set('token', response.data.accessToken);
+        Cookies.set('token', response.data.accessToken, {
+          domain: 'sharkov-blog.onrender.com',
+          secure: true,
+        });
 
         return instance.request(originalRequest);
       } catch (error) {

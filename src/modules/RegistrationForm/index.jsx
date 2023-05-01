@@ -34,7 +34,10 @@ export const RegistrationForm = () => {
     const response = await dispatch(fetchRegister(values));
 
     if (response.payload) {
-      Cookies.set('token', response.data.token);
+      Cookies.set('token', response.data.token, {
+        domain: 'sharkov-blog.onrender.com',
+        secure: true,
+      });
     }
 
     handlingInternalOrServerError(response, setAlertOptions);
