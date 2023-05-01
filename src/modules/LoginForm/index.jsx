@@ -33,7 +33,7 @@ export const LoginForm = () => {
 
     if (response.payload) {
       Cookies.set('token', response.payload.token, {
-        domain: 'sharkov-blog.onrender.com',
+        domain: process.env.REACT_APP_DOMAIN,
         secure: true,
       });
     }

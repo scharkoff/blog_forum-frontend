@@ -34,7 +34,7 @@ export const RegistrationForm = () => {
     const response = await dispatch(fetchRegister(values));
 
     if (response.payload) {
-      Cookies.set('token', response.data.token, {
+      Cookies.set('token', response.payload.token, {
         domain: process.env.REACT_APP_DOMAIN,
         secure: true,
       });

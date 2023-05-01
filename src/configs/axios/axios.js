@@ -29,7 +29,7 @@ instance.interceptors.response.use(
         );
 
         Cookies.set('token', response.data.accessToken, {
-          domain: 'sharkov-blog.onrender.com',
+          domain: process.env.REACT_APP_DOMAIN,
           secure: true,
         });
 
