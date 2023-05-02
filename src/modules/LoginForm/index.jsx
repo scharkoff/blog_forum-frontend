@@ -30,8 +30,6 @@ export const LoginForm = () => {
   const onSubmitAuth = async (values) => {
     const response = await dispatch(fetchAuth(values));
 
-    console.log(response.payload);
-
     if (response.payload) {
       localStorage.setItem('token', response.payload.token);
     }
