@@ -1,6 +1,5 @@
 import React from 'react';
 import Container from '@mui/material/Container';
-import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import { fetchAuthMe } from 'redux/slices/auth';
 import { setIsMobile } from 'redux/slices/utils';
@@ -18,7 +17,10 @@ function App() {
     [openLoader, setOpenLoader] = React.useState(true);
 
   React.useEffect(() => {
-    if (Cookies.get('token') && Cookies.get('token') !== 'undefined') {
+    if (
+      localStorage.getItem('token') &&
+      localStorage.getItem('token') !== 'undefined'
+    ) {
       dispatch(fetchAuthMe());
     }
 

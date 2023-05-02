@@ -1,10 +1,15 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   withCredentials: true,
   sameSite: 'none',
+});
+
+instance.interceptors.request.use((config) => {
+  config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+
+  return config;
 });
 
 instance.interceptors.response.use(
@@ -28,14 +33,11 @@ instance.interceptors.response.use(
           },
         );
 
-        Cookies.set('token', response.data.accessToken, {
-          domain: process.env.REACT_APP_DOMAIN,
-          secure: true,
-        });
+        localStorage.setItem('token', response.data.accessToken);
 
         return instance.request(originalRequest);
       } catch (error) {
-        Cookies.remove('token');
+        localStorage.removeItem('token');
         window.location.reload();
       }
     }

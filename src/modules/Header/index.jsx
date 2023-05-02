@@ -9,13 +9,12 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPosts, setActiveTag } from 'redux/slices/posts';
 import { fetchLogout, selectIsAuth } from 'redux/slices/auth';
+import { Avatar } from '@mui/material';
 import {
   setActiveTab,
   resetSearchString,
   setActivePage,
 } from 'redux/slices/utils';
-import { Avatar } from '@mui/material';
-import Cookies from 'js-cookie';
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -27,7 +26,7 @@ export const Header = () => {
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти из акккаунта?')) {
       dispatch(fetchLogout());
-      Cookies.remove('token');
+      localStorage.removeItem('token');
     }
   };
 

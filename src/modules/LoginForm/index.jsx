@@ -1,5 +1,4 @@
 import React from 'react';
-import Cookies from 'js-cookie';
 import styles from './scss/Login.module.scss';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -32,10 +31,7 @@ export const LoginForm = () => {
     const response = await dispatch(fetchAuth(values));
 
     if (response.payload) {
-      Cookies.set('token', response.payload.token, {
-        domain: process.env.REACT_APP_DOMAIN,
-        secure: true,
-      });
+      localStorage.setItem('token', response.payload.accessToken);
     }
 
     handlingInternalOrServerError(response, setAlertOptions);

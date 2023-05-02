@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './Registration.module.scss';
-import Cookies from 'js-cookie';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
@@ -34,10 +33,7 @@ export const RegistrationForm = () => {
     const response = await dispatch(fetchRegister(values));
 
     if (response.payload) {
-      Cookies.set('token', response.payload.token, {
-        domain: process.env.REACT_APP_DOMAIN,
-        secure: true,
-      });
+      localStorage.setItem('token', response.payload.accessToken);
     }
 
     handlingInternalOrServerError(response, setAlertOptions);
