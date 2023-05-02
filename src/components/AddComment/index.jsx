@@ -3,9 +3,9 @@ import styles from './AddComment.module.scss';
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import axios from 'configs/axios/axios';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'configs/axios/axios';
 import { setCommentEditMode } from 'redux/slices/posts';
 
 export const AddComment = ({ comments, setComments }) => {

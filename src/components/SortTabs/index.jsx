@@ -1,15 +1,12 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-
+import { useDispatch, useSelector } from 'react-redux';
 import {
   resetSearchString,
   setActivePage,
   setActiveTab,
 } from 'redux/slices/utils';
-import {} from 'redux/slices/tags';
 
 export const SortTabs = () => {
   const dispatch = useDispatch();

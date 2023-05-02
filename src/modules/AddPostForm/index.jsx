@@ -7,7 +7,6 @@ import SimpleMDE from 'react-simplemde-editor';
 import styles from './scss/AddPost.module.scss';
 import useAlertMessage from 'hooks/useAlertMessage';
 import 'easymde/dist/easymde.min.css';
-import { Img } from 'react-image';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { onSubmitPost } from './api/submitPost';
@@ -148,7 +147,7 @@ export const AddPostForm = ({ id }) => {
             >
               Удалить
             </Button>
-            <Img
+            <img
               className={styles.image}
               src={`${process.env.REACT_APP_API_URL}${createPostFields.imageUrl}`}
               alt="Uploaded"

@@ -1,24 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import clsx from 'clsx';
-
 import styles from './Post.module.scss';
-
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
 import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Img } from 'react-image';
-
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
-
-import { fetchPosts, fetchRemovePost } from 'redux/slices/posts';
+import { fetchRemovePost } from 'redux/slices/posts';
 
 export const Post = ({
   id,
@@ -80,7 +73,7 @@ export const Post = ({
       )}
       {imageUrl && (
         <Link to={`/posts/${id}`}>
-          <Img
+          <img
             className={clsx(styles.image, {
               [styles.imageFull]: isFullPost,
             })}
