@@ -33,7 +33,7 @@ export const RegistrationForm = () => {
     const response = await dispatch(fetchRegister(values));
 
     if (response.payload) {
-      localStorage.setItem('token', response.payload.accessToken);
+      localStorage.setItem('token', response.payload.token);
     }
 
     handlingInternalOrServerError(response, setAlertOptions);
