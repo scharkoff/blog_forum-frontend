@@ -1,10 +1,13 @@
 import React from 'react';
 import useAlertMessage from 'hooks/useAlertMessage';
 import { PostsPagination } from './PostsPagination';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AlertMessage, Post, SearchString } from 'components';
+import { resetIsPostRemoved } from 'redux/slices/posts';
 
 export const Posts = () => {
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [alertVariables, setAlertOptions] = useAlertMessage();
@@ -16,8 +19,9 @@ export const Posts = () => {
       setIsLoading(false);
     }
 
-    if (posts.status === 'removed') {
+    if (posts.isPostRemoved) {
       setAlertOptions(true, 'success', 'Статья успешно удалена!');
+      dispatch(resetIsPostRemoved());
     }
   }, [posts.items]);
 

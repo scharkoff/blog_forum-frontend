@@ -45,7 +45,6 @@ export const Header = () => {
               );
               dispatch(resetSearchString(new Date().valueOf()));
               dispatch(setActivePage(0));
-              dispatch(fetchPosts());
             }}
             className={styles.logo}
             to="/"

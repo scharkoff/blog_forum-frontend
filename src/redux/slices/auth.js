@@ -7,7 +7,10 @@ export const fetchLogin = createAsyncThunk(
   async (params) => {
     try {
       const { data } = await iaxios.post('/auth/login', params);
-      return { userData: data.userData, token: data.accessToken };
+      return {
+        userData: data.userData,
+        token: data.accessToken,
+      };
     } catch (error) {
       console.log('error', error);
       throw new Error(error.response.data.message);
@@ -29,7 +32,10 @@ export const fetchRegister = createAsyncThunk(
   async (params) => {
     try {
       const { data } = await iaxios.post('/auth/register', params);
-      return { userData: data.userData, token: data.accessToken };
+      return {
+        userData: data.userData,
+        token: data.accessToken,
+      };
     } catch (error) {
       console.log('error', error);
       throw new Error(error.response.data.message);
@@ -49,7 +55,9 @@ export const fetchAuthMe = createAsyncThunk('auth/fetchAuthMe', async () => {
       },
     );
 
-    return { userData: data.userData };
+    return {
+      userData: data.userData,
+    };
   } catch (error) {
     throw new Error(error.response.data.message);
   }
@@ -60,8 +68,9 @@ const initialState = {
     userData: {},
     token: null,
   },
-  status: 'loading',
+  isLoading: true,
   authorization: false,
+  error: '',
 };
 
 const authSlice = createSlice({
@@ -69,54 +78,54 @@ const authSlice = createSlice({
   initialState,
   extraReducers: {
     [fetchLogin.pending]: (state) => {
-      state.status = 'loading';
+      state.isLoading = true;
       state.authorization = false;
     },
     [fetchLogin.fulfilled]: (state, action) => {
       state.data = action.payload;
-      state.status = 'loaded';
+      state.isLoading = false;
       state.authorization = true;
     },
     [fetchLogin.rejected]: (state, action) => {
       state.data = action.error.message;
-      state.status = 'error';
+      state.isLoading = false;
       state.authorization = false;
     },
 
     [fetchAuthMe.pending]: (state) => {
-      state.status = 'loading';
+      state.isLoading = true;
       state.authorization = false;
     },
     [fetchAuthMe.fulfilled]: (state, action) => {
       state.data = action.payload;
-      state.status = 'loaded';
+      state.isLoading = false;
       state.authorization = true;
     },
     [fetchAuthMe.rejected]: (state) => {
-      state.status = 'error';
+      state.isLoading = false;
       state.authorization = false;
     },
 
     [fetchRegister.pending]: (state) => {
-      state.status = 'loading';
+      state.isLoading = true;
       state.authorization = false;
     },
     [fetchRegister.fulfilled]: (state, action) => {
       state.data = action.payload;
-      state.status = 'loaded';
+      state.isLoading = false;
       state.authorization = true;
     },
     [fetchRegister.rejected]: (state, action) => {
       state.data = action.error.message;
-      state.status = 'error';
+      state.isLoading = false;
       state.authorization = false;
     },
 
     [fetchLogout.pending]: (state) => {
-      state.status = 'loading';
+      state.isLoading = true;
     },
     [fetchLogout.fulfilled]: (state) => {
-      state.status = 'loaded';
+      state.isLoading = false;
       state.data = {
         userData: {},
         token: null,
@@ -124,7 +133,7 @@ const authSlice = createSlice({
       state.authorization = false;
     },
     [fetchLogout.pending]: (state) => {
-      state.status = 'error';
+      state.isLoading = false;
       state.authorization = true;
     },
   },

@@ -30,21 +30,22 @@ export const fetchRemovePost = createAsyncThunk(
 const initialState = {
   posts: {
     items: [],
-    status: 'loading',
+    isLoading: true,
+    isPostRemoved: false,
   },
   tags: {
     items: [],
-    status: 'loading',
+    isLoading: true,
     activeTag: null,
   },
   comments: {
     items: [],
-    status: 'loading',
+    isLoading: true,
     editMode: false,
   },
   lastComments: {
     items: [],
-    status: 'loading',
+    isLoading: true,
   },
 };
 
@@ -67,74 +68,83 @@ const postsSlice = createSlice({
         text: action.payload.text,
       };
       state.comments.editMode = true;
-      state.comments.status = 'loaded';
+      state.comments.isLoading = false;
+    },
+
+    resetIsPostRemoved: (state) => {
+      state.posts.isPostRemoved = false;
     },
   },
   extraReducers: {
-    [fetchPosts.pending]: (state, action) => {
-      state.posts.status = 'loading';
+    [fetchPosts.pending]: (state) => {
+      state.posts.isLoading = true;
     },
     [fetchPosts.fulfilled]: (state, action) => {
       state.posts.items = action.payload?.posts;
       state.posts.postsCount = action.payload?.postsCount;
-      state.posts.status = 'loaded';
+      state.posts.isLoading = false;
       state.posts.home = true;
     },
     [fetchPosts.rejected]: (state, action) => {
-      state.posts.status = 'error';
+      state.posts.isLoading = false;
     },
 
+    [fetchRemovePost.pending]: (state) => {
+      state.posts.isLoading = true;
+    },
     [fetchRemovePost.fulfilled]: (state, action) => {
       state.posts.items = state.posts.items.filter(
         (obj) => obj._id !== action.meta.arg,
       );
-      state.posts.status = 'removed';
-    },
-    [fetchRemovePost.pending]: (state) => {
-      state.posts.status = 'loading';
+      state.posts.isPostRemoved = true;
+      state.posts.isLoading = false;
     },
     [fetchRemovePost.rejected]: (state) => {
-      state.posts.status = 'error';
+      state.posts.isLoading = false;
     },
 
     [fetchTags.pending]: (state, action) => {
       state.tags.items = action.payload;
-      state.tags.status = 'loading';
+      state.tags.isLoading = true;
     },
     [fetchTags.fulfilled]: (state, action) => {
       state.tags.items = action.payload;
-      state.tags.status = 'loaded';
+      state.tags.isLoading = false;
     },
     [fetchTags.rejected]: (state, action) => {
-      state.tags.status = 'error';
+      state.tags.isLoading = false;
     },
 
     [fetchComments.pending]: (state, action) => {
       state.comments.items = action.payload;
-      state.comments.status = 'loading';
+      state.comments.isLoading = true;
     },
     [fetchComments.fulfilled]: (state, action) => {
       state.comments.items = action.payload;
-      state.comments.status = 'loaded';
+      state.comments.isLoading = false;
     },
     [fetchComments.rejected]: (state, action) => {
-      state.comments.status = 'error';
+      state.comments.isLoading = false;
     },
 
     [fetchLastsComments.pending]: (state, action) => {
       state.lastComments.items = action.payload;
-      state.lastComments.status = 'loading';
+      state.lastComments.isLoading = true;
     },
     [fetchLastsComments.fulfilled]: (state, action) => {
       state.lastComments.items = action.payload;
-      state.lastComments.status = 'loaded';
+      state.lastComments.isLoading = false;
     },
     [fetchLastsComments.rejected]: (state, action) => {
-      state.lastComments.status = 'error';
+      state.lastComments.isLoading = false;
     },
   },
 });
 
 export const postsReducer = postsSlice.reducer;
-export const { setCommentEditMode, setActiveTag, setEditCommentValues } =
-  postsSlice.actions;
+export const {
+  setCommentEditMode,
+  setActiveTag,
+  setEditCommentValues,
+  resetIsPostRemoved,
+} = postsSlice.actions;

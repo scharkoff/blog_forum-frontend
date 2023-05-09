@@ -36,7 +36,7 @@ export const fetchUpdateByCondition = createAsyncThunk(
 
 const initialState = {
   data: [],
-  status: 'loading',
+  isLoading: true,
 };
 
 const usersSlice = createSlice({
@@ -44,28 +44,37 @@ const usersSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [fetchUsers.fulfilled]: (state, action) => {
-      state.data = action.payload;
-      state.status = 'loaded';
+    [fetchUsers.pending]: (state, action) => {
+      state.isLoading = true;
     },
     [fetchUsers.rejected]: (state, action) => {
-      state.status = 'error';
+      state.isLoading = false;
+    },
+    [fetchUsers.fulfilled]: (state, action) => {
+      state.data = action.payload;
+      state.isLoading = false;
     },
 
+    [fetchDeleteUser.pending]: (state, action) => {
+      state.isLoading = true;
+    },
     [fetchDeleteUser.fulfilled]: (state, action) => {
       state.data = state.data.filter((obj) => obj._id !== action.meta.arg);
-      state.status = 'loaded';
+      state.isLoading = false;
     },
     [fetchDeleteUser.rejected]: (state, action) => {
-      state.status = 'error';
+      state.isLoading = false;
     },
 
+    [fetchUpdateByCondition.pending]: (state, action) => {
+      state.isLoading = true;
+    },
     [fetchUpdateByCondition.fulfilled]: (state, action) => {
       state.data = action.payload;
-      state.status = 'loaded';
+      state.isLoading = false;
     },
     [fetchUpdateByCondition.rejected]: (state, action) => {
-      state.status = 'error';
+      state.isLoading = false;
     },
   },
 });

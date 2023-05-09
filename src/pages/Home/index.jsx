@@ -8,22 +8,22 @@ import { CommentsBlock, SortTabs, TagsBlock } from 'components';
 export const Home = () => {
   const [isLoading, setIsLoading] = React.useState(true);
 
-  const { lastCommets, tags, status } = useSelector(
+  const { lastCommets, tags, isPostsLoading } = useSelector(
     React.useMemo(
       () => (state) => ({
         lastCommets: state.posts.lastComments,
         tags: state.posts.tags,
-        status: state.posts.posts.status,
+        isPostsLoading: state.posts.posts.isLoading,
       }),
       [],
     ),
   );
 
   React.useEffect(() => {
-    if (status === 'loaded') {
+    if (!isPostsLoading) {
       setIsLoading(false);
     }
-  }, [status]);
+  }, [isPostsLoading]);
 
   React.useEffect(() => {
     document.title = 'Главная страница';
