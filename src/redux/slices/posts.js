@@ -1,8 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'configs/axios/axios';
-
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchComments, fetchLastsComments } from './comments';
-
 import { fetchTags } from './tags';
 
 export const fetchPosts = createAsyncThunk(

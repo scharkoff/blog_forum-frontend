@@ -35,6 +35,6 @@ export const onSubmitPost = async ({
 
     navigate(`/posts/${_id}`);
   } catch (error) {
-    setAlertOptions(true, 'error', error.response?.data[0]?.msg);
+    setAlertOptions(true, 'error', error.response.data.message);
   }
 };

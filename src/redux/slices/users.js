@@ -1,13 +1,12 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'configs/axios/axios';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   try {
     const { data } = await axios.get('/users');
-
     return data.users;
   } catch (error) {
-    return { ...error.response.data, isError: true };
+    throw new Error(error.response.data.message);
   }
 });
 
@@ -18,7 +17,7 @@ export const fetchDeleteUser = createAsyncThunk(
       const { data } = await axios.delete(`/users/${id}`);
       return data;
     } catch (error) {
-      return { ...error.response.data, isError: true };
+      throw new Error(error.response.data.message);
     }
   },
 );
@@ -30,7 +29,7 @@ export const fetchUpdateByCondition = createAsyncThunk(
       const { data } = await axios.patch(`/users/${params.id}`, params);
       return data;
     } catch (error) {
-      return { ...error.response.data, isError: true };
+      throw new Error(error.response.data.message);
     }
   },
 );
@@ -46,15 +45,27 @@ const usersSlice = createSlice({
   reducers: {},
   extraReducers: {
     [fetchUsers.fulfilled]: (state, action) => {
-      if (!action.payload.isError) {
-        state.data = action.payload;
-        state.status = 'loaded';
-      }
+      state.data = action.payload;
+      state.status = 'loaded';
+    },
+    [fetchUsers.rejected]: (state, action) => {
+      state.status = 'error';
     },
 
     [fetchDeleteUser.fulfilled]: (state, action) => {
-      if (!action.payload.isError)
-        state.data = state.data.filter((obj) => obj._id !== action.meta.arg);
+      state.data = state.data.filter((obj) => obj._id !== action.meta.arg);
+      state.status = 'loaded';
+    },
+    [fetchDeleteUser.rejected]: (state, action) => {
+      state.status = 'error';
+    },
+
+    [fetchUpdateByCondition.fulfilled]: (state, action) => {
+      state.data = action.payload;
+      state.status = 'loaded';
+    },
+    [fetchUpdateByCondition.rejected]: (state, action) => {
+      state.status = 'error';
     },
   },
 });

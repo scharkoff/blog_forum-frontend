@@ -1,15 +1,13 @@
 const handlingInternalOrServerError = (response, setAlertOptions) => {
-  if (response.payload?.isError) {
-    setAlertOptions(
-      true,
-      'error',
-      response.payload?.message
-        ? response.payload?.message
-        : response.payload[0]?.msg,
-    );
-  } else {
-    setAlertOptions(true, 'success', response.payload?.message);
+  if (response.payload) {
+    return setAlertOptions(true, 'success', response.payload.message);
   }
+
+  if (response.error) {
+    return setAlertOptions(true, 'error', response.error.message);
+  }
+
+  return setAlertOptions(true, 'info', 'Произошла непредвиденная ситуация');
 };
 
 export default handlingInternalOrServerError;

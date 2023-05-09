@@ -9,7 +9,7 @@ import handlingInternalOrServerError from 'utils/functions/errors/handlingIntern
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { fetchAuth, selectIsAuth } from 'redux/slices/auth';
+import { fetchLogin, selectIsAuth } from 'redux/slices/auth';
 import { AlertMessage } from 'components';
 
 export const LoginForm = () => {
@@ -27,8 +27,8 @@ export const LoginForm = () => {
     mode: 'onChange',
   });
 
-  const onSubmitAuth = async (values) => {
-    const response = await dispatch(fetchAuth(values));
+  const onLogin = async (values) => {
+    const response = await dispatch(fetchLogin(values));
 
     if (response.payload) {
       localStorage.setItem('token', response.payload.token);
@@ -49,7 +49,7 @@ export const LoginForm = () => {
         <Typography classes={{ root: styles.title }} variant="h5">
           Вход в аккаунт
         </Typography>
-        <form onSubmit={handleSubmit(onSubmitAuth)}>
+        <form onSubmit={handleSubmit(onLogin)}>
           <TextField
             className={styles.field}
             label="E-Mail"

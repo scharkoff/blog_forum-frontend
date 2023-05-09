@@ -1,24 +1,26 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import iaxios from 'configs/axios/axios';
 import axios from 'axios';
+import iaxios from 'configs/axios/axios';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchAuth = createAsyncThunk('auth/fetchAuth', async (params) => {
-  try {
-    const { data } = await iaxios.post('/auth/login', params);
-
-    return { userData: data.userData, token: data.accessToken };
-  } catch (error) {
-    return { ...error.response.data, isError: true };
-  }
-});
+export const fetchLogin = createAsyncThunk(
+  'auth/fetchLogin',
+  async (params) => {
+    try {
+      const { data } = await iaxios.post('/auth/login', params);
+      return { userData: data.userData, token: data.accessToken };
+    } catch (error) {
+      console.log('error', error);
+      throw new Error(error.response.data.message);
+    }
+  },
+);
 
 export const fetchLogout = createAsyncThunk('auth/fetchLogout', async () => {
   try {
     const { data } = await iaxios.get('/auth/logout');
-
     return data;
   } catch (error) {
-    return { ...error.response.data, isError: true };
+    throw new Error(error.response.data.message);
   }
 });
 
@@ -27,10 +29,10 @@ export const fetchRegister = createAsyncThunk(
   async (params) => {
     try {
       const { data } = await iaxios.post('/auth/register', params);
-
       return { userData: data.userData, token: data.accessToken };
     } catch (error) {
-      return { ...error.response.data, isError: true };
+      console.log('error', error);
+      throw new Error(error.response.data.message);
     }
   },
 );
@@ -49,7 +51,7 @@ export const fetchAuthMe = createAsyncThunk('auth/fetchAuthMe', async () => {
 
     return { userData: data.userData };
   } catch (error) {
-    return { ...error.response.data, isError: true };
+    throw new Error(error.response.data.message);
   }
 });
 
@@ -66,16 +68,17 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   extraReducers: {
-    [fetchAuth.pending]: (state) => {
+    [fetchLogin.pending]: (state) => {
       state.status = 'loading';
       state.authorization = false;
     },
-    [fetchAuth.fulfilled]: (state, action) => {
+    [fetchLogin.fulfilled]: (state, action) => {
       state.data = action.payload;
       state.status = 'loaded';
-      state.authorization = action.payload?.isError ? false : true;
+      state.authorization = true;
     },
-    [fetchAuth.rejected]: (state) => {
+    [fetchLogin.rejected]: (state, action) => {
+      state.data = action.error.message;
       state.status = 'error';
       state.authorization = false;
     },
@@ -87,7 +90,7 @@ const authSlice = createSlice({
     [fetchAuthMe.fulfilled]: (state, action) => {
       state.data = action.payload;
       state.status = 'loaded';
-      state.authorization = action.payload?.isError ? false : true;
+      state.authorization = true;
     },
     [fetchAuthMe.rejected]: (state) => {
       state.status = 'error';
@@ -101,10 +104,10 @@ const authSlice = createSlice({
     [fetchRegister.fulfilled]: (state, action) => {
       state.data = action.payload;
       state.status = 'loaded';
-      state.authorization = action.payload?.isError ? false : true;
+      state.authorization = true;
     },
     [fetchRegister.rejected]: (state, action) => {
-      state.data = action.data;
+      state.data = action.error.message;
       state.status = 'error';
       state.authorization = false;
     },
@@ -120,8 +123,9 @@ const authSlice = createSlice({
       };
       state.authorization = false;
     },
-    [fetchLogout.rejected]: (state, action) => {
+    [fetchLogout.pending]: (state) => {
       state.status = 'error';
+      state.authorization = true;
     },
   },
 });
