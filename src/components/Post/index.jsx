@@ -10,7 +10,7 @@ import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserInfo } from '../UserInfo';
-import { PostSkeleton } from './Skeleton';
+import { PostSkeleton } from './ui/PostSkeleton';
 import { fetchRemovePost } from 'redux/slices/posts';
 
 export const Post = ({

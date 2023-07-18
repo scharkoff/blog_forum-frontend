@@ -6,7 +6,6 @@ import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
-import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
@@ -18,6 +17,7 @@ import { useParams } from 'react-router-dom';
 import { selectIsAuth } from 'redux/slices/auth.js';
 import { fetchRemoveComment } from 'redux/slices/comments';
 import { setEditCommentValues } from 'redux/slices/posts';
+import { skeletonItems } from './ui/skeleton';
 
 export const CommentsBlock = React.memo(
   ({ comments = [], setComments, children, isLoading = true, isEditble }) => {
@@ -40,27 +40,6 @@ export const CommentsBlock = React.memo(
     function onEditComment(commentId, text) {
       dispatch(setEditCommentValues({ id, commentId, text }));
     }
-
-    const skeletonItems = Array.from({ length: 5 }, (_, i) => (
-      <React.Fragment key={i}>
-        <ListItem alignItems="flex-start">
-          <ListItemAvatar>
-            <Skeleton variant="circular" width={40} height={40} />
-          </ListItemAvatar>
-
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <Skeleton variant="text" height={25} width={120} />
-            <Skeleton variant="text" height={18} width={230} />
-          </div>
-          <Divider variant="inset" component="li" />
-        </ListItem>
-      </React.Fragment>
-    ));
 
     return (
       <SideBlock title="Комментарии">

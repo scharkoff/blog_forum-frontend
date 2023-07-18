@@ -8,38 +8,24 @@ import { resetIsPostRemoved } from 'redux/slices/posts';
 export const Posts = () => {
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = React.useState(true);
-
   const [alertVariables, setAlertOptions] = useAlertMessage();
 
-  const { posts } = useSelector((state) => state.posts);
+  const { items, isPostRemoved, isLoading } = useSelector(
+    (state) => state.posts.posts,
+  );
 
   React.useEffect(() => {
-    if (posts.items) {
-      setIsLoading(false);
-    }
-
-    if (posts.isPostRemoved) {
+    if (isPostRemoved) {
       setAlertOptions(true, 'success', 'Статья успешно удалена!');
       dispatch(resetIsPostRemoved());
     }
-  }, [posts.items]);
-
-  if (isLoading) {
-    return (
-      <div>
-        {[...Array(5)].map((_, index) => {
-          return <Post key={index} isLoading={true} />;
-        })}
-      </div>
-    );
-  }
+  }, [isPostRemoved]);
 
   return (
     <div>
       <AlertMessage {...alertVariables} />
       <SearchString />
-      <PostsPagination posts={posts.items} />
+      <PostsPagination posts={items} isLoading={isLoading} />
     </div>
   );
 };

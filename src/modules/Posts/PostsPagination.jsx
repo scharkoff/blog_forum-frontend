@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts } from 'redux/slices/posts';
 import { setActivePage } from 'redux/slices/utils';
 
-export const PostsPagination = ({ posts }) => {
+export const PostsPagination = React.memo(({ posts, isLoading }) => {
   const dispatch = useDispatch();
 
   const { userData } = useSelector((state) => state.auth.data);
@@ -86,5 +86,17 @@ export const PostsPagination = ({ posts }) => {
     );
   }
 
-  return <PaginatedItems itemsPerPage={5} />;
-};
+  return (
+    <>
+      {isLoading ? (
+        <div>
+          {[...Array(5)].map((_, index) => {
+            return <Post key={index} isLoading={true} />;
+          })}
+        </div>
+      ) : (
+        <PaginatedItems itemsPerPage={5} />
+      )}
+    </>
+  );
+});
