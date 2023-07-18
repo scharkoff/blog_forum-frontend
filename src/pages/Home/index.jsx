@@ -8,16 +8,19 @@ import { CommentsBlock, SortTabs, TagsBlock } from 'components';
 export const Home = () => {
   const [isLoading, setIsLoading] = React.useState(true);
 
-  const { lastCommets, tags, isPostsLoading } = useSelector(
-    React.useMemo(
-      () => (state) => ({
-        lastCommets: state.posts.lastComments,
-        tags: state.posts.tags,
-        isPostsLoading: state.posts.posts.isLoading,
-      }),
-      [],
-    ),
-  );
+  const {
+    lastCommets,
+    tags,
+    isPostsLoading,
+    isTagsLoading,
+    isLastCommentsLoading,
+  } = useSelector((state) => ({
+    lastCommets: state.posts.lastComments,
+    tags: state.posts.tags,
+    isPostsLoading: state.posts.posts.isLoading,
+    isTagsLoading: state.posts.tags.isLoading,
+    isLastCommentsLoading: state.posts.lastComments.isLoading,
+  }));
 
   React.useEffect(() => {
     if (!isPostsLoading) {
@@ -39,11 +42,11 @@ export const Home = () => {
         </Grid>
 
         <Grid xs={4} item className={styles.tags}>
-          <TagsBlock tags={tags.items} isLoading={isLoading} />
+          <TagsBlock tags={tags.items} isLoading={isTagsLoading} />
           <CommentsBlock
             className={styles.comments}
             comments={lastCommets.items}
-            isLoading={isLoading}
+            isLoading={isLastCommentsLoading}
             isEditable={false}
           />
         </Grid>

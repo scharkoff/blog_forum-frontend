@@ -32,7 +32,7 @@ export const TagsBlock = React.memo(({ tags = [], isLoading = true }) => {
   return (
     <SideBlock title="Тэги">
       <List>
-        {(isLoading && !tags ? [...Array(5)] : tags).map((tag) => (
+        {tags?.map((tag) => (
           <Link
             key={tag}
             style={{

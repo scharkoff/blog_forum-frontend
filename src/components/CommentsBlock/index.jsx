@@ -41,86 +41,93 @@ export const CommentsBlock = React.memo(
       dispatch(setEditCommentValues({ id, commentId, text }));
     }
 
+    const skeletonItems = Array.from({ length: 5 }, (_, i) => (
+      <React.Fragment key={i}>
+        <ListItem alignItems="flex-start">
+          <ListItemAvatar>
+            <Skeleton variant="circular" width={40} height={40} />
+          </ListItemAvatar>
+
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <Skeleton variant="text" height={25} width={120} />
+            <Skeleton variant="text" height={18} width={230} />
+          </div>
+          <Divider variant="inset" component="li" />
+        </ListItem>
+      </React.Fragment>
+    ));
+
     return (
       <SideBlock title="Комментарии">
         <List>
-          {(isLoading && !comments ? [...Array(5)] : comments).map(
-            (comment) => (
-              <React.Fragment key={comment._id}>
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    {isLoading ? (
-                      <Skeleton variant="circular" width={40} height={40} />
-                    ) : (
+          {isLoading ? (
+            skeletonItems
+          ) : (
+            <>
+              {comments?.map((comment) => (
+                <React.Fragment key={comment._id}>
+                  <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
                       <Avatar
                         alt={comment.user?.fullName}
                         src={`${process.env.REACT_APP_API_URL}${comment.user.avatarUrl}`}
                       />
-                    )}
-                  </ListItemAvatar>
-                  {isLoading ? (
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                      }}
-                    >
-                      <Skeleton variant="text" height={25} width={120} />
-                      <Skeleton variant="text" height={18} width={230} />
-                    </div>
-                  ) : (
-                    <>
-                      <ListItemText
-                        primary={
-                          <React.Fragment>
-                            <Typography
-                              sx={{
-                                display: 'inline',
-                              }}
-                              component="span"
-                              variant="body2"
-                              color="text.primary"
-                            >
-                              {comment.user?.fullName}
-                            </Typography>
-                            <span
-                              className={
-                                comment.user?.rank === 'user'
-                                  ? styles.rank
-                                  : styles.admin
-                              }
-                            >
-                              {' ' + comment.user?.rank}
-                            </span>
-                          </React.Fragment>
-                        }
-                        secondary={comment.text}
-                      />
-                      {(isAuth && isEditble && userId === comment.user?._id) ||
-                      (userRank === 'admin' && isAuth && isEditble) ? (
-                        <>
-                          <IconButton
-                            onClick={() => onRemoveComment(comment._id)}
-                            color="secondary"
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <React.Fragment>
+                          <Typography
+                            sx={{
+                              display: 'inline',
+                            }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
                           >
-                            <DeleteIcon />
-                          </IconButton>
-                          <IconButton
-                            onClick={() =>
-                              onEditComment(comment._id, comment.text)
+                            {comment.user?.fullName}
+                          </Typography>
+                          <span
+                            className={
+                              comment.user?.rank === 'user'
+                                ? styles.rank
+                                : styles.admin
                             }
-                            color="primary"
                           >
-                            <EditIcon />
-                          </IconButton>
-                        </>
-                      ) : null}
-                    </>
-                  )}
-                </ListItem>
-                <Divider variant="inset" component="li" />
-              </React.Fragment>
-            ),
+                            {' ' + comment.user?.rank}
+                          </span>
+                        </React.Fragment>
+                      }
+                      secondary={comment.text}
+                    />
+                    {(isAuth && isEditble && userId === comment.user?._id) ||
+                    (userRank === 'admin' && isAuth && isEditble) ? (
+                      <>
+                        <IconButton
+                          onClick={() => onRemoveComment(comment._id)}
+                          color="secondary"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={() =>
+                            onEditComment(comment._id, comment.text)
+                          }
+                          color="primary"
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </>
+                    ) : null}
+                  </ListItem>
+                  <Divider variant="inset" component="li" />
+                </React.Fragment>
+              ))}
+            </>
           )}
         </List>
         {children}
