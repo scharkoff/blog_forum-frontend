@@ -8,16 +8,16 @@ import useAlertMessage from 'hooks/useAlertMessage';
 import handlingInternalOrServerError from 'utils/functions/errors/handlingInternalOrServerError';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { fetchLogin, selectIsAuth } from 'redux/slices/auth';
 import { AlertMessage } from 'components';
+import { setLoader } from 'redux/slices/utils';
 
-export const LoginForm = () => {
+export const LoginForm = ({ setAlertOptions }) => {
   const dispatch = useDispatch();
 
   const isAuth = useSelector(selectIsAuth);
-
-  const [alertVariables, setAlertOptions] = useAlertMessage();
+  const { isLoading } = useSelector((state) => state.auth);
 
   const { register, handleSubmit, formState } = useForm({
     defaultValues: {
@@ -28,7 +28,11 @@ export const LoginForm = () => {
   });
 
   const onLogin = async (values) => {
+    dispatch(setLoader(true));
+
     const response = await dispatch(fetchLogin(values));
+
+    dispatch(setLoader(false));
 
     if (response.payload) {
       localStorage.setItem('token', response.payload.token);
@@ -43,8 +47,6 @@ export const LoginForm = () => {
 
   return (
     <div>
-      <AlertMessage {...alertVariables} />
-
       <Paper elevation={0} classes={{ root: styles.root }}>
         <Typography classes={{ root: styles.title }} variant="h5">
           Авторизация
@@ -52,10 +54,16 @@ export const LoginForm = () => {
         <form onSubmit={handleSubmit(onLogin)}>
           <TextField
             className={styles.field}
-            label="E-Mail"
+            label="Email"
             error={Boolean(formState.errors.email?.message)}
             helperText={formState.errors.email?.message}
-            {...register('email', { required: 'Укажите почту' })}
+            {...register('email', {
+              required: 'Укажите почту',
+              pattern: {
+                value: /^\S+@\S+\.\S+$/,
+                message: 'Неверный формат почты',
+              },
+            })}
             fullWidth
           />
           <TextField
@@ -66,11 +74,15 @@ export const LoginForm = () => {
             fullWidth
             {...register('password', {
               required: 'Введите пароль',
+              minLength: {
+                value: 5,
+                message: 'Пароль должен содержать минимум 5 символов',
+              },
             })}
             helperText={formState.errors.password?.message}
           />
           <Button
-            disabled={!formState.isValid}
+            disabled={!formState.isValid || isLoading}
             type="submit"
             size="large"
             variant="contained"
@@ -78,6 +90,10 @@ export const LoginForm = () => {
           >
             Войти
           </Button>
+
+          <p className={styles.reg}>
+            Нет аккаунта? <Link to="/register">Зарегистрироваться</Link>
+          </p>
         </form>
       </Paper>
     </div>

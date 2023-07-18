@@ -1,20 +1,20 @@
 import React from 'react';
 import Container from '@mui/material/Container';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchAuthMe } from 'redux/slices/auth';
 import { setIsMobile } from 'redux/slices/utils';
 import { AllRoutes } from './routes';
 import { Header, Footer } from 'modules';
 import { fetchTags } from 'redux/slices/tags';
 import { fetchLastsComments } from 'redux/slices/comments';
-import { fetchPosts } from 'redux/slices/posts';
 import { Loader } from 'components';
 
 function App() {
   const dispatch = useDispatch();
 
-  const [width, setWidth] = React.useState(window.innerWidth),
-    [openLoader, setOpenLoader] = React.useState(true);
+  const [width, setWidth] = React.useState(window.innerWidth);
+
+  const { loader } = useSelector((state) => state.utils);
 
   React.useEffect(() => {
     if (
@@ -23,14 +23,6 @@ function App() {
     ) {
       dispatch(fetchAuthMe());
     }
-
-    (async () => {
-      const response = await dispatch(fetchPosts());
-      if (response)
-        setTimeout(() => {
-          setOpenLoader(false);
-        }, 1000);
-    })();
   }, []);
 
   function handleWindowSizeChange() {
@@ -54,7 +46,7 @@ function App() {
 
   return (
     <>
-      <Loader open={openLoader} />
+      <Loader open={loader} />
 
       <Header />
 

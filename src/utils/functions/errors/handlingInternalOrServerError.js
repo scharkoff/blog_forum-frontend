@@ -7,7 +7,11 @@ const handlingInternalOrServerError = (response, setAlertOptions) => {
     return setAlertOptions(true, 'error', response.error.message);
   }
 
-  return setAlertOptions(true, 'info', 'Произошла непредвиденная ситуация');
+  return setAlertOptions(
+    true,
+    'error',
+    'Произошла непредвиденная ошибка. Пожалуйста, попробуйте еще раз',
+  );
 };
 
 export default handlingInternalOrServerError;

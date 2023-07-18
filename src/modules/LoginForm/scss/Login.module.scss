@@ -1,8 +1,8 @@
 .root {
   max-width: 400px;
-  padding: 50px;
+  padding: 30px 50px;
   border: 1px solid #dedede;
-  margin: 50px auto;
+  margin: 0 auto;
 }
 
 .field {
@@ -13,6 +13,21 @@
   text-align: center !important;
   font-weight: bold !important;
   margin-bottom: 30px !important;
+}
+
+.reg {
+  font-size: 12px;
+  text-align: center;
+  margin: 20px 0 0 0;
+
+  a {
+    color: #2979ff;
+    text-decoration: none;
+
+    &:hover {
+      color: #1c54b2;
+    }
+  }
 }
 
 @import './Login.media.module.scss';

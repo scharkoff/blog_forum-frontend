@@ -15,6 +15,8 @@ const initialState = {
   },
 
   activePage: 0,
+
+  loader: false,
 };
 
 const utilsSlice = createSlice({
@@ -37,9 +39,18 @@ const utilsSlice = createSlice({
     setActivePage(state, action) {
       state.activePage = action.payload;
     },
+
+    setLoader(state, action) {
+      state.loader = action.payload;
+    },
   },
 });
 
-export const { resetSearchString, setIsMobile, setActiveTab, setActivePage } =
-  utilsSlice.actions;
+export const {
+  resetSearchString,
+  setIsMobile,
+  setActiveTab,
+  setActivePage,
+  setLoader,
+} = utilsSlice.actions;
 export const utilsReducer = utilsSlice.reducer;
