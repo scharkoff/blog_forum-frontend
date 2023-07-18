@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './EditUserData.module.scss';
 import { EditUserDataForm } from 'modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useParams } from 'react-router-dom';
@@ -36,5 +37,9 @@ export const EditUserData = () => {
     }
   }, [users]);
 
-  return <EditUserDataForm editbleUserData={editbleUserData} id={id} />;
+  return (
+    <div className={styles.wrapper}>
+      <EditUserDataForm editbleUserData={editbleUserData} id={id} />
+    </div>
+  );
 };

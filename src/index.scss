@@ -5,3 +5,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #f5f5f5 !important;
 }
+
+@mixin pageWrapper {
+  min-height: calc(100vh - 58px - 60px);
+  padding: 30px 0;
+}

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { fetchAuthMe } from 'redux/slices/auth';
 import { setIsMobile } from 'redux/slices/utils';
 import { AllRoutes } from './routes';
-import { Header } from 'modules/Header';
+import { Header, Footer } from 'modules';
 import { fetchTags } from 'redux/slices/tags';
 import { fetchLastsComments } from 'redux/slices/comments';
 import { fetchPosts } from 'redux/slices/posts';
@@ -55,10 +55,14 @@ function App() {
   return (
     <>
       <Loader open={openLoader} />
+
       <Header />
+
       <Container maxWidth="lg">
         <AllRoutes />
       </Container>
+
+      <Footer />
     </>
   );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './AdminPanel.module.scss';
 import { AdminPanelTable } from 'modules';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
@@ -16,5 +17,9 @@ export const AdminPanel = () => {
     return <Navigate to="/" />;
   }
 
-  return <AdminPanelTable user={user} />;
+  return (
+    <div className={styles.wrapper}>
+      <AdminPanelTable user={user} />
+    </div>
+  );
 };

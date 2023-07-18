@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './AddPost.module.scss';
 import { AddPostForm } from 'modules';
 import { selectIsAuth } from 'redux/slices/auth';
 import { useSelector } from 'react-redux';
@@ -13,5 +14,9 @@ export const AddPost = () => {
     return <Navigate to="/" />;
   }
 
-  return <AddPostForm id={id} />;
+  return (
+    <div className={styles.wrapper}>
+      <AddPostForm id={id} />
+    </div>
+  );
 };

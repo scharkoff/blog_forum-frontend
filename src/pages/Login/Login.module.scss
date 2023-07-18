@@ -1,0 +1,8 @@
+@import '../../index.scss';
+
+.wrapper {
+  @include pageWrapper;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
