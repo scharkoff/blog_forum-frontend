@@ -47,7 +47,7 @@ export const LoginForm = () => {
 
       <Paper elevation={0} classes={{ root: styles.root }}>
         <Typography classes={{ root: styles.title }} variant="h5">
-          Вход в аккаунт
+          Авторизация
         </Typography>
         <form onSubmit={handleSubmit(onSubmitAuth)}>
           <TextField

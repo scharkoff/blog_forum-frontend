@@ -1,0 +1,27 @@
+@import '../../index.scss';
+
+.footer {
+  padding: 20px 0;
+  width: 100%;
+  background-color: #f1f1f1;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.developer {
+  a {
+    color: #5393ff;
+    text-decoration: none;
+
+    &:hover {
+      color: #4479d3;
+    }
+  }
+}
+
+@import './Footer.media.module.scss';

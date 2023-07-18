@@ -6,3 +6,5 @@ export { ProfileForm } from './ProfileForm';
 export { FullPostForm } from './FullPostForm';
 export { AdminPanelTable } from './AdminPanelTable';
 export { Posts } from './Posts';
+export { Footer } from './Footer';
+export { Header } from './Header';

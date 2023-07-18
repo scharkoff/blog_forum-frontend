@@ -30,7 +30,7 @@ export const Home = () => {
   }, []);
 
   return (
-    <>
+    <div className={styles.wrapper}>
       <SortTabs />
 
       <Grid container spacing={4} className={styles.contentWrapper}>
@@ -48,6 +48,6 @@ export const Home = () => {
           />
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 };
