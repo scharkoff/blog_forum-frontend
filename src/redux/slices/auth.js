@@ -68,7 +68,7 @@ const initialState = {
     userData: {},
     token: null,
   },
-  isLoading: true,
+  isLoading: false,
   authorization: false,
   error: '',
 };

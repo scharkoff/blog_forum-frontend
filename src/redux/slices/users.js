@@ -36,7 +36,7 @@ export const fetchUpdateByCondition = createAsyncThunk(
 
 const initialState = {
   data: [],
-  isLoading: true,
+  isLoading: false,
 };
 
 const usersSlice = createSlice({

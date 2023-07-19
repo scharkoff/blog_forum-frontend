@@ -30,22 +30,22 @@ export const fetchRemovePost = createAsyncThunk(
 const initialState = {
   posts: {
     items: [],
-    isLoading: true,
+    isLoading: false,
     isPostRemoved: false,
   },
   tags: {
     items: [],
-    isLoading: true,
+    isLoading: false,
     activeTag: null,
   },
   comments: {
     items: [],
-    isLoading: true,
+    isLoading: false,
     editMode: false,
   },
   lastComments: {
     items: [],
-    isLoading: true,
+    isLoading: false,
   },
 };
 
