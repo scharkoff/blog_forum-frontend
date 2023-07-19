@@ -12,7 +12,6 @@ export const fetchLogin = createAsyncThunk(
         token: data.accessToken,
       };
     } catch (error) {
-      console.log('error', error);
       throw new Error(error.response.data.message);
     }
   },
@@ -37,7 +36,6 @@ export const fetchRegister = createAsyncThunk(
         token: data.accessToken,
       };
     } catch (error) {
-      console.log('error', error);
       throw new Error(error.response.data.message);
     }
   },
