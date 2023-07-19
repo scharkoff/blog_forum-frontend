@@ -8,6 +8,7 @@ import {
   FullPost,
   Home,
   Login,
+  NotFoundPage,
   Profile,
   Registation,
 } from 'pages';
@@ -28,6 +29,7 @@ export const AllRoutes = () => {
         path="/admin-panel/edit-user/:id"
         element={<EditUserData />}
       ></Route>
+      <Route path="*" element={<NotFoundPage />}></Route>
     </Routes>
   );
 };
