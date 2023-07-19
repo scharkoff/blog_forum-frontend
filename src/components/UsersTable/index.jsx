@@ -17,7 +17,7 @@ import { AdminSearchString } from 'components';
 export const UsersTable = ({ user, setAlertOptions }) => {
   const dispatch = useDispatch();
 
-  const users = useSelector((state) => state.users?.data);
+  const users = useSelector((state) => state.users.data);
 
   const [rows, setRows] = React.useState([]);
   const [copyOfRows, setCopyOfRows] = React.useState([]);

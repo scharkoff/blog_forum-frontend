@@ -3,7 +3,7 @@ import styles from './EditUserData.module.scss';
 import { EditUserDataForm } from 'modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useParams } from 'react-router-dom';
-import { fetchUsers } from 'redux/slices/users';
+import { fetchUserById, fetchUsers } from 'redux/slices/users';
 import { selectIsAuth } from 'redux/slices/auth';
 
 export const EditUserData = () => {
@@ -17,25 +17,24 @@ export const EditUserData = () => {
 
   const { id } = useParams();
 
-  const users = useSelector((state) => state.users.data);
+  const userData = useSelector((state) => state.users.user);
 
   const [editbleUserData, setEditbleUserData] = React.useState({});
 
   React.useEffect(() => {
-    dispatch(fetchUsers());
+    dispatch(fetchUserById({ id }));
   }, []);
 
   React.useEffect(() => {
-    if (users.length) {
-      const user = users.filter((user) => user._id === id)[0];
+    if (userData) {
       setEditbleUserData({
-        id: user._id,
-        login: user.fullName,
-        email: user.email,
-        rank: user.rank,
+        id: userData.data._id,
+        login: userData.data.fullName,
+        email: userData.data.email,
+        rank: userData.data.rank,
       });
     }
-  }, [users]);
+  }, [userData]);
 
   return (
     <div className={styles.wrapper}>

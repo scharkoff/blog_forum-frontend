@@ -10,6 +10,18 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   }
 });
 
+export const fetchUserById = createAsyncThunk(
+  'users/fetchUserById',
+  async (params) => {
+    try {
+      const { data } = await axios.get(`/users/${params.id}`);
+      return data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  },
+);
+
 export const fetchDeleteUser = createAsyncThunk(
   'users/fetchDeleteUser',
   async (id) => {
@@ -36,6 +48,10 @@ export const fetchUpdateByCondition = createAsyncThunk(
 
 const initialState = {
   data: [],
+  user: {
+    data: {},
+    message: '',
+  },
   isLoading: false,
 };
 
@@ -55,6 +71,17 @@ const usersSlice = createSlice({
       state.isLoading = false;
     },
 
+    [fetchUserById.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [fetchUserById.rejected]: (state, action) => {
+      state.isLoading = false;
+    },
+    [fetchUserById.fulfilled]: (state, action) => {
+      state.user.data = action.payload?.user;
+      state.isLoading = false;
+    },
+
     [fetchDeleteUser.pending]: (state, action) => {
       state.isLoading = true;
     },
@@ -70,7 +97,7 @@ const usersSlice = createSlice({
       state.isLoading = true;
     },
     [fetchUpdateByCondition.fulfilled]: (state, action) => {
-      state.data = action.payload;
+      state.user = action.payload;
       state.isLoading = false;
     },
     [fetchUpdateByCondition.rejected]: (state, action) => {
