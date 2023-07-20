@@ -22,6 +22,7 @@ export const Header = () => {
   const isAuth = useSelector(selectIsAuth);
   const isMobile = useSelector((state) => state.utils.isMobile.value);
   const { userData } = useSelector((state) => state.auth.data);
+  const { isLoading } = useSelector((state) => state.auth);
 
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти из акккаунта?')) {
@@ -52,13 +53,15 @@ export const Header = () => {
             <div>SHARKOV BLOG</div>
           </Link>
           <div className={styles.buttons}>
-            {isAuth ? (
+            {isLoading ? (
+              'Авторизация...'
+            ) : isAuth ? (
               <>
                 <Link
                   to={`/profile/${userData?._id}`}
                   style={{ marginLeft: 10 }}
                 >
-                  {userData ? (
+                  {userData && (
                     <Avatar
                       src={`${process.env.REACT_APP_API_URL}${userData.avatarUrl}`}
                       variant="rounded"
@@ -68,11 +71,10 @@ export const Header = () => {
                           : { width: 32, height: 32 }
                       }
                     />
-                  ) : (
-                    ''
                   )}
                 </Link>
-                {userData.rank === 'admin' ? (
+
+                {userData?.rank === 'admin' && (
                   <Link to="/admin-panel" style={{ marginLeft: 10 }}>
                     <Button variant="contained" color="secondary">
                       <AdminPanelSettingsIcon
@@ -80,18 +82,17 @@ export const Header = () => {
                       />
                     </Button>
                   </Link>
-                ) : (
-                  ''
                 )}
 
                 <Link to="/add-post" style={{ marginLeft: 10 }}>
                   <Button
                     variant="contained"
-                    startIcon={!isMobile ? <AddIcon fontSize="small" /> : ''}
+                    startIcon={!isMobile && <AddIcon fontSize="small" />}
                   >
                     {!isMobile ? 'Создать' : <AddIcon fontSize="small" />}
                   </Button>
                 </Link>
+
                 <Link to="/login" style={{ marginLeft: 10 }}>
                   <Button
                     onClick={onClickLogout}
