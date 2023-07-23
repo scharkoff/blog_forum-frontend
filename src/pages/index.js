@@ -7,3 +7,4 @@ export { EditUserData } from './EditUserData';
 export { AdminPanel } from './AdminPanel';
 export { AddPost } from './AddPost';
 export { NotFoundPage } from './404';
+export { ActivatePage } from './Activate';

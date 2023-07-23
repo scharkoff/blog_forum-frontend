@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Route, Routes } from 'react-router-dom';
 import {
+  ActivatePage,
   AddPost,
   AdminPanel,
   EditUserData,
@@ -19,6 +20,7 @@ export const AllRoutes = () => {
       <Route path="/" element={<Home />}></Route>
       <Route path="/login" element={<Login />}></Route>
       <Route path="/register" element={<Registation />}></Route>
+      <Route path="/activate/:link" element={<ActivatePage />}></Route>
       <Route path="/posts/:id" element={<FullPost />}></Route>
       <Route path="/posts/:id/edit" element={<AddPost />}></Route>
       <Route path="/add-post" element={<AddPost />}></Route>

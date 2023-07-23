@@ -1,0 +1,29 @@
+@import '../../index.scss';
+
+.wrapper {
+  @include pageWrapper;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  text-align: center;
+  font-size: 18px;
+
+  span {
+    display: block;
+    font-size: 14px;
+    color: green;
+  }
+}
+
+.icon {
+  font-size: 90px !important;
+  color: rgb(189, 223, 189);
+}
+
+.iconWrapper {
+  margin-bottom: 20px;
+}

@@ -31,10 +31,7 @@ export const fetchRegister = createAsyncThunk(
   async (params) => {
     try {
       const { data } = await iaxios.post('/auth/register', params);
-      return {
-        userData: data.userData,
-        token: data.accessToken,
-      };
+      return data;
     } catch (error) {
       throw new Error(error.response.data.message);
     }
@@ -109,9 +106,8 @@ const authSlice = createSlice({
       state.authorization = false;
     },
     [fetchRegister.fulfilled]: (state, action) => {
-      state.data = action.payload;
       state.isLoading = false;
-      state.authorization = true;
+      state.authorization = false;
     },
     [fetchRegister.rejected]: (state, action) => {
       state.data = action.error.message;

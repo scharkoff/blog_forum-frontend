@@ -1,4 +1,5 @@
 const handlingInternalOrServerError = (response, setAlertOptions) => {
+  console.log(response);
   if (response.payload) {
     return setAlertOptions(true, 'success', response.payload.message);
   }

@@ -7,6 +7,10 @@ body {
 }
 
 @mixin pageWrapper {
-  min-height: calc(100vh - 58px - 60px);
+  min-height: calc(100vh - 57px - 61px);
   padding: 30px 0;
+
+  @media (max-width: 768px) {
+    min-height: calc(100vh - 49px - 58px);
+  }
 }
