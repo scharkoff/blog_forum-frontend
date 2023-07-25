@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Avatar } from '@mui/material';
 import { fetchUpdateByCondition } from 'redux/slices/users';
+import { setLoader } from 'redux/slices/utils';
 
 export const ProfileAvatarForm = React.memo(
   ({ avatarUrl, setAlertOptions }) => {
@@ -24,18 +25,26 @@ export const ProfileAvatarForm = React.memo(
 
     const handleChangeFile = async (event) => {
       try {
+        dispatch(setLoader(true));
+
         const formData = new FormData();
         const file = event.target.files[0];
         formData.append('image', file);
         const { data } = await axios.post('/upload', formData);
         setNewAvatarUrl(data.url);
+
+        dispatch(setLoader(false));
       } catch (error) {
+        dispatch(setLoader(false));
         setAlertOptions(true, 'error', 'Не удалось загрузить изображение!');
       }
     };
 
     const onSubmitAvatar = async (values) => {
+      dispatch(setLoader(true));
       const response = await dispatch(fetchUpdateByCondition(values));
+      dispatch(setLoader(false));
+
       handlingInternalOrServerError(response, setAlertOptions);
     };
 

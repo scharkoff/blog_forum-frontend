@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { onSubmitPost } from './api/submitPost';
 import { handleChangeFile } from './api/handleChangeFile';
 import { AlertMessage } from 'components';
+import { setLoader } from 'redux/slices/utils';
 
 export const AddPostForm = ({ id }) => {
   const dispatch = useDispatch();
@@ -24,7 +25,6 @@ export const AddPostForm = ({ id }) => {
 
   const inputFileRef = React.useRef(null);
 
-  const [isLoading, setIsLoading] = React.useState(true);
   const [createPostFields, setCreatePostFields] = React.useState({
     text: '',
     title: '',
@@ -41,6 +41,8 @@ export const AddPostForm = ({ id }) => {
     }
 
     if (id) {
+      dispatch(setLoader(true));
+
       axios
         .get(`/posts/${id}`)
         .then(({ data }) => {
@@ -52,14 +54,13 @@ export const AddPostForm = ({ id }) => {
             tags: data.post?.tags,
             authorId: data.post?.user?._id,
           });
-          setIsLoading(false);
+
+          dispatch(setLoader(false));
         })
         .catch((error) => {
-          console.log(error);
+          dispatch(setLoader(false));
           setAlertOptions(true, 'error', error.response.data?.message);
         });
-    } else {
-      setIsLoading(false);
     }
   }, []);
 
@@ -109,15 +110,8 @@ export const AddPostForm = ({ id }) => {
     createPostFields,
     setCreatePostFields,
     setAlertOptions,
+    dispatch,
   };
-
-  if (isLoading) {
-    return (
-      <div>
-        <AlertMessage {...alertVariables} />
-      </div>
-    );
-  }
 
   return (
     <div>

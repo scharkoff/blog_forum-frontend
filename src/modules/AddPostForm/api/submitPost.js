@@ -1,4 +1,5 @@
 import axios from 'configs/axios/axios';
+import { setLoader } from 'redux/slices/utils';
 
 export const onSubmitPost = async ({
   title,
@@ -10,8 +11,10 @@ export const onSubmitPost = async ({
   setAlertOptions,
   navigate,
   id,
+  dispatch,
 }) => {
   try {
+    dispatch(setLoader(true));
     const fieldsCreate = {
       title,
       text,
@@ -31,10 +34,14 @@ export const onSubmitPost = async ({
       ? await axios.patch(`/posts/${id}`, fieldsUpdate)
       : await axios.post('/posts', fieldsCreate);
 
+    dispatch(setLoader(false));
+
     const _id = isEditing ? id : data.post?._id;
 
     return navigate(`/posts/${_id}`);
   } catch (error) {
+    dispatch(setLoader(false));
+
     if (!error.response.data)
       return setAlertOptions(
         true,

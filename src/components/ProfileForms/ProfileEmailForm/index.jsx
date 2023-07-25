@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { fetchUpdateByCondition } from 'redux/slices/users';
+import { setLoader } from 'redux/slices/utils';
 
 export const ProfileEmailForm = React.memo(
   ({ user, email, setEmail, setAlertOptions }) => {
@@ -16,7 +17,10 @@ export const ProfileEmailForm = React.memo(
     const { id } = useParams();
 
     const onSubmitEmail = async (values) => {
+      dispatch(setLoader(true));
       const response = await dispatch(fetchUpdateByCondition(values));
+      dispatch(setLoader(false));
+
       handlingInternalOrServerError(response, setAlertOptions);
     };
 

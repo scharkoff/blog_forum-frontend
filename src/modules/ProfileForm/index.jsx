@@ -1,7 +1,5 @@
 import React from 'react';
-import useAlertMessage from 'hooks/useAlertMessage';
 import {
-  AlertMessage,
   ProfileAvatarForm,
   ProfileEmailForm,
   ProfileLoginForm,
