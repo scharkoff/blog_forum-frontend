@@ -8,13 +8,11 @@ import {
   ProfilePasswordForm,
 } from 'components';
 
-export const ProfileForm = ({ user }) => {
+export const ProfileForm = ({ user, setAlertOptions }) => {
   const [login, setLogin] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [avatarUrl, setAvatarUrl] = React.useState('');
-
-  const [alertVariables, setAlertOptions] = useAlertMessage();
 
   React.useEffect(() => {
     if (user) {
@@ -26,8 +24,6 @@ export const ProfileForm = ({ user }) => {
 
   return (
     <div>
-      <AlertMessage {...alertVariables} />
-
       <ProfileAvatarForm
         avatarUrl={avatarUrl}
         setAlertOptions={setAlertOptions}
