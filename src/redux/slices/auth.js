@@ -4,7 +4,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchLogin = createAsyncThunk(
   'auth/fetchLogin',
-  async (params) => {
+  async (params, thunkAPI) => {
     try {
       const { data } = await iaxios.post('/auth/login', params);
       return {
@@ -12,51 +12,65 @@ export const fetchLogin = createAsyncThunk(
         token: data.accessToken,
       };
     } catch (error) {
-      throw new Error(error.response.data.message);
+      return error.response.data
+        ? thunkAPI.rejectWithValue(error.response.data)
+        : thunkAPI.rejectWithValue(null);
     }
   },
 );
 
-export const fetchLogout = createAsyncThunk('auth/fetchLogout', async () => {
-  try {
-    const { data } = await iaxios.get('/auth/logout');
-    return data;
-  } catch (error) {
-    throw new Error(error.response.data.message);
-  }
-});
+export const fetchLogout = createAsyncThunk(
+  'auth/fetchLogout',
+  async (_, thunkAPI) => {
+    try {
+      const { data } = await iaxios.get('/auth/logout');
+      return data;
+    } catch (error) {
+      return error.response.data
+        ? thunkAPI.rejectWithValue(error.response.data)
+        : thunkAPI.rejectWithValue(null);
+    }
+  },
+);
 
 export const fetchRegister = createAsyncThunk(
   'auth/fetchRegister',
-  async (params) => {
+  async (params, thunkAPI) => {
     try {
       const { data } = await iaxios.post('/auth/register', params);
       return data;
     } catch (error) {
-      throw new Error(error.response.data.message);
+      return error.response.data
+        ? thunkAPI.rejectWithValue(error.response.data)
+        : thunkAPI.rejectWithValue(null);
     }
   },
 );
 
-export const fetchAuthMe = createAsyncThunk('auth/fetchAuthMe', async () => {
-  try {
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_API_URL}/auth/me`,
-      {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+export const fetchAuthMe = createAsyncThunk(
+  'auth/fetchAuthMe',
+  async (_, thunkAPI) => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL}/auth/me`,
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
         },
-      },
-    );
+      );
 
-    return {
-      userData: data.userData,
-    };
-  } catch (error) {
-    throw new Error(error.response.data.message);
-  }
-});
+      return {
+        userData: data.userData,
+      };
+    } catch (error) {
+      return error.response.data
+        ? thunkAPI.rejectWithValue(error.response.data)
+        : thunkAPI.rejectWithValue(null);
+    }
+  },
+);
 
 const initialState = {
   data: {
@@ -65,7 +79,7 @@ const initialState = {
   },
   isLoading: false,
   authorization: false,
-  error: '',
+  error: null,
 };
 
 const authSlice = createSlice({
@@ -80,9 +94,10 @@ const authSlice = createSlice({
       state.data = action.payload;
       state.isLoading = false;
       state.authorization = true;
+      state.error = null;
     },
     [fetchLogin.rejected]: (state, action) => {
-      state.data = action.error.message;
+      state.error = action.payload;
       state.isLoading = false;
       state.authorization = false;
     },
@@ -95,6 +110,7 @@ const authSlice = createSlice({
       state.data = action.payload;
       state.isLoading = false;
       state.authorization = true;
+      state.error = null;
     },
     [fetchAuthMe.rejected]: (state) => {
       state.isLoading = false;
@@ -108,6 +124,7 @@ const authSlice = createSlice({
     [fetchRegister.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.authorization = false;
+      state.error = null;
     },
     [fetchRegister.rejected]: (state, action) => {
       state.data = action.error.message;
@@ -125,6 +142,7 @@ const authSlice = createSlice({
         token: null,
       };
       state.authorization = false;
+      state.error = null;
     },
     [fetchLogout.pending]: (state) => {
       state.isLoading = false;

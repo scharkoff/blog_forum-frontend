@@ -33,8 +33,17 @@ export const onSubmitPost = async ({
 
     const _id = isEditing ? id : data.post?._id;
 
-    navigate(`/posts/${_id}`);
+    return navigate(`/posts/${_id}`);
   } catch (error) {
-    setAlertOptions(true, 'error', error.response.data.message);
+    if (!error.response.data)
+      return setAlertOptions(
+        true,
+        'error',
+        'Серверная ошибка. Пожалуйста, попробуйте позже',
+      );
+
+    return Array.isArray(error.response.data)
+      ? setAlertOptions(true, 'error', error.response.data[0].msg)
+      : setAlertOptions(true, 'error', error.response.data.message);
   }
 };

@@ -1,17 +1,22 @@
 const handlingInternalOrServerError = (response, setAlertOptions) => {
-  if (response.payload) {
-    return setAlertOptions(true, 'success', response.payload.message);
+  if (!response.payload) {
+    return setAlertOptions(
+      true,
+      'error',
+      'Серверная ошибка. Пожалуйста, попробуйте позже',
+    );
   }
 
-  if (response.error) {
-    return setAlertOptions(true, 'error', response.error.message);
+  if ('error' in response) {
+    const errorMessage = Array.isArray(response.payload)
+      ? response.payload[0]?.msg
+      : response.payload?.message ||
+        'Серверная ошибка. Пожалуйста, попробуйте позже';
+
+    return setAlertOptions(true, 'error', errorMessage);
   }
 
-  return setAlertOptions(
-    true,
-    'error',
-    'Произошла непредвиденная ошибка. Пожалуйста, попробуйте еще раз',
-  );
+  return setAlertOptions(true, 'success', response.payload?.message);
 };
 
 export default handlingInternalOrServerError;

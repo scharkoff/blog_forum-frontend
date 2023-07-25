@@ -55,6 +55,7 @@ export const AddPostForm = ({ id }) => {
           setIsLoading(false);
         })
         .catch((error) => {
+          console.log(error);
           setAlertOptions(true, 'error', error.response.data?.message);
         });
     } else {

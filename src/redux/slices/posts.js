@@ -5,25 +5,40 @@ import { fetchTags } from './tags';
 
 export const fetchPosts = createAsyncThunk(
   'posts/fetchPosts',
-  async ({
-    pageOptions = [1, 5],
-    activeTabs = { activeId: 0, activeType: 'new' },
-    tagName = null,
-    searchText = null,
-  } = {}) => {
-    const { data } = await axios.get(
-      `/posts?tag=${tagName}&page=${pageOptions[0]}&pageSize=${pageOptions[1]}&sortType=${activeTabs.activeType}&searchText=${searchText}`,
-    );
+  async (
+    {
+      pageOptions = [1, 5],
+      activeTabs = { activeId: 0, activeType: 'new' },
+      tagName = null,
+      searchText = null,
+    } = {},
+    thunkAPI,
+  ) => {
+    try {
+      const { data } = await axios.get(
+        `/posts?tag=${tagName}&page=${pageOptions[0]}&pageSize=${pageOptions[1]}&sortType=${activeTabs.activeType}&searchText=${searchText}`,
+      );
 
-    return { posts: data.posts, postsCount: data.postsCount };
+      return { posts: data.posts, postsCount: data.postsCount };
+    } catch (error) {
+      return error.response.data
+        ? thunkAPI.rejectWithValue(error.response.data)
+        : thunkAPI.rejectWithValue(null);
+    }
   },
 );
 
 export const fetchRemovePost = createAsyncThunk(
   'posts/fetchRemovePost',
-  async (id) => {
-    const { data } = await axios.delete(`/posts/${id}`);
-    return data;
+  async (id, thunkAPI) => {
+    try {
+      const { data } = await axios.delete(`/posts/${id}`);
+      return data;
+    } catch (error) {
+      return error.response.data
+        ? thunkAPI.rejectWithValue(error.response.data)
+        : thunkAPI.rejectWithValue(null);
+    }
   },
 );
 
@@ -32,20 +47,24 @@ const initialState = {
     items: [],
     isLoading: false,
     isPostRemoved: false,
+    error: null,
   },
   tags: {
     items: [],
     isLoading: false,
     activeTag: null,
+    error: null,
   },
   comments: {
     items: [],
     isLoading: false,
     editMode: false,
+    error: null,
   },
   lastComments: {
     items: [],
     isLoading: false,
+    error: null,
   },
 };
 
@@ -84,9 +103,11 @@ const postsSlice = createSlice({
       state.posts.postsCount = action.payload?.postsCount;
       state.posts.isLoading = false;
       state.posts.home = true;
+      state.posts.error = null;
     },
     [fetchPosts.rejected]: (state, action) => {
       state.posts.isLoading = false;
+      state.posts.error = action.payload;
     },
 
     [fetchRemovePost.pending]: (state) => {
@@ -98,9 +119,11 @@ const postsSlice = createSlice({
       );
       state.posts.isPostRemoved = true;
       state.posts.isLoading = false;
+      state.posts.error = null;
     },
-    [fetchRemovePost.rejected]: (state) => {
+    [fetchRemovePost.rejected]: (state, action) => {
       state.posts.isLoading = false;
+      state.posts.error = action.payload;
     },
 
     [fetchTags.pending]: (state, action) => {
@@ -110,9 +133,11 @@ const postsSlice = createSlice({
     [fetchTags.fulfilled]: (state, action) => {
       state.tags.items = action.payload;
       state.tags.isLoading = false;
+      state.tags.error = null;
     },
     [fetchTags.rejected]: (state, action) => {
       state.tags.isLoading = false;
+      state.tags.error = action.payload;
     },
 
     [fetchComments.pending]: (state, action) => {
@@ -122,9 +147,11 @@ const postsSlice = createSlice({
     [fetchComments.fulfilled]: (state, action) => {
       state.comments.items = action.payload;
       state.comments.isLoading = false;
+      state.comments.error = null;
     },
     [fetchComments.rejected]: (state, action) => {
       state.comments.isLoading = false;
+      state.comments.error = action.payload;
     },
 
     [fetchLastsComments.pending]: (state, action) => {
@@ -134,9 +161,11 @@ const postsSlice = createSlice({
     [fetchLastsComments.fulfilled]: (state, action) => {
       state.lastComments.items = action.payload;
       state.lastComments.isLoading = false;
+      state.lastComments.error = null;
     },
     [fetchLastsComments.rejected]: (state, action) => {
       state.lastComments.isLoading = false;
+      state.lastComments.error = action.payload;
     },
   },
 });
