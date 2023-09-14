@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.8.0",
@@ -21,7 +22,7 @@
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.32.0",
     "react-image": "^4.1.0",
-    "react-markdown": "^8.0.3",
+    "react-markdown": "^8.0.7",
     "react-paginate": "^8.1.4",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
@@ -56,11 +57,28 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.22.19",
+    "@babel/preset-env": "^7.22.15",
+    "babel-jest": "^29.7.0",
     "eslint": "^8.37.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.5.1",
     "prettier": "^2.8.7"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "^lodash-es$": "lodash",
+      "\\.(css|less)$": "identity-obj-proxy"
+    },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!lodash-es)"
+    ]
   }
 }
