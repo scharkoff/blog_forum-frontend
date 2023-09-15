@@ -1,7 +1,6 @@
 module.exports = {
   transform: {
     '^.+\\.jsx?$': 'babel-jest',
-    '^.+\\.css$': '<rootDir>/path/to/css-transformer.js',
   },
   moduleNameMapper: {
     '^lodash-es$': 'lodash',
