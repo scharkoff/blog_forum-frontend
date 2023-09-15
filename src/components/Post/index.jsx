@@ -96,7 +96,7 @@ export const Post = ({
             {isFullPost ? title : <Link to={`/posts/${id}`}>{title}</Link>}
           </h2>
           <ul className={styles.tags}>
-            {tags.map((name) => (
+            {tags?.map((name) => (
               <li key={name}>
                 <Link to={`/tags/${name}`}>#{name}</Link>
               </li>
@@ -106,11 +106,11 @@ export const Post = ({
           <ul className={styles.postDetails}>
             <li>
               <EyeIcon />
-              <span>{viewsCount}</span>
+              <span data-testid="views-count">{viewsCount}</span>
             </li>
             <li>
               <CommentIcon />
-              <span>{commentsCount}</span>
+              <span data-testid="comments-count">{commentsCount}</span>
             </li>
           </ul>
         </div>

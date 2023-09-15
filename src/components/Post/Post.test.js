@@ -1,15 +1,27 @@
-import store from 'redux/store';
+import configureStore from 'redux-mock-store';
 import { render } from '@testing-library/react';
+import { screen } from '@testing-library/dom';
 import { Post } from './';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 
+const createMockStore = configureStore();
+
 describe('Post', () => {
   beforeAll(() => {
+    const mockAuthUser = {
+      _id: '1',
+      rank: 'user',
+      email: 'mock@mail.ru',
+      fullName: 'MockFullName',
+      created: '2023-09-15T12:34:56Z',
+      avatarUrl: 'https://example.com/avatar.jpg',
+    };
+
     jest.mock('react-redux', () => ({
       ...jest.requireActual('react-redux'),
       useDispatch: jest.fn(),
-      useSelector: jest.fn(),
+      useSelector: jest.fn().mockReturnValue(mockAuthUser),
     }));
   });
 
@@ -17,14 +29,29 @@ describe('Post', () => {
     jest.clearAllMocks();
   });
 
-  test('Компонент должен успешно смонтироваться', () => {
+  test('should be successful rendered', () => {
+    const initialState = {
+      auth: {
+        data: {
+          userData: {
+            _id: '1',
+            rank: 'user',
+            email: 'mock_auth@mail.ru',
+            fullName: 'MockAuthFullName',
+            created: '2023-09-15T12:34:56Z',
+            avatarUrl: 'https://example.com/avatar.jpg',
+          },
+        },
+      },
+    };
+    const store = createMockStore(initialState);
     const mockPostProps = {
       id: '1',
       title: 'Test Title',
       createdAt: '2023-09-15T12:34:56Z',
       imageUrl: 'https://example.com/image.jpg',
       user: {
-        _id: '1',
+        _id: '2',
         rank: 'user',
         email: 'mock@mail.ru',
         fullName: 'MockFullName',
@@ -45,5 +72,10 @@ describe('Post', () => {
         </Provider>
       </MemoryRouter>,
     );
+
+    expect(screen.getByText('Test Title')).toBeInTheDocument();
+    expect(screen.getByText('user')).toBeInTheDocument();
+    expect(screen.queryByTestId('views-count').textContent).toEqual('10');
+    expect(screen.queryByTestId('comments-count').textContent).toEqual('5');
   });
 });
