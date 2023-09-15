@@ -68,17 +68,5 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
     "prettier": "^2.8.7"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.jsx?$": "babel-jest"
-    },
-    "moduleNameMapper": {
-      "^lodash-es$": "lodash",
-      "\\.(css|less)$": "identity-obj-proxy"
-    },
-    "transformIgnorePatterns": [
-      "<rootDir>/node_modules/(?!lodash-es)"
-    ]
   }
 }
