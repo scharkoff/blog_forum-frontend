@@ -85,6 +85,11 @@ const initialState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
+  reducers: {
+    setUserData: (state, action) => {
+      state.data.userData = action.payload;
+    },
+  },
   extraReducers: {
     [fetchLogin.pending]: (state) => {
       state.isLoading = true;
@@ -152,5 +157,7 @@ const authSlice = createSlice({
 });
 
 export const selectIsAuth = (state) => state.auth.authorization;
+
+export const { setUserData } = authSlice.actions;
 
 export const authReducer = authSlice.reducer;

@@ -55,9 +55,9 @@ export const Post = ({
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
-      {isEditable ||
-      authUser?.rank === 'admin' ||
-      user?._id === authUser?._id ? (
+      {(isEditable ||
+        authUser?.rank === 'admin' ||
+        user?._id === authUser?._id) && (
         <div className={styles.editButtons}>
           <Link to={`/posts/${id}/edit`}>
             <IconButton color="primary">
@@ -68,9 +68,8 @@ export const Post = ({
             <DeleteIcon />
           </IconButton>
         </div>
-      ) : (
-        ''
       )}
+
       {imageUrl && (
         <Link to={`/posts/${id}`}>
           <img
@@ -132,7 +131,4 @@ Post.propTypes = {
   isFullPost: PropTypes.bool,
   isLoading: PropTypes.bool,
   isEditable: PropTypes.bool,
-  setOpen: PropTypes.func,
-  setAlertText: PropTypes.func,
-  setAlertType: PropTypes.func,
 };
