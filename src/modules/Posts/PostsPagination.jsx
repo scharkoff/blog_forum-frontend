@@ -4,27 +4,65 @@ import styles from './Posts.module.scss';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { Post } from 'components/Post';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts } from 'redux/slices/posts';
-import { setActivePage } from 'redux/slices/utils';
+import { gql, useQuery } from '@apollo/client';
 
-export const PostsPagination = React.memo(({ posts, isLoading }) => {
-  const dispatch = useDispatch();
+// GraphQL Query
+const GET_POSTS = gql`
+  query GetPosts($page: Int, $pageSize: Int, $sortType: String, $tag: String) {
+    getPosts(page: $page, pageSize: $pageSize, sortType: $sortType, tag: $tag) {
+      posts {
+        _id: id
+        title
+        imageUrl
+        user {
+          _id: id
+          fullName
+          avatarUrl
+          rank
+        }
+        createdAt
+        viewsCount
+        commentsCount
+        tags
+      }
+      postsCount
+    }
+  }
+`;
 
-  const { userData } = useSelector((state) => state.auth.data);
-  const { postsCount } = useSelector((state) => state.posts.posts);
-  const { activeTabs, activePage } = useSelector((state) => state.utils);
-  const { activeTag } = useSelector((state) => state.posts.tags);
+export const PostsPagination = React.memo(() => {
+  const [currentPage, setCurrentPage] = React.useState(0);
+  const itemsPerPage = 5;
 
-  React.useEffect(() => {
-    dispatch(
-      fetchPosts({
-        pageOptions: [activePage + 1, 5],
-        activeTabs,
-        tagName: activeTag,
-      }),
+  const { loading, error, data, refetch } = useQuery(GET_POSTS, {
+    variables: {
+      page: currentPage + 1, // GraphQL нумерация страниц начинается с 1
+      pageSize: itemsPerPage,
+      sortType: 'latest',
+      tag: null,
+    },
+  });
+
+  const handlePageClick = (event) => {
+    setCurrentPage(event.selected);
+    refetch(); // Перезагружаем данные при смене страницы
+  };
+
+  if (loading) {
+    return (
+      <div>
+        {[...Array(5)].map((_, index) => (
+          <Post key={index} isLoading={true} />
+        ))}
+      </div>
     );
-  }, [activePage, activeTabs, activeTag]);
+  }
+
+  if (error) {
+    return <p>Error loading posts</p>;
+  }
+
+  const { posts, postsCount } = data.getPosts;
 
   function Items({ currentItems }) {
     return (
@@ -45,58 +83,37 @@ export const PostsPagination = React.memo(({ posts, isLoading }) => {
               viewsCount={post.viewsCount}
               commentsCount={post.commentsCount}
               tags={post.tags}
-              isEditable={userData?._id === post.user?._id}
+              isEditable={true /* замените на проверку пользователя */}
             />
           ))}
       </>
     );
   }
 
-  function PaginatedItems({ itemsPerPage }) {
-    const currentItems = posts.slice(0, 5);
-    const pageCount = Math.ceil(postsCount / itemsPerPage) || 1;
-
-    const handlePageClick = (event) => {
-      dispatch(setActivePage(event.selected));
-    };
-
-    return (
-      <>
-        <Items currentItems={currentItems} />
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel={<NavigateNextIcon />}
-          onPageChange={handlePageClick}
-          forcePage={activePage}
-          pageRangeDisplayed={2}
-          pageCount={pageCount}
-          previousLabel={<NavigateBeforeIcon />}
-          renderOnZeroPageCount={null}
-          containerClassName={styles.paginationWrapper}
-          pageClassName={styles.currentPage}
-          pageLinkClassName={styles.currentPageLink}
-          previousClassName={styles.prevPage}
-          previousLinkClassName={styles.prevLink}
-          nextClassName={styles.nextPage}
-          nextLinkClassName={styles.nextLink}
-          activeClassName={styles.activePage}
-          disabledClassName={styles.disabled}
-        />
-      </>
-    );
-  }
+  const pageCount = Math.ceil(postsCount / itemsPerPage);
 
   return (
     <>
-      {isLoading ? (
-        <div>
-          {[...Array(5)].map((_, index) => {
-            return <Post key={index} isLoading={true} />;
-          })}
-        </div>
-      ) : (
-        <PaginatedItems itemsPerPage={5} />
-      )}
+      <Items currentItems={posts.slice(0, itemsPerPage)} />
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel={<NavigateNextIcon />}
+        onPageChange={handlePageClick}
+        forcePage={currentPage}
+        pageRangeDisplayed={2}
+        pageCount={pageCount}
+        previousLabel={<NavigateBeforeIcon />}
+        renderOnZeroPageCount={null}
+        containerClassName={styles.paginationWrapper}
+        pageClassName={styles.currentPage}
+        pageLinkClassName={styles.currentPageLink}
+        previousClassName={styles.prevPage}
+        previousLinkClassName={styles.prevLink}
+        nextClassName={styles.nextPage}
+        nextLinkClassName={styles.nextLink}
+        activeClassName={styles.activePage}
+        disabledClassName={styles.disabled}
+      />
     </>
   );
 });

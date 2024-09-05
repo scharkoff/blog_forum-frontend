@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 import { useSelector } from 'react-redux';
 import { Posts } from 'modules';
 import { CommentsBlock, SortTabs, TagsBlock } from 'components';
+import UsersList from 'components/UserList';
 
 export const Home = () => {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -49,6 +50,7 @@ export const Home = () => {
             isLoading={isLastCommentsLoading}
             isEditable={false}
           />
+          <UsersList />
         </Grid>
       </Grid>
     </div>
